@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const defaultThemeState = {
-  theme: 'light',
+  theme: 'dark',
   setTheme: () => {},
   toggleTheme: () => {},
-  isDark: false
+  isDark: true,
 };
 
 const ThemeContext = createContext(defaultThemeState);
@@ -12,39 +12,51 @@ const ThemeContext = createContext(defaultThemeState);
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem('civic_theme');
-    if (saved) return saved;
-    // Check system preference
-    if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark';
+
+    if (saved === 'light' || saved === 'dark') {
+      return saved;
     }
-    return 'light';
+
+    // CivicEye is intentionally dark-first.
+    return 'dark';
   });
 
   useEffect(() => {
     if (typeof document === 'undefined') return;
+
     const root = document.documentElement;
+
     if (theme === 'dark') {
       root.classList.add('dark');
+      root.style.colorScheme = 'dark';
     } else {
       root.classList.remove('dark');
+      root.style.colorScheme = 'light';
     }
+
     localStorage.setItem('civic_theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+    setTheme((previous) => (previous === 'dark' ? 'light' : 'dark'));
   };
 
   const isDark = theme === 'dark';
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, toggleTheme, isDark }}>
+    <ThemeContext.Provider
+      value={{
+        theme,
+        setTheme,
+        toggleTheme,
+        isDark,
+      }}
+    >
       {children}
     </ThemeContext.Provider>
   );
 }
 
 export function useTheme() {
-  const context = useContext(ThemeContext);
-  return context || defaultThemeState;
+  return useContext(ThemeContext) || defaultThemeState;
 }
