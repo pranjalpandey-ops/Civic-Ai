@@ -1,5 +1,10 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
 
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
@@ -8,24 +13,21 @@ import { LanguageProvider } from './context/LanguageContext';
 
 import { Navbar } from './components/common/Navbar';
 
-// Public
+// Pages
 import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
 import { SignupPage } from './pages/SignupPage';
 
-// Citizen
 import { CitizenDashboard } from './pages/citizen/CitizenDashboard';
 import { MyComplaintsPage } from './pages/citizen/MyComplaints';
 import { ReportIssuePage } from './pages/citizen/ReportIssueModal';
 import { ComplaintDetailPage } from './pages/citizen/ComplaintDetail';
 
-// Authority
 import { AuthorityDashboard } from './pages/authority/AuthorityDashboard';
 import { IncidentAnalysisPage } from './pages/authority/IncidentAnalysis';
 import { AuthorityQueuePage } from './pages/authority/AuthorityQueue';
 import { LiveCityMapPage } from './pages/authority/LiveCityMap';
 
-// Admin
 import { AdminPanelPage } from './pages/admin/AdminPanel';
 import { ReportsExportPage } from './pages/admin/ReportsExport';
 
@@ -41,22 +43,43 @@ export function App() {
                 v7_relativeSplatPath: true,
               }}
             >
-              <div className="civic-app min-h-screen flex flex-col">
+              <div className="min-h-screen bg-[#070b12] text-slate-100 flex flex-col">
+
+                {/* Global Navigation */}
                 <Navbar />
 
-                <div className="relative z-0 flex-1">
+                {/* Application Content */}
+                <div className="flex-1 min-w-0">
                   <Routes>
-                    {/* ================================
-                        PUBLIC
-                    ================================= */}
-                    <Route path="/" element={<LandingPage />} />
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/signup" element={<SignupPage />} />
-                    <Route path="/map" element={<LiveCityMapPage />} />
 
-                    {/* ================================
+                    {/* =================================================
+                        PUBLIC
+                    ================================================= */}
+
+                    <Route
+                      path="/"
+                      element={<LandingPage />}
+                    />
+
+                    <Route
+                      path="/login"
+                      element={<LoginPage />}
+                    />
+
+                    <Route
+                      path="/signup"
+                      element={<SignupPage />}
+                    />
+
+                    <Route
+                      path="/map"
+                      element={<LiveCityMapPage />}
+                    />
+
+                    {/* =================================================
                         CITIZEN
-                    ================================= */}
+                    ================================================= */}
+
                     <Route
                       path="/citizen"
                       element={<CitizenDashboard />}
@@ -77,9 +100,10 @@ export function App() {
                       element={<ComplaintDetailPage />}
                     />
 
-                    {/* ================================
+                    {/* =================================================
                         AUTHORITY
-                    ================================= */}
+                    ================================================= */}
+
                     <Route
                       path="/authority"
                       element={<AuthorityDashboard />}
@@ -125,9 +149,10 @@ export function App() {
                       element={<AdminPanelPage />}
                     />
 
-                    {/* ================================
+                    {/* =================================================
                         ADMIN
-                    ================================= */}
+                    ================================================= */}
+
                     <Route
                       path="/admin"
                       element={<AdminPanelPage />}
@@ -153,13 +178,15 @@ export function App() {
                       element={<ReportsExportPage />}
                     />
 
-                    {/* ================================
+                    {/* =================================================
                         FALLBACK
-                    ================================= */}
+                    ================================================= */}
+
                     <Route
                       path="*"
                       element={<Navigate to="/" replace />}
                     />
+
                   </Routes>
                 </div>
               </div>
