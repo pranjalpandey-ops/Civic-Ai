@@ -253,764 +253,900 @@ export function LandingPage() {
 
       </div>
 
-      {/* ========================================================
-          HERO
-      ======================================================== */}
+{/* ========================================================
+    PREMIUM CIVICEYE HERO
+======================================================== */}
 
-      <section
+<section
+  className="
+    relative
+    z-10
+    overflow-hidden
+    px-5
+    pb-20
+    pt-8
+    sm:px-8
+    lg:px-12
+    lg:pb-24
+    lg:pt-12
+  "
+>
+  {/* Decorative ambient lines */}
+
+  <div className="pointer-events-none absolute inset-0 overflow-hidden">
+    <div
+      className={`
+        absolute
+        left-[8%]
+        top-[18%]
+        h-px
+        w-[260px]
+        rotate-[-18deg]
+        bg-gradient-to-r
+        from-transparent
+        via-blue-500/30
+        to-transparent
+      `}
+    />
+
+    <div
+      className="
+        absolute
+        right-[5%]
+        top-[28%]
+        h-px
+        w-[300px]
+        rotate-[22deg]
+        bg-gradient-to-r
+        from-transparent
+        via-violet-500/25
+        to-transparent
+      "
+    />
+
+    <div
+      className="
+        absolute
+        bottom-[12%]
+        left-[35%]
+        h-px
+        w-[420px]
+        rotate-[-8deg]
+        bg-gradient-to-r
+        from-transparent
+        via-cyan-500/20
+        to-transparent
+      "
+    />
+  </div>
+
+  <div
+    className="
+      relative
+      mx-auto
+      grid
+      max-w-7xl
+      items-center
+      gap-12
+      lg:grid-cols-[0.92fr_1.08fr]
+      lg:gap-10
+    "
+  >
+
+    {/* ======================================================
+        LEFT — HERO CONTENT
+    ====================================================== */}
+
+    <div className="relative z-20">
+
+      {/* Live intelligence badge */}
+
+      <div
+        className={`
+          mb-6
+          inline-flex
+          items-center
+          gap-2.5
+          rounded-full
+          border
+          px-3.5
+          py-2
+          text-[10px]
+          font-black
+          uppercase
+          tracking-[0.16em]
+          backdrop-blur-xl
+          ${
+            isDark
+              ? 'border-blue-400/15 bg-blue-500/[0.07] text-blue-300'
+              : 'border-blue-200 bg-white/80 text-blue-600 shadow-sm'
+          }
+        `}
+      >
+        <span className="relative flex h-2 w-2">
+          <span className="absolute inset-0 animate-ping rounded-full bg-emerald-400 opacity-60" />
+
+          <span className="relative h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(34,197,94,.7)]" />
+        </span>
+
+        <span>{t('liveCityIntelligence')}</span>
+
+        <Sparkles className="h-3 w-3 text-violet-400" />
+      </div>
+
+      {/* Main heading */}
+
+      <h1
+        className={`
+          max-w-3xl
+          text-[2.7rem]
+          font-black
+          leading-[0.96]
+          tracking-[-0.055em]
+          sm:text-5xl
+          md:text-6xl
+          lg:text-[4.65rem]
+          xl:text-[5rem]
+          ${
+            isDark
+              ? 'text-white'
+              : 'text-slate-950'
+          }
+        `}
+      >
+        {t('heroLine1')}
+
+        <br />
+
+        {t('heroLine2')}
+
+        <br />
+
+        {t('heroLine3')}
+
+        <br />
+
+        <span
+          className="
+            bg-gradient-to-r
+            from-blue-400
+            via-indigo-400
+            to-violet-400
+            bg-clip-text
+            text-transparent
+          "
+        >
+          {t('heroGradientLine1')}
+        </span>
+
+        <br />
+
+        <span
+          className="
+            bg-gradient-to-r
+            from-violet-400
+            via-blue-400
+            to-cyan-400
+            bg-clip-text
+            text-transparent
+          "
+        >
+          {t('heroGradientLine2')}
+        </span>
+      </h1>
+
+      {/* Description */}
+
+      <p
+        className={`
+          mt-7
+          max-w-xl
+          text-sm
+          leading-7
+          sm:text-base
+          lg:text-[15px]
+          ${muted}
+        `}
+      >
+        {t('heroDescription')}
+      </p>
+
+      {/* ====================================================
+          PRIMARY ACTIONS
+      ==================================================== */}
+
+      <div className="mt-8 flex flex-wrap items-center gap-3">
+
+        {/* Report */}
+
+        <Link
+          to="/report"
+          className="
+            group
+            relative
+            inline-flex
+            h-12
+            items-center
+            gap-2
+            overflow-hidden
+            rounded-xl
+            bg-gradient-to-r
+            from-blue-600
+            via-indigo-600
+            to-violet-600
+            px-5
+            text-sm
+            font-black
+            text-white
+            shadow-xl
+            shadow-blue-600/20
+            transition-all
+            duration-300
+            hover:-translate-y-1
+            hover:shadow-2xl
+            hover:shadow-blue-600/30
+          "
+        >
+          <span
+            className="
+              absolute
+              inset-0
+              -translate-x-full
+              bg-gradient-to-r
+              from-transparent
+              via-white/20
+              to-transparent
+              transition-transform
+              duration-700
+              group-hover:translate-x-full
+            "
+          />
+
+          <AlertCircle className="relative h-4 w-4" />
+
+          <span className="relative">
+            {t('reportIssue')}
+          </span>
+
+          <ArrowRight
+            className="
+              relative
+              h-4
+              w-4
+              transition-transform
+              duration-300
+              group-hover:translate-x-1
+            "
+          />
+        </Link>
+
+        {/* Live map */}
+
+        <Link
+          to="/map"
+          className={`
+            group
+            inline-flex
+            h-12
+            items-center
+            gap-2
+            rounded-xl
+            border
+            px-5
+            text-sm
+            font-bold
+            backdrop-blur-xl
+            transition-all
+            duration-300
+            hover:-translate-y-1
+            ${
+              isDark
+                ? 'border-white/10 bg-white/[0.04] text-slate-200 hover:border-blue-400/30 hover:bg-blue-500/[0.07] hover:text-white'
+                : 'border-slate-200 bg-white/80 text-slate-800 hover:border-blue-200 hover:text-blue-600'
+            }
+          `}
+        >
+          <MapPin className="h-4 w-4 text-blue-500" />
+
+          <span>{t('exploreLiveCity')}</span>
+
+          <ChevronRight
+            className="
+              h-4
+              w-4
+              transition-transform
+              duration-300
+              group-hover:translate-x-1
+            "
+          />
+        </Link>
+      </div>
+
+      {/* ====================================================
+          TRUST / SYSTEM STATUS
+      ==================================================== */}
+
+      <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+
+        <div
+          className={`
+            flex
+            items-center
+            gap-2
+            text-[10px]
+            font-bold
+            ${muted}
+          `}
+        >
+          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+
+          {t('aiAssistedTriage')}
+        </div>
+
+        <div
+          className={`
+            flex
+            items-center
+            gap-2
+            text-[10px]
+            font-bold
+            ${muted}
+          `}
+        >
+          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+
+          {t('transparentResponse')}
+        </div>
+
+        <div
+          className={`
+            flex
+            items-center
+            gap-2
+            text-[10px]
+            font-bold
+            ${muted}
+          `}
+        >
+          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+
+          {t('cityWideIntelligence')}
+        </div>
+      </div>
+
+      {/* Small live status */}
+
+      <div
+        className={`
+          mt-7
+          flex
+          w-fit
+          items-center
+          gap-3
+          rounded-xl
+          border
+          px-3
+          py-2.5
+          ${
+            isDark
+              ? 'border-white/[0.06] bg-white/[0.025]'
+              : 'border-slate-200 bg-white/60'
+          }
+        `}
+      >
+        <div className="relative flex h-2 w-2">
+          <span className="absolute inset-0 animate-ping rounded-full bg-emerald-400 opacity-50" />
+
+          <span className="relative h-2 w-2 rounded-full bg-emerald-500" />
+        </div>
+
+        <div>
+          <p
+            className={`
+              text-[9px]
+              font-black
+              uppercase
+              tracking-wider
+              ${isDark ? 'text-slate-200' : 'text-slate-700'}
+            `}
+          >
+            CivicEye AI Online
+          </p>
+
+          <p className={`mt-0.5 text-[8px] ${subtle}`}>
+            Monitoring civic signals in real time
+          </p>
+        </div>
+      </div>
+    </div>
+
+    {/* ======================================================
+        RIGHT — CIVIC INTELLIGENCE VISUAL
+    ====================================================== */}
+
+    <div
+      className="
+        relative
+        min-h-[500px]
+        [perspective:1400px]
+        sm:min-h-[570px]
+        lg:min-h-[600px]
+      "
+    >
+
+      {/* Ambient glow */}
+
+      <div
+        className={`
+          absolute
+          left-1/2
+          top-1/2
+          h-[340px]
+          w-[340px]
+          -translate-x-1/2
+          -translate-y-1/2
+          rounded-full
+          blur-[100px]
+          ${
+            isDark
+              ? 'bg-blue-600/[0.12]'
+              : 'bg-blue-400/[0.15]'
+          }
+        `}
+      />
+
+      {/* Secondary glow */}
+
+      <div
         className="
-          relative
-          z-10
-          px-5
-          pb-20
-          pt-10
-          sm:px-8
-          lg:px-12
-          lg:pb-28
-          lg:pt-16
+          absolute
+          right-[10%]
+          top-[10%]
+          h-[180px]
+          w-[180px]
+          rounded-full
+          bg-violet-500/[0.08]
+          blur-[80px]
+        "
+      />
+
+      {/* ====================================================
+          3D SCENE
+      ==================================================== */}
+
+      <div
+        className="
+          absolute
+          inset-0
+          [transform-style:preserve-3d]
         "
       >
 
+        {/* Back technical grid */}
+
+        <div
+          className={`
+            absolute
+            left-1/2
+            top-1/2
+            h-[440px]
+            w-[440px]
+            -translate-x-1/2
+            -translate-y-1/2
+            rounded-[40px]
+            border
+            [transform-style:preserve-3d]
+            ${
+              isDark
+                ? 'border-blue-400/[0.09]'
+                : 'border-blue-200/50'
+            }
+          `}
+          style={{
+            backgroundImage:
+              'linear-gradient(rgba(59,130,246,.11) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,.11) 1px, transparent 1px)',
+            backgroundSize: '32px 32px',
+            transform:
+              'translate(-50%, -50%) rotateX(58deg) rotateZ(-12deg) translateZ(-90px)',
+          }}
+        />
+
+        {/* Orbit rings */}
+
+        <div className="ce-orbit ce-orbit-one" />
+
+        <div className="ce-orbit ce-orbit-two" />
+
+        <div className="ce-orbit ce-orbit-three" />
+
+        {/* ==================================================
+            CENTRAL GLOBE
+        ================================================== */}
+
         <div
           className="
-            mx-auto
-            grid
-            max-w-7xl
-            items-center
-            gap-14
-            lg:grid-cols-[0.95fr_1.05fr]
-            lg:gap-8
+            ce-3d-globe
+            absolute
+            left-1/2
+            top-1/2
+            h-[245px]
+            w-[245px]
+            -translate-x-1/2
+            -translate-y-1/2
           "
         >
 
-          {/* ====================================================
-              HERO CONTENT
-          ==================================================== */}
+          {/* Globe */}
 
-          <div className="relative z-20">
+          <div
+            className={`
+              absolute
+              inset-0
+              overflow-hidden
+              rounded-full
+              border
+              ${
+                isDark
+                  ? 'border-blue-400/30 bg-[#09152c]'
+                  : 'border-blue-300/50 bg-[#edf6ff]'
+              }
+            `}
+            style={{
+              boxShadow: isDark
+                ? 'inset -35px -25px 70px rgba(0,0,0,.75), inset 25px 20px 50px rgba(59,130,246,.18), 0 0 90px rgba(59,130,246,.18)'
+                : 'inset -35px -25px 70px rgba(59,130,246,.12), inset 25px 20px 50px rgba(255,255,255,.95), 0 20px 80px rgba(59,130,246,.18)',
+            }}
+          >
 
-            <div
-              className={`
-                mb-6
-                inline-flex
-                items-center
-                gap-2
-                rounded-full
-                border
-                px-3.5
-                py-2
-                text-[10px]
-                font-black
-                uppercase
-                tracking-[0.16em]
-                backdrop-blur-xl
-                ${
-                  isDark
-                    ? 'border-blue-400/10 bg-blue-500/[0.06] text-blue-300'
-                    : 'border-blue-200 bg-white/70 text-blue-600 shadow-sm'
-                }
-              `}
-            >
+            {/* Latitude */}
 
-              <span className="relative flex h-2 w-2">
+            <div className="absolute left-[-10%] top-[20%] h-px w-[120%] rotate-[8deg] bg-blue-400/20" />
 
-                <span
-                  className="
-                    absolute
-                    inline-flex
-                    h-full
-                    w-full
-                    animate-ping
-                    rounded-full
-                    bg-emerald-400
-                    opacity-60
-                  "
-                />
+            <div className="absolute left-[-10%] top-[38%] h-px w-[120%] rotate-[3deg] bg-blue-400/20" />
 
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+            <div className="absolute left-[-10%] top-[58%] h-px w-[120%] -rotate-[3deg] bg-blue-400/20" />
 
-              </span>
+            <div className="absolute left-[-10%] top-[77%] h-px w-[120%] -rotate-[8deg] bg-blue-400/20" />
 
-              {t('liveCityIntelligence')}
+            {/* Longitude */}
 
-              <Sparkles className="h-3 w-3" />
+            <div className="absolute left-[22%] top-[-10%] h-[120%] w-px rotate-[18deg] bg-violet-400/15" />
 
+            <div className="absolute left-[42%] top-[-10%] h-[120%] w-px rotate-[8deg] bg-violet-400/15" />
+
+            <div className="absolute left-[60%] top-[-10%] h-[120%] w-px -rotate-[8deg] bg-violet-400/15" />
+
+            <div className="absolute left-[78%] top-[-10%] h-[120%] w-px -rotate-[18deg] bg-violet-400/15" />
+
+            {/* City network */}
+
+            <div className="absolute left-[27%] top-[32%] h-[45%] w-[45%] rotate-12">
+              <div className="absolute left-1/2 top-0 h-full w-px bg-cyan-400/35" />
+
+              <div className="absolute left-0 top-1/2 h-px w-full bg-cyan-400/35" />
+
+              <div className="absolute left-[20%] top-[20%] h-[60%] w-[60%] rotate-45 border border-blue-400/25" />
+
+              <div className="absolute left-[15%] top-[15%] h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_15px_rgba(34,211,238,.9)]" />
+
+              <div className="absolute bottom-[15%] right-[15%] h-2 w-2 rounded-full bg-violet-400 shadow-[0_0_15px_rgba(139,92,246,.9)]" />
             </div>
 
-            <h1
-              className={`
-                max-w-3xl
-                text-[2.8rem]
-                font-black
-                leading-[0.96]
-                tracking-[-0.055em]
-                sm:text-5xl
-                md:text-6xl
-                lg:text-[4.8rem]
-                ${
-                  isDark
-                    ? 'text-white'
-                    : 'text-slate-950'
-                }
-              `}
-            >
-
-              {t('heroLine1')}
-
-              <br />
-
-              {t('heroLine2')}
-
-              <br />
-
-              {t('heroLine3')}
-
-              <br />
-
-              <span
-                className="
-                  bg-gradient-to-r
-                  from-blue-500
-                  via-violet-500
-                  to-cyan-400
-                  bg-clip-text
-                  text-transparent
-                "
-              >
-                {t('heroGradientLine1')}
-              </span>
-
-              <br />
-
-              <span
-                className="
-                  bg-gradient-to-r
-                  from-violet-500
-                  to-blue-500
-                  bg-clip-text
-                  text-transparent
-                "
-              >
-                {t('heroGradientLine2')}
-              </span>
-
-            </h1>
-
-            <p
-              className={`
-                mt-7
-                max-w-2xl
-                text-base
-                leading-7
-                sm:text-lg
-                ${muted}
-              `}
-            >
-              {t('heroDescription')}
-            </p>
-
-            {/* ==================================================
-                CTA
-            ================================================== */}
-
-            <div className="mt-8 flex flex-wrap gap-3">
-
-              <Link
-                to="/report"
-                className="
-                  group
-                  inline-flex
-                  h-12
-                  items-center
-                  gap-2
-                  rounded-xl
-                  bg-gradient-to-r
-                  from-blue-600
-                  to-indigo-600
-                  px-5
-                  text-sm
-                  font-bold
-                  text-white
-                  shadow-lg
-                  shadow-blue-600/20
-                  transition-all
-                  duration-300
-                  hover:-translate-y-1
-                  hover:shadow-xl
-                  hover:shadow-blue-600/30
-                "
-              >
-
-                <AlertCircle className="h-4 w-4" />
-
-                {t('reportIssue')}
-
-                <ArrowRight
-                  className="
-                    h-4
-                    w-4
-                    transition-transform
-                    duration-300
-                    group-hover:translate-x-1
-                  "
-                />
-
-              </Link>
-
-              <Link
-                to="/map"
-                className={`
-                  group
-                  inline-flex
-                  h-12
-                  items-center
-                  gap-2
-                  rounded-xl
-                  border
-                  px-5
-                  text-sm
-                  font-bold
-                  shadow-sm
-                  backdrop-blur-xl
-                  transition-all
-                  duration-300
-                  hover:-translate-y-1
-                  ${
-                    isDark
-                      ? 'border-white/10 bg-white/[0.04] text-white hover:border-blue-400/30 hover:bg-blue-500/[0.06]'
-                      : 'border-slate-200 bg-white/70 text-slate-800 hover:border-blue-200 hover:text-blue-600'
-                  }
-                `}
-              >
-
-                <MapPin className="h-4 w-4 text-blue-500" />
-
-                {t('exploreLiveCity')}
-
-                <ChevronRight
-                  className="
-                    h-4
-                    w-4
-                    transition-transform
-                    duration-300
-                    group-hover:translate-x-1
-                  "
-                />
-
-              </Link>
-
-            </div>
-
-            {/* ==================================================
-                TRUST
-            ================================================== */}
-
-            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3">
-
-              <div className={`flex items-center gap-2 text-[10px] font-bold ${muted}`}>
-                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                {t('aiAssistedTriage')}
-              </div>
-
-              <div className={`flex items-center gap-2 text-[10px] font-bold ${muted}`}>
-                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                {t('transparentResponse')}
-              </div>
-
-              <div className={`flex items-center gap-2 text-[10px] font-bold ${muted}`}>
-                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                {t('cityWideIntelligence')}
-              </div>
-
-            </div>
-
-          </div>
-
-          {/* ====================================================
-              3D CIVIC INTELLIGENCE ENGINE
-          ==================================================== */}
-
-          <div className="relative min-h-[520px] [perspective:1400px] sm:min-h-[620px]">
-
-            {/* Ambient halo */}
-
-            <div
-              className={`
-                absolute
-                left-1/2
-                top-1/2
-                h-[360px]
-                w-[360px]
-                -translate-x-1/2
-                -translate-y-1/2
-                rounded-full
-                blur-[90px]
-                ${
-                  isDark
-                    ? 'bg-blue-600/10'
-                    : 'bg-blue-400/15'
-                }
-              `}
-            />
-
-            {/* 3D scene */}
+            {/* Central AI core */}
 
             <div
               className="
                 absolute
-                inset-0
-                [transform-style:preserve-3d]
+                left-1/2
+                top-1/2
+                h-[68px]
+                w-[68px]
+                -translate-x-1/2
+                -translate-y-1/2
+                rounded-full
+                bg-gradient-to-br
+                from-blue-400
+                via-indigo-500
+                to-violet-600
+                shadow-[0_0_55px_rgba(59,130,246,.7)]
               "
             >
+              <div className="absolute inset-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-sm" />
 
-              {/* =================================================
-                  BACK GRID PLANE
-              ================================================= */}
-
-              <div
-                className={`
-                  absolute
-                  left-1/2
-                  top-1/2
-                  h-[460px]
-                  w-[460px]
-                  -translate-x-1/2
-                  -translate-y-1/2
-                  rotate-x-[58deg]
-                  rotate-z-[-12deg]
-                  rounded-[40px]
-                  border
-                  [transform-style:preserve-3d]
-                  ${
-                    isDark
-                      ? 'border-blue-400/10'
-                      : 'border-blue-200/50'
-                  }
-                `}
-                style={{
-                  backgroundImage:
-                    'linear-gradient(rgba(59,130,246,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,.12) 1px, transparent 1px)',
-                  backgroundSize: '34px 34px',
-                  transform:
-                    'translate(-50%, -50%) rotateX(58deg) rotateZ(-12deg) translateZ(-80px)',
-                }}
-              />
-
-              {/* =================================================
-                  ORBIT RINGS
-              ================================================= */}
-
-              <div
-                className="ce-orbit ce-orbit-one"
-              />
-
-              <div
-                className="ce-orbit ce-orbit-two"
-              />
-
-              <div
-                className="ce-orbit ce-orbit-three"
-              />
-
-              {/* =================================================
-                  CENTRAL 3D GLOBE
-              ================================================= */}
-
-              <div
+              <Cpu
                 className="
-                  ce-3d-globe
                   absolute
                   left-1/2
                   top-1/2
-                  h-[260px]
-                  w-[260px]
+                  h-7
+                  w-7
                   -translate-x-1/2
                   -translate-y-1/2
+                  text-white
                 "
+              />
+            </div>
+          </div>
+
+          {/* Globe atmosphere */}
+
+          <div className="absolute -inset-5 rounded-full border border-blue-400/10" />
+
+          <div className="absolute -inset-8 rounded-full border border-violet-400/[0.07]" />
+
+          <div className="absolute -inset-11 rounded-full border border-cyan-400/[0.04]" />
+        </div>
+
+        {/* ==================================================
+            FLOATING SIGNAL NODES
+        ================================================== */}
+
+        <div className="ce-floating-node node-one">
+          <span className="ce-node-pulse" />
+          <MapPin className="h-3.5 w-3.5" />
+        </div>
+
+        <div className="ce-floating-node node-two">
+          <span className="ce-node-pulse" />
+          <Radio className="h-3.5 w-3.5" />
+        </div>
+
+        <div className="ce-floating-node node-three">
+          <span className="ce-node-pulse" />
+          <AlertCircle className="h-3.5 w-3.5" />
+        </div>
+
+        <div className="ce-floating-node node-four">
+          <span className="ce-node-pulse" />
+          <CheckCircle2 className="h-3.5 w-3.5" />
+        </div>
+
+        {/* ==================================================
+            CRITICAL INCIDENT CARD
+        ================================================== */}
+
+        <div
+          className={`
+            ce-3d-card
+            absolute
+            left-[0%]
+            top-[12%]
+            w-[175px]
+            rounded-2xl
+            border
+            p-3.5
+            backdrop-blur-xl
+            ${
+              isDark
+                ? 'border-white/10 bg-[#0c1424]/85'
+                : 'border-white bg-white/80 shadow-xl'
+            }
+          `}
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-500/10">
+              <AlertCircle className="h-4 w-4 text-red-500" />
+            </div>
+
+            <span className="rounded-md bg-red-500/10 px-1.5 py-1 text-[7px] font-black uppercase tracking-wider text-red-400">
+              CRITICAL
+            </span>
+          </div>
+
+          <p
+            className={`
+              mt-3
+              text-[10px]
+              font-black
+              ${isDark ? 'text-white' : 'text-slate-900'}
+            `}
+          >
+            {t('nh24')}
+          </p>
+
+          <p className={`mt-1 text-[8px] ${subtle}`}>
+            {t('waterlogging')}
+          </p>
+
+          <div className="mt-3 flex items-center justify-between text-[7px]">
+            <span className={subtle}>AI confidence</span>
+            <span className="font-black text-red-400">92%</span>
+          </div>
+
+          <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-slate-500/10">
+            <div className="h-full w-[92%] rounded-full bg-gradient-to-r from-red-500 to-orange-400" />
+          </div>
+        </div>
+
+        {/* ==================================================
+            SYSTEM STATUS CARD
+        ================================================== */}
+
+        <div
+          className={`
+            absolute
+            right-[3%]
+            top-[5%]
+            rounded-xl
+            border
+            px-3.5
+            py-2.5
+            backdrop-blur-xl
+            ${
+              isDark
+                ? 'border-white/10 bg-[#0b1220]/75'
+                : 'border-white bg-white/80 shadow-lg'
+            }
+          `}
+        >
+          <div className="flex items-center gap-2">
+            <div className="relative h-2 w-2">
+              <span className="absolute inset-0 animate-ping rounded-full bg-emerald-400 opacity-60" />
+
+              <span className="relative block h-2 w-2 rounded-full bg-emerald-500" />
+            </div>
+
+            <span
+              className={`
+                text-[9px]
+                font-black
+                uppercase
+                tracking-wider
+                ${isDark ? 'text-white' : 'text-slate-800'}
+              `}
+            >
+              SYSTEM ONLINE
+            </span>
+          </div>
+
+          <p className={`mt-1 text-[8px] ${subtle}`}>
+            {t('ncrNetworkOperational')}
+          </p>
+        </div>
+
+        {/* ==================================================
+            AI VERIFICATION CARD
+        ================================================== */}
+
+        <div
+          className={`
+            ce-3d-card
+            absolute
+            bottom-[15%]
+            right-[0%]
+            w-[180px]
+            rounded-2xl
+            border
+            p-3.5
+            backdrop-blur-xl
+            ${
+              isDark
+                ? 'border-white/10 bg-[#0c1424]/85'
+                : 'border-white bg-white/80 shadow-xl'
+            }
+          `}
+        >
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10">
+              <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+            </div>
+
+            <div>
+              <p
+                className={`
+                  text-[10px]
+                  font-black
+                  ${isDark ? 'text-white' : 'text-slate-900'}
+                `}
               >
+                94.6%
+              </p>
 
-                {/* Globe body */}
+              <p className={`text-[8px] ${subtle}`}>
+                {t('satisfaction')}
+              </p>
+            </div>
+          </div>
 
-                <div
-                  className={`
-                    absolute
-                    inset-0
-                    overflow-hidden
-                    rounded-full
-                    border
-                    ${
-                      isDark
-                        ? 'border-blue-400/30 bg-[#0b1630]'
-                        : 'border-blue-300/50 bg-[#eaf3ff]'
-                    }
-                  `}
+          <div className="mt-3 flex h-7 items-end gap-1">
+            {[28, 42, 35, 55, 48, 70, 82, 76, 94].map(
+              (height, index) => (
+                <span
+                  key={index}
+                  className="w-full rounded-t-sm bg-gradient-to-t from-emerald-500/20 to-emerald-400"
                   style={{
-                    boxShadow: isDark
-                      ? 'inset -35px -25px 70px rgba(0,0,0,.7), inset 25px 20px 50px rgba(59,130,246,.18), 0 0 90px rgba(59,130,246,.14)'
-                      : 'inset -35px -25px 70px rgba(59,130,246,.15), inset 25px 20px 50px rgba(255,255,255,.9), 0 20px 80px rgba(59,130,246,.18)',
+                    height: `${height * 0.28}px`,
                   }}
-                >
+                />
+              )
+            )}
+          </div>
+        </div>
 
-                  {/* Globe latitude */}
+        {/* ==================================================
+            BOTTOM LIVE METRICS
+        ================================================== */}
 
-                  <div className="absolute left-[-10%] top-[20%] h-px w-[120%] rotate-[8deg] bg-blue-400/20" />
+        <div
+          className={`
+            absolute
+            bottom-[3%]
+            left-1/2
+            w-[88%]
+            -translate-x-1/2
+            rounded-2xl
+            border
+            p-3.5
+            backdrop-blur-xl
+            ${
+              isDark
+                ? 'border-white/10 bg-[#0b1220]/80'
+                : 'border-white bg-white/80 shadow-xl'
+            }
+          `}
+        >
+          <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
 
-                  <div className="absolute left-[-10%] top-[38%] h-px w-[120%] rotate-[3deg] bg-blue-400/20" />
+            <div>
+              <p className={`text-[7px] font-bold uppercase tracking-wider ${subtle}`}>
+                {t('activeIncidents')}
+              </p>
 
-                  <div className="absolute left-[-10%] top-[58%] h-px w-[120%] -rotate-[3deg] bg-blue-400/20" />
-
-                  <div className="absolute left-[-10%] top-[77%] h-px w-[120%] -rotate-[8deg] bg-blue-400/20" />
-
-                  {/* Globe longitude */}
-
-                  <div className="absolute left-[22%] top-[-10%] h-[120%] w-px rotate-[18deg] bg-violet-400/15" />
-
-                  <div className="absolute left-[42%] top-[-10%] h-[120%] w-px rotate-[8deg] bg-violet-400/15" />
-
-                  <div className="absolute left-[60%] top-[-10%] h-[120%] w-px -rotate-[8deg] bg-violet-400/15" />
-
-                  <div className="absolute left-[78%] top-[-10%] h-[120%] w-px -rotate-[18deg] bg-violet-400/15" />
-
-                  {/* City network */}
-
-                  <div className="absolute left-[28%] top-[34%] h-[42%] w-[42%] rotate-12">
-
-                    <div className="absolute left-1/2 top-0 h-full w-px bg-cyan-400/30" />
-
-                    <div className="absolute left-0 top-1/2 h-px w-full bg-cyan-400/30" />
-
-                    <div className="absolute left-[20%] top-[20%] h-[60%] w-[60%] rotate-45 border border-blue-400/20" />
-
-                  </div>
-
-                  {/* Core */}
-
-                  <div
-                    className="
-                      absolute
-                      left-1/2
-                      top-1/2
-                      h-16
-                      w-16
-                      -translate-x-1/2
-                      -translate-y-1/2
-                      rounded-full
-                      bg-gradient-to-br
-                      from-blue-400
-                      via-indigo-500
-                      to-violet-600
-                      shadow-[0_0_50px_rgba(59,130,246,.65)]
-                    "
-                  >
-
-                    <div className="absolute inset-2 rounded-full bg-white/10 backdrop-blur-sm" />
-
-                    <Cpu
-                      className="
-                        absolute
-                        left-1/2
-                        top-1/2
-                        h-7
-                        w-7
-                        -translate-x-1/2
-                        -translate-y-1/2
-                        text-white
-                      "
-                    />
-
-                  </div>
-
-                </div>
-
-                {/* Atmosphere */}
-
-                <div className="absolute -inset-5 rounded-full border border-blue-400/10" />
-
-                <div className="absolute -inset-8 rounded-full border border-violet-400/[0.07]" />
-
-              </div>
-
-              {/* =================================================
-                  FLOATING SIGNAL NODES
-              ================================================= */}
-
-              <div className="ce-floating-node node-one">
-                <span className="ce-node-pulse" />
-                <MapPin className="h-3.5 w-3.5" />
-              </div>
-
-              <div className="ce-floating-node node-two">
-                <span className="ce-node-pulse" />
-                <Radio className="h-3.5 w-3.5" />
-              </div>
-
-              <div className="ce-floating-node node-three">
-                <span className="ce-node-pulse" />
-                <AlertCircle className="h-3.5 w-3.5" />
-              </div>
-
-              <div className="ce-floating-node node-four">
-                <span className="ce-node-pulse" />
-                <CheckCircle2 className="h-3.5 w-3.5" />
-              </div>
-
-              {/* =================================================
-                  3D DATA CARDS
-              ================================================= */}
-
-              <div
+              <p
                 className={`
-                  ce-3d-card
-                  absolute
-                  left-[2%]
-                  top-[14%]
-                  w-[170px]
-                  rounded-2xl
-                  border
-                  p-3
-                  ${
-                    isDark
-                      ? 'border-white/10 bg-[#0c1424]/80'
-                      : 'border-white bg-white/75'
-                  }
+                  mt-1
+                  text-sm
+                  font-black
+                  ${isDark ? 'text-white' : 'text-slate-900'}
                 `}
               >
+                342
+              </p>
+            </div>
 
-                <div className="flex items-center justify-between">
+            <div>
+              <p className={`text-[7px] font-bold uppercase tracking-wider ${subtle}`}>
+                {t('aiVerified')}
+              </p>
 
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-red-500/10">
-                    <AlertCircle className="h-3.5 w-3.5 text-red-500" />
-                  </div>
-
-                  <span className="text-[8px] font-black uppercase tracking-wider text-red-400">
-                    CRITICAL
-                  </span>
-
-                </div>
-
-                <p
-                  className={`
-                    mt-3
-                    text-[10px]
-                    font-black
-                    ${isDark ? 'text-white' : 'text-slate-900'}
-                  `}
-                >
-                  {t('nh24')}
-                </p>
-
-                <p className={`mt-1 text-[8px] ${subtle}`}>
-                  {t('waterlogging')}
-                </p>
-
-                <div className="mt-3 h-1 overflow-hidden rounded-full bg-slate-500/10">
-                  <div className="h-full w-[82%] rounded-full bg-gradient-to-r from-red-500 to-orange-400" />
-                </div>
-
-              </div>
-
-              <div
+              <p
                 className={`
-                  ce-3d-card
-                  absolute
-                  bottom-[14%]
-                  right-[0%]
-                  w-[175px]
-                  rounded-2xl
-                  border
-                  p-3
-                  ${
-                    isDark
-                      ? 'border-white/10 bg-[#0c1424]/80'
-                      : 'border-white bg-white/75'
-                  }
+                  mt-1
+                  text-sm
+                  font-black
+                  ${isDark ? 'text-white' : 'text-slate-900'}
                 `}
               >
+                97%
+              </p>
+            </div>
 
-                <div className="flex items-center gap-2">
+            <div>
+              <p className={`text-[7px] font-bold uppercase tracking-wider ${subtle}`}>
+                {t('critical')}
+              </p>
 
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-500/10">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                  </div>
+              <p className="mt-1 text-sm font-black text-red-500">
+                07
+              </p>
+            </div>
 
-                  <div>
-                    <p
-                      className={`
-                        text-[10px]
-                        font-black
-                        ${isDark ? 'text-white' : 'text-slate-900'}
-                      `}
-                    >
-                      94.6%
-                    </p>
+            <div className="hidden sm:block">
+              <p className={`text-[7px] font-bold uppercase tracking-wider ${subtle}`}>
+                {t('satisfaction')}
+              </p>
 
-                    <p className={`text-[8px] ${subtle}`}>
-                      {t('satisfaction')}
-                    </p>
-                  </div>
-
-                </div>
-
-                <div className="mt-3 flex items-end gap-1">
-
-                  {[28, 42, 35, 55, 48, 70, 82, 76, 94].map(
-                    (height, index) => (
-                      <span
-                        key={index}
-                        className="w-full rounded-t-sm bg-gradient-to-t from-emerald-500/20 to-emerald-400"
-                        style={{
-                          height: `${height * 0.28}px`,
-                        }}
-                      />
-                    )
-                  )}
-
-                </div>
-
-              </div>
-
-              {/* =================================================
-                  TOP STATUS BAR
-              ================================================= */}
-
-              <div
-                className={`
-                  absolute
-                  right-[5%]
-                  top-[5%]
-                  rounded-xl
-                  border
-                  px-3
-                  py-2
-                  backdrop-blur-xl
-                  ${
-                    isDark
-                      ? 'border-white/10 bg-[#0b1220]/70'
-                      : 'border-white bg-white/70 shadow-lg'
-                  }
-                `}
-              >
-
-                <div className="flex items-center gap-2">
-
-                  <div className="relative h-2 w-2">
-
-                    <span className="absolute inset-0 animate-ping rounded-full bg-emerald-400 opacity-60" />
-
-                    <span className="relative block h-2 w-2 rounded-full bg-emerald-500" />
-
-                  </div>
-
-                  <span
-                    className={`
-                      text-[9px]
-                      font-black
-                      uppercase
-                      tracking-wider
-                      ${isDark ? 'text-white' : 'text-slate-800'}
-                    `}
-                  >
-                    SYSTEM ONLINE
-                  </span>
-
-                </div>
-
-                <p className={`mt-1 text-[8px] ${subtle}`}>
-                  {t('ncrNetworkOperational')}
-                </p>
-
-              </div>
-
-              {/* =================================================
-                  BOTTOM METRIC PANEL
-              ================================================= */}
-
-              <div
-                className={`
-                  absolute
-                  bottom-[3%]
-                  left-1/2
-                  w-[90%]
-                  -translate-x-1/2
-                  rounded-2xl
-                  border
-                  p-3
-                  backdrop-blur-xl
-                  ${
-                    isDark
-                      ? 'border-white/10 bg-[#0b1220]/75'
-                      : 'border-white bg-white/75 shadow-xl'
-                  }
-                `}
-              >
-
-                <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
-
-                  <div>
-                    <p className={`text-[7px] font-bold uppercase tracking-wider ${subtle}`}>
-                      {t('activeIncidents')}
-                    </p>
-
-                    <p
-                      className={`
-                        mt-1
-                        text-sm
-                        font-black
-                        ${isDark ? 'text-white' : 'text-slate-900'}
-                      `}
-                    >
-                      342
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className={`text-[7px] font-bold uppercase tracking-wider ${subtle}`}>
-                      {t('aiVerified')}
-                    </p>
-
-                    <p
-                      className={`
-                        mt-1
-                        text-sm
-                        font-black
-                        ${isDark ? 'text-white' : 'text-slate-900'}
-                      `}
-                    >
-                      97%
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className={`text-[7px] font-bold uppercase tracking-wider ${subtle}`}>
-                      {t('critical')}
-                    </p>
-
-                    <p className="mt-1 text-sm font-black text-red-500">
-                      07
-                    </p>
-                  </div>
-
-                  <div className="hidden sm:block">
-                    <p className={`text-[7px] font-bold uppercase tracking-wider ${subtle}`}>
-                      {t('satisfaction')}
-                    </p>
-
-                    <p className="mt-1 text-sm font-black text-emerald-500">
-                      94.6%
-                    </p>
-                  </div>
-
-                </div>
-
-              </div>
-
+              <p className="mt-1 text-sm font-black text-emerald-500">
+                94.6%
+              </p>
             </div>
 
           </div>
-
         </div>
-
-      </section>
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* ========================================================
           SEARCH
