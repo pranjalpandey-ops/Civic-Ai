@@ -10,7 +10,8 @@ This project is organized into two independent sets: **frontend** and **backend*
 - **backend/**: Node.js + Express API server with AI vision triage & duplicate clustering
 
 ---
-
+ 
+ 
 ## Quick Start
 
 ### Run Frontend:
