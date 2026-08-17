@@ -3548,100 +3548,455 @@ export function LandingPage() {
           FOOTER
       ======================================================== */}
 
-      <footer
-        className={`
-          relative
-          z-10
-          border-t
-          px-5
-          py-8
-          sm:px-8
-          ${
-            isDark
-              ? 'border-white/[0.05] bg-[#060a12]'
-              : 'border-slate-200 bg-white/70'
-          }
-        `}
-      >
+ {/* ========================================================
+    FOOTER
+======================================================== */}
 
-        <div className="mx-auto flex max-w-7xl flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+<footer
+  className={`
+    relative
+    z-10
+    overflow-hidden
+    border-t
+    px-5
+    py-12
+    sm:px-8
+    lg:py-14
+    ${
+      isDark
+        ? 'border-white/[0.06] bg-[#050810]'
+        : 'border-slate-200 bg-white'
+    }
+  `}
+>
 
-          <div className="flex items-center gap-3">
+  {/* Subtle background glow */}
 
-            <div
-              className="
-                flex
-                h-9
-                w-9
-                items-center
-                justify-center
-                rounded-xl
-                bg-gradient-to-br
-                from-blue-600
-                to-violet-600
-                text-white
-                shadow-lg
-                shadow-blue-500/20
-              "
+  <div
+    className={`
+      pointer-events-none
+      absolute
+      -bottom-32
+      left-1/2
+      h-72
+      w-72
+      -translate-x-1/2
+      rounded-full
+      blur-[100px]
+      ${
+        isDark
+          ? 'bg-blue-600/[0.06]'
+          : 'bg-blue-400/[0.08]'
+      }
+    `}
+  />
+
+  <div className="relative mx-auto max-w-7xl">
+
+    {/* ======================================================
+        MAIN FOOTER GRID
+    ====================================================== */}
+
+    <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+
+      {/* ====================================================
+          BRAND
+      ==================================================== */}
+
+      <div>
+
+        <Link
+          to="/"
+          className="group inline-flex items-center gap-3"
+        >
+
+          <div
+            className="
+              flex
+              h-10
+              w-10
+              items-center
+              justify-center
+              rounded-xl
+              bg-gradient-to-br
+              from-blue-600
+              to-violet-600
+              text-white
+              shadow-lg
+              shadow-blue-500/20
+              transition-transform
+              duration-300
+              group-hover:scale-105
+            "
+          >
+            <Shield className="h-5 w-5" />
+          </div>
+
+          <div>
+
+            <p
+              className={`
+                text-sm
+                font-black
+                tracking-tight
+                ${
+                  isDark
+                    ? 'text-white'
+                    : 'text-slate-900'
+                }
+              `}
             >
-              <Shield className="h-4 w-4" />
-            </div>
+              CivicEye
+              <span className="ml-1 text-blue-500">
+                AI
+              </span>
+            </p>
 
-            <div>
-
-              <p
-                className={`
-                  text-xs
-                  font-black
-                  ${isDark ? 'text-white' : 'text-slate-900'}
-                `}
-              >
-                CivicEye AI
-              </p>
-
-              <p className={`text-[9px] font-medium ${subtle}`}>
-                © 2026 · {t('precisionGovernance')}
-              </p>
-
-            </div>
+            <p
+              className={`
+                mt-0.5
+                text-[8px]
+                font-bold
+                uppercase
+                tracking-[0.16em]
+                ${subtle}
+              `}
+            >
+              Civic Intelligence Platform
+            </p>
 
           </div>
 
-          <div className="flex flex-wrap items-center gap-5 text-[10px] font-bold">
+        </Link>
 
-            <Link
-              to="/privacy"
-              className={`transition-colors hover:text-blue-500 ${muted}`}
-            >
-              {t('privacy')}
-            </Link>
+        <p
+          className={`
+            mt-5
+            max-w-sm
+            text-xs
+            leading-6
+            ${muted}
+          `}
+        >
+          AI-powered civic intelligence connecting citizens,
+          authorities and communities through transparent
+          issue reporting and response tracking.
+        </p>
 
-            <Link
-              to="/terms"
-              className={`transition-colors hover:text-blue-500 ${muted}`}
-            >
-              {t('terms')}
-            </Link>
+        {/* System status */}
 
-            <Link
-              to="/api-docs"
-              className={`transition-colors hover:text-blue-500 ${muted}`}
-            >
-              {t('apiDocs')}
-            </Link>
+        <div
+          className={`
+            mt-5
+            inline-flex
+            items-center
+            gap-2
+            rounded-lg
+            border
+            px-3
+            py-2
+            ${
+              isDark
+                ? 'border-emerald-500/10 bg-emerald-500/[0.04]'
+                : 'border-emerald-200 bg-emerald-50'
+            }
+          `}
+        >
 
-            <Link
-              to="/contact"
-              className={`transition-colors hover:text-blue-500 ${muted}`}
-            >
-              {t('contact')}
-            </Link>
+          <span className="relative flex h-2 w-2">
 
-          </div>
+            <span className="absolute inset-0 animate-ping rounded-full bg-emerald-400 opacity-50" />
+
+            <span className="relative h-2 w-2 rounded-full bg-emerald-500" />
+
+          </span>
+
+          <span
+            className={`
+              text-[9px]
+              font-black
+              uppercase
+              tracking-wider
+              ${
+                isDark
+                  ? 'text-emerald-400'
+                  : 'text-emerald-600'
+              }
+            `}
+          >
+            Platform operational
+          </span>
 
         </div>
 
-      </footer>
+      </div>
+
+      {/* ====================================================
+          PLATFORM
+      ==================================================== */}
+
+      <div>
+
+        <h3
+          className={`
+            text-[10px]
+            font-black
+            uppercase
+            tracking-[0.16em]
+            ${
+              isDark
+                ? 'text-white'
+                : 'text-slate-900'
+            }
+          `}
+        >
+          Platform
+        </h3>
+
+        <div className="mt-5 space-y-3">
+
+          <Link
+            to="/"
+            className={`block text-xs transition-colors hover:text-blue-500 ${muted}`}
+          >
+            Overview
+          </Link>
+
+          <Link
+            to="/map"
+            className={`block text-xs transition-colors hover:text-blue-500 ${muted}`}
+          >
+            Live City Map
+          </Link>
+
+          <Link
+            to="/report"
+            className={`block text-xs transition-colors hover:text-blue-500 ${muted}`}
+          >
+            Report an Issue
+          </Link>
+
+          <Link
+            to="/citizen"
+            className={`block text-xs transition-colors hover:text-blue-500 ${muted}`}
+          >
+            Citizen Portal
+          </Link>
+
+        </div>
+
+      </div>
+
+      {/* ====================================================
+          OPERATIONS
+      ==================================================== */}
+
+      <div>
+
+        <h3
+          className={`
+            text-[10px]
+            font-black
+            uppercase
+            tracking-[0.16em]
+            ${
+              isDark
+                ? 'text-white'
+                : 'text-slate-900'
+            }
+          `}
+        >
+          Operations
+        </h3>
+
+        <div className="mt-5 space-y-3">
+
+          <Link
+            to="/authority"
+            className={`block text-xs transition-colors hover:text-blue-500 ${muted}`}
+          >
+            Authority Command
+          </Link>
+
+          <Link
+            to="/admin"
+            className={`block text-xs transition-colors hover:text-blue-500 ${muted}`}
+          >
+            Municipal Admin
+          </Link>
+
+          <Link
+            to="/api-docs"
+            className={`block text-xs transition-colors hover:text-blue-500 ${muted}`}
+          >
+            API Documentation
+          </Link>
+
+          <Link
+            to="/contact"
+            className={`block text-xs transition-colors hover:text-blue-500 ${muted}`}
+          >
+            Contact & Support
+          </Link>
+
+        </div>
+
+      </div>
+
+      {/* ====================================================
+          LEGAL
+      ==================================================== */}
+
+      <div>
+
+        <h3
+          className={`
+            text-[10px]
+            font-black
+            uppercase
+            tracking-[0.16em]
+            ${
+              isDark
+                ? 'text-white'
+                : 'text-slate-900'
+            }
+          `}
+        >
+          Information
+        </h3>
+
+        <div className="mt-5 space-y-3">
+
+          <Link
+            to="/privacy"
+            className={`block text-xs transition-colors hover:text-blue-500 ${muted}`}
+          >
+            Privacy Policy
+          </Link>
+
+          <Link
+            to="/terms"
+            className={`block text-xs transition-colors hover:text-blue-500 ${muted}`}
+          >
+            Terms of Service
+          </Link>
+
+          <Link
+            to="/api-docs"
+            className={`block text-xs transition-colors hover:text-blue-500 ${muted}`}
+          >
+            Developer Docs
+          </Link>
+
+          <Link
+            to="/contact"
+            className={`block text-xs transition-colors hover:text-blue-500 ${muted}`}
+          >
+            Get in Touch
+          </Link>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    {/* ======================================================
+        DIVIDER
+    ====================================================== */}
+
+    <div
+      className={`
+        my-9
+        h-px
+        ${
+          isDark
+            ? 'bg-white/[0.06]'
+            : 'bg-slate-200'
+        }
+      `}
+    />
+
+    {/* ======================================================
+        BOTTOM BAR
+    ====================================================== */}
+
+    <div
+      className="
+        flex
+        flex-col
+        gap-4
+        sm:flex-row
+        sm:items-center
+        sm:justify-between
+      "
+    >
+
+      <div>
+
+        <p
+          className={`
+            text-[9px]
+            font-medium
+            ${subtle}
+          `}
+        >
+          © 2026 CivicEye AI · Precision civic intelligence
+        </p>
+
+      </div>
+
+      <div className="flex flex-wrap items-center gap-5">
+
+        <span
+          className={`
+            flex
+            items-center
+            gap-2
+            text-[9px]
+            font-bold
+            ${subtle}
+          `}
+        >
+          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+          AI-assisted
+        </span>
+
+        <span
+          className={`
+            flex
+            items-center
+            gap-2
+            text-[9px]
+            font-bold
+            ${subtle}
+          `}
+        >
+          <Shield className="h-3.5 w-3.5 text-blue-500" />
+          Transparent
+        </span>
+
+        <span
+          className={`
+            flex
+            items-center
+            gap-2
+            text-[9px]
+            font-bold
+            ${subtle}
+          `}
+        >
+          <Globe2 className="h-3.5 w-3.5 text-violet-500" />
+          City-wide
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</footer>
 
       {/* ========================================================
           3D / MOTION CSS
