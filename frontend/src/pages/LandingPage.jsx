@@ -46,65 +46,74 @@ export function LandingPage() {
 
     if (!query) return;
 
-    navigate(
-      `/map?search=${encodeURIComponent(query)}`
-    );
+    navigate(`/map?search=${encodeURIComponent(query)}`);
   };
+
+  /*
+   * ============================================================
+   * STATS
+   * ============================================================
+   *
+   * All text uses t() so it automatically changes when the
+   * global language changes from English to Hindi.
+   */
 
   const stats = [
     {
-      label: 'Active Signals',
+      label: t('activeSignals'),
       value: '342',
-      description: 'Live across the city',
+      description: t('liveAcrossCity'),
       icon: Activity,
     },
     {
-      label: 'AI Verified',
+      label: t('aiVerified'),
       value: '97%',
-      description: 'Classification confidence',
+      description: t('classificationConfidence'),
       icon: BrainCircuit,
     },
     {
-      label: 'Avg Response',
+      label: t('avgResponse'),
       value: '4h 12m',
-      description: 'From report to action',
+      description: t('fromReportToAction'),
       icon: Zap,
     },
     {
-      label: 'Citizens Engaged',
+      label: t('citizensEngaged'),
       value: '2,847',
-      description: 'Active contributors',
+      description: t('activeContributors'),
       icon: Users,
     },
   ];
 
+  /*
+   * ============================================================
+   * CIVICEYE PROCESS
+   * ============================================================
+   */
+
   const processSteps = [
     {
       number: '01',
-      title: 'Citizen reports',
-      description:
-        'A real-world civic signal enters the CivicEye network.',
+      title: t('citizenReports'),
+      description: t('citizenReportsDesc'),
       icon: Shield,
     },
     {
       number: '02',
-      title: 'AI understands',
-      description:
-        'Evidence is classified, verified and intelligently scored.',
+      title: t('aiUnderstands'),
+      description: t('aiUnderstandsDesc'),
       icon: BrainCircuit,
     },
     {
       number: '03',
-      title: 'City responds',
-      description:
-        'The right department and response team are activated.',
+      title: t('cityResponds'),
+      description: t('cityRespondsDesc'),
       icon: Route,
     },
     {
       number: '04',
-      title: 'Everyone sees',
-      description:
-        'Resolution becomes visible, measurable and accountable.',
+      title: t('everyoneSees'),
+      description: t('everyoneSeesDesc'),
       icon: Eye,
     },
   ];
@@ -128,7 +137,7 @@ export function LandingPage() {
           <div className="ce-hero-badge">
             <span className="ce-live-dot" />
 
-            LIVE CITY INTELLIGENCE
+            {t('liveCityIntelligence')}
 
             <Sparkles className="w-3.5 h-3.5" />
           </div>
@@ -136,30 +145,33 @@ export function LandingPage() {
           {/* Heading */}
           <h1 className="ce-hero-title">
 
-            See the city.
+            {t('heroLine1')}
 
             <br />
 
-            Understand
+            {t('heroLine2')}
+
             <br />
 
-            the problem.
+            {t('heroLine3')}
 
             <br />
 
             <span className="ce-gradient-text">
-              Move before it becomes
-              a crisis.
+
+              {t('heroGradientLine1')}
+
+              <br />
+
+              {t('heroGradientLine2')}
+
             </span>
 
           </h1>
 
           {/* Description */}
           <p className="ce-hero-description">
-            CivicEye AI transforms citizen signals
-            into verified, prioritized and actionable
-            municipal intelligence — helping cities
-            respond faster and operate smarter.
+            {t('heroDescription')}
           </p>
 
           {/* CTA */}
@@ -171,7 +183,7 @@ export function LandingPage() {
             >
               <AlertCircle className="w-4.5 h-4.5" />
 
-              Report an Issue
+              {t('reportIssue')}
 
               <ArrowRight className="w-4 h-4" />
             </Link>
@@ -182,7 +194,7 @@ export function LandingPage() {
             >
               <MapPin className="w-4.5 h-4.5 text-blue-400" />
 
-              Explore Live City
+              {t('exploreLiveCity')}
             </Link>
 
           </div>
@@ -192,17 +204,20 @@ export function LandingPage() {
 
             <div className="ce-trust-item">
               <CheckCircle2 className="w-3.5 h-3.5" />
-              AI-assisted triage
+
+              {t('aiAssistedTriage')}
             </div>
 
             <div className="ce-trust-item">
               <CheckCircle2 className="w-3.5 h-3.5" />
-              Transparent response
+
+              {t('transparentResponse')}
             </div>
 
             <div className="ce-trust-item">
               <CheckCircle2 className="w-3.5 h-3.5" />
-              City-wide intelligence
+
+              {t('cityWideIntelligence')}
             </div>
 
           </div>
@@ -229,13 +244,15 @@ export function LandingPage() {
           <div className="ce-map-panel">
 
             <div className="ce-map-panel-title">
+
               <span className="ce-live-dot" />
 
-              LIVE CIVIC SIGNALS
+              {t('liveCivicSignals')}
+
             </div>
 
             <div className="ce-map-panel-value">
-              NCR NODE / NETWORK OPERATIONAL
+              {t('ncrNetworkOperational')}
             </div>
 
           </div>
@@ -244,32 +261,58 @@ export function LandingPage() {
           <div className="ce-map-stats">
 
             <div className="ce-map-stat">
-              <span>Active incidents</span>
-              <strong>342</strong>
+
+              <span>
+                {t('activeIncidents')}
+              </span>
+
+              <strong>
+                342
+              </strong>
+
             </div>
 
             <div className="ce-map-stat">
-              <span>AI verified</span>
-              <strong>18</strong>
+
+              <span>
+                {t('aiVerified')}
+              </span>
+
+              <strong>
+                18
+              </strong>
+
             </div>
 
             <div className="ce-map-stat">
-              <span>Critical</span>
+
+              <span>
+                {t('critical')}
+              </span>
+
               <strong className="text-red-400">
                 7
               </strong>
+
             </div>
 
             <div className="ce-map-stat">
-              <span>Satisfaction</span>
+
+              <span>
+                {t('satisfaction')}
+              </span>
+
               <strong className="text-emerald-400">
                 94.6%
               </strong>
+
             </div>
 
           </div>
 
-          {/* Map nodes */}
+          {/* ====================================================
+              MAP NODES
+          ==================================================== */}
 
           <div
             className="ce-map-node critical"
@@ -319,7 +362,9 @@ export function LandingPage() {
             }}
           />
 
-          {/* Labels */}
+          {/* ====================================================
+              MAP LABELS
+          ==================================================== */}
 
           <div
             className="ce-map-label"
@@ -328,13 +373,15 @@ export function LandingPage() {
               top: '27%',
             }}
           >
+
             <strong>
-              Sector 62
+              {t('sector62')}
             </strong>
 
             <span>
-              Pothole detected · P1
+              {t('potholeDetected')}
             </span>
+
           </div>
 
           <div
@@ -344,13 +391,15 @@ export function LandingPage() {
               top: '40%',
             }}
           >
+
             <strong>
-              NH-24
+              {t('nh24')}
             </strong>
 
             <span>
-              Waterlogging · P1
+              {t('waterlogging')}
             </span>
+
           </div>
 
           <div
@@ -360,32 +409,41 @@ export function LandingPage() {
               bottom: '29%',
             }}
           >
+
             <strong>
-              Sector 18
+              {t('sector18')}
             </strong>
 
             <span>
-              Streetlight failure
+              {t('streetlightFailure')}
             </span>
+
           </div>
 
-          {/* Bottom map information */}
+          {/* ====================================================
+              MAP FOOTER
+          ==================================================== */}
+
           <div className="ce-map-footer">
 
             <div className="flex items-center gap-3">
 
               <div className="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-400/10 flex items-center justify-center">
+
                 <Radio className="w-4 h-4 text-blue-400" />
+
               </div>
 
               <div>
+
                 <small>
-                  NETWORK STATUS
+                  {t('networkStatus')}
                 </small>
 
                 <strong>
-                  24 active signals
+                  24 {t('activeSignals')}
                 </strong>
+
               </div>
 
             </div>
@@ -394,9 +452,11 @@ export function LandingPage() {
               to="/map"
               className="flex items-center gap-1 text-[10px] font-bold text-blue-400 hover:text-blue-300"
             >
-              Open Live Map
+
+              {t('openLiveMap')}
 
               <ArrowRight className="w-3 h-3" />
+
             </Link>
 
           </div>
@@ -441,11 +501,10 @@ export function LandingPage() {
             type="text"
             value={searchQuery}
             onChange={(event) =>
-              setSearchQuery(
-                event.target.value
-              )
+              setSearchQuery(event.target.value)
             }
-            placeholder="Search reports, locations or departments..."
+            placeholder={t('searchPlaceholder')}
+            aria-label={t('searchPlaceholder')}
             className="
               w-full
               h-14
@@ -475,24 +534,29 @@ export function LandingPage() {
               transition-colors
             "
           >
-            Search
+            {t('search')}
           </button>
 
-          <div className="
-            absolute
-            right-24
-            hidden
-            sm:flex
-            items-center
-            gap-1
-            text-[9px]
-            font-bold
-            text-blue-400
-            uppercase
-            tracking-wider
-          ">
+          <div
+            className="
+              absolute
+              right-24
+              hidden
+              sm:flex
+              items-center
+              gap-1
+              text-[9px]
+              font-bold
+              text-blue-400
+              uppercase
+              tracking-wider
+            "
+          >
+
             <Sparkles className="w-3 h-3" />
+
             AI
+
           </div>
 
         </form>
@@ -508,18 +572,22 @@ export function LandingPage() {
         <div className="ce-section-heading">
 
           <div className="ce-section-kicker">
-            CIVICEYE SYSTEM OVERVIEW
+            {t('systemOverview')}
           </div>
 
           <h2 className="ce-section-title">
-            Intelligence that moves
+
+            {t('intelligenceThatMoves')}
+
             <span className="ce-gradient-text">
-              {" "}cities forward.
+              {' '}
+              {t('citiesForward')}
             </span>
+
           </h2>
 
           <p className="ce-section-description">
-            Live intelligence from NCR-07
+            {t('liveIntelligenceNCR')}
           </p>
 
         </div>
@@ -528,6 +596,7 @@ export function LandingPage() {
         <div className="ce-stats-grid">
 
           {stats.map((stat) => {
+
             const Icon = stat.icon;
 
             return (
@@ -539,7 +608,9 @@ export function LandingPage() {
                 <div className="flex items-center justify-between">
 
                   <div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/10 flex items-center justify-center">
+
                     <Icon className="w-4 h-4 text-blue-400" />
+
                   </div>
 
                   <ArrowRight className="w-4 h-4 text-slate-700" />
@@ -560,6 +631,7 @@ export function LandingPage() {
 
               </div>
             );
+
           })}
 
         </div>
@@ -575,18 +647,21 @@ export function LandingPage() {
         <div className="ce-section-heading">
 
           <div className="ce-section-kicker">
-            THE CIVICEYE LOOP
+            {t('civicEyeLoop')}
           </div>
 
           <h2 className="ce-section-title">
-            From citizen signal
+
+            {t('fromCitizenSignal')}
+
             <br />
-            to city action.
+
+            {t('toCityAction')}
+
           </h2>
 
           <p className="ce-section-description">
-            CivicEye connects the complete
-            response lifecycle.
+            {t('completeLifecycle')}
           </p>
 
         </div>
@@ -594,12 +669,18 @@ export function LandingPage() {
         <div className="ce-process-grid">
 
           {processSteps.map((step) => {
+
             const Icon = step.icon;
 
             return (
               <div
                 key={step.number}
-                className="ce-process-card group hover:border-blue-500/20 transition-colors"
+                className="
+                  ce-process-card
+                  group
+                  hover:border-blue-500/20
+                  transition-colors
+                "
               >
 
                 <div className="flex items-center justify-between">
@@ -614,8 +695,16 @@ export function LandingPage() {
 
                 </div>
 
-                <div className="ce-process-icon group-hover:bg-blue-500/15 transition-colors">
+                <div
+                  className="
+                    ce-process-icon
+                    group-hover:bg-blue-500/15
+                    transition-colors
+                  "
+                >
+
                   <Icon className="w-5 h-5" />
+
                 </div>
 
                 <h3 className="ce-process-title">
@@ -628,6 +717,7 @@ export function LandingPage() {
 
               </div>
             );
+
           })}
 
         </div>
@@ -656,7 +746,14 @@ export function LandingPage() {
         >
 
           {/* Actual Leaflet map */}
-          <div className="relative min-h-[390px] rounded-2xl overflow-hidden">
+          <div
+            className="
+              relative
+              min-h-[390px]
+              rounded-2xl
+              overflow-hidden
+            "
+          >
 
             <LeafletMap
               complaints={complaints.slice(0, 8)}
@@ -684,11 +781,21 @@ export function LandingPage() {
                 backdrop-blur-md
               "
             >
-              <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
+
+              <span
+                className="
+                  w-2
+                  h-2
+                  rounded-full
+                  bg-emerald-400
+                  shadow-[0_0_10px_rgba(52,211,153,0.8)]
+                "
+              />
 
               <span className="text-[10px] font-bold text-white">
-                LIVE CITY MAP
+                {t('liveCityMap')}
               </span>
+
             </div>
 
           </div>
@@ -697,42 +804,55 @@ export function LandingPage() {
           <div className="p-7 lg:p-10 flex flex-col justify-center">
 
             <div className="ce-section-kicker">
-              LIVE CITY PREVIEW
+              {t('liveCityPreview')}
             </div>
 
-            <h2 className="
-              mt-3
-              text-3xl
-              sm:text-4xl
-              font-black
-              tracking-tight
-              text-white
-            ">
-              See every signal.
+            <h2
+              className="
+                mt-3
+                text-3xl
+                sm:text-4xl
+                font-black
+                tracking-tight
+                text-white
+              "
+            >
+
+              {t('seeEverySignal')}
+
               <br />
 
               <span className="ce-gradient-text">
-                Track every action.
+                {t('trackEveryAction')}
               </span>
+
             </h2>
 
-            <p className="
-              mt-5
-              text-sm
-              leading-7
-              text-slate-500
-              max-w-lg
-            ">
-              Citizens report problems.
-              AI verifies and prioritizes them.
-              Authorities receive actionable
-              intelligence. Everyone sees the
-              progress.
+            <p
+              className="
+                mt-5
+                text-sm
+                leading-7
+                text-slate-500
+                max-w-lg
+              "
+            >
+              {t('liveCityDescription')}
             </p>
 
             <div className="mt-7 grid grid-cols-2 gap-3">
 
-              <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+              {/* Active signals */}
+              <div
+                className="
+                  p-4
+                  rounded-xl
+                  bg-slate-900/80
+                  border
+                  border-slate-800
+                "
+              >
+
                 <Map className="w-4 h-4 text-blue-400" />
 
                 <p className="mt-3 text-xl font-black text-white">
@@ -740,11 +860,22 @@ export function LandingPage() {
                 </p>
 
                 <p className="text-[10px] text-slate-600">
-                  Active signals
+                  {t('activeSignals')}
                 </p>
+
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+              {/* AI verified */}
+              <div
+                className="
+                  p-4
+                  rounded-xl
+                  bg-slate-900/80
+                  border
+                  border-slate-800
+                "
+              >
+
                 <Database className="w-4 h-4 text-purple-400" />
 
                 <p className="mt-3 text-xl font-black text-white">
@@ -752,11 +883,22 @@ export function LandingPage() {
                 </p>
 
                 <p className="text-[10px] text-slate-600">
-                  AI verified
+                  {t('aiVerified')}
                 </p>
+
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+              {/* In progress */}
+              <div
+                className="
+                  p-4
+                  rounded-xl
+                  bg-slate-900/80
+                  border
+                  border-slate-800
+                "
+              >
+
                 <Clock3 className="w-4 h-4 text-orange-400" />
 
                 <p className="mt-3 text-xl font-black text-white">
@@ -764,11 +906,22 @@ export function LandingPage() {
                 </p>
 
                 <p className="text-[10px] text-slate-600">
-                  In progress
+                  {t('inProgressShort')}
                 </p>
+
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+              {/* Resolved */}
+              <div
+                className="
+                  p-4
+                  rounded-xl
+                  bg-slate-900/80
+                  border
+                  border-slate-800
+                "
+              >
+
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
 
                 <p className="mt-3 text-xl font-black text-white">
@@ -776,8 +929,9 @@ export function LandingPage() {
                 </p>
 
                 <p className="text-[10px] text-slate-600">
-                  Resolved
+                  {t('resolved')}
                 </p>
+
               </div>
 
             </div>
@@ -795,9 +949,11 @@ export function LandingPage() {
                 hover:text-blue-300
               "
             >
-              Open full live map
+
+              {t('openLiveMap')}
 
               <ArrowRight className="w-4 h-4" />
+
             </Link>
 
           </div>
@@ -829,73 +985,103 @@ export function LandingPage() {
           "
         >
 
-          <div className="
-            absolute
-            left-1/2
-            top-0
-            -translate-x-1/2
-            w-72
-            h-40
-            rounded-full
-            bg-blue-500/10
-            blur-3xl
-            pointer-events-none
-          " />
+          <div
+            className="
+              absolute
+              left-1/2
+              top-0
+              -translate-x-1/2
+              w-72
+              h-40
+              rounded-full
+              bg-blue-500/10
+              blur-3xl
+              pointer-events-none
+            "
+          />
 
           <div className="relative">
 
-            <div className="inline-flex items-center gap-2 text-blue-400 text-[10px] font-bold uppercase tracking-[0.15em]">
+            <div
+              className="
+                inline-flex
+                items-center
+                gap-2
+                text-blue-400
+                text-[10px]
+                font-bold
+                uppercase
+                tracking-[0.15em]
+              "
+            >
+
               <Shield className="w-3.5 h-3.5" />
-              Built for transparency
+
+              {t('builtForTransparency')}
+
             </div>
 
-            <h2 className="
-              mt-4
-              text-3xl
-              sm:text-5xl
-              font-black
-              tracking-tight
-              text-white
-            ">
-              Smarter cities start
+            <h2
+              className="
+                mt-4
+                text-3xl
+                sm:text-5xl
+                font-black
+                tracking-tight
+                text-white
+              "
+            >
+
+              {t('smarterCitiesStart')}
+
               <br />
-              with a single report.
+
+              {t('withSingleReport')}
+
             </h2>
 
-            <p className="
-              max-w-xl
-              mx-auto
-              mt-4
-              text-sm
-              leading-7
-              text-slate-500
-            ">
-              Every report becomes intelligence,
-              action and visible progress.
+            <p
+              className="
+                max-w-xl
+                mx-auto
+                mt-4
+                text-sm
+                leading-7
+                text-slate-500
+              "
+            >
+              {t('everyReportBecomes')}
             </p>
 
-            <div className="
-              mt-7
-              flex
-              items-center
-              justify-center
-              gap-3
-              flex-wrap
-            ">
+            <div
+              className="
+                mt-7
+                flex
+                items-center
+                justify-center
+                gap-3
+                flex-wrap
+              "
+            >
 
               <Link
                 to="/report"
                 className="ce-primary-btn"
               >
-                Report an Issue
+
+                {t('reportIssue')}
+
                 <ArrowRight className="w-4 h-4" />
+
               </Link>
 
               <Link
                 to="/map"
                 className="ce-secondary-btn"
               >
-                Explore Live City
+
+                {t('exploreLiveCity')}
+
               </Link>
 
             </div>
@@ -915,26 +1101,29 @@ export function LandingPage() {
         <div className="ce-footer-inner">
 
           <div className="ce-footer-text">
-            © 2026 CivicEye AI.
-            Precision Urban Governance.
+
+            © 2026 CivicEye AI.{' '}
+
+            {t('precisionGovernance')}
+
           </div>
 
           <div className="ce-footer-links">
 
             <Link to="/privacy">
-              Privacy
+              {t('privacy')}
             </Link>
 
             <Link to="/terms">
-              Terms
+              {t('terms')}
             </Link>
 
             <Link to="/api-docs">
-              API Docs
+              {t('apiDocs')}
             </Link>
 
             <Link to="/contact">
-              Contact
+              {t('contact')}
             </Link>
 
           </div>
