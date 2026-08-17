@@ -13,6 +13,11 @@ import {
   X,
   ChevronDown,
   ArrowUpRight,
+  Sparkles,
+  Map,
+  Users,
+  Building2,
+  Settings2,
 } from 'lucide-react';
 
 import {
@@ -64,18 +69,22 @@ export function Navbar() {
     {
       label: t('platform'),
       path: '/',
+      icon: Sparkles,
     },
     {
       label: t('citizens'),
       path: '/citizen',
+      icon: Users,
     },
     {
       label: t('authorities'),
       path: '/authority',
+      icon: Building2,
     },
     {
       label: 'Live Map',
       path: '/map',
+      icon: Map,
     },
   ];
 
@@ -98,135 +107,186 @@ export function Navbar() {
     navigate(path);
   };
 
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+    setRoleMenuOpen(false);
+  };
+
+  const currentRole = user?.role?.toLowerCase() || 'citizen';
+
   return (
     <>
-      {/* =========================================================
-          DESKTOP / MAIN NAVBAR
-      ========================================================= */}
+      <header
+        className={`ce-navbar ${
+          mobileMenuOpen ? 'ce-navbar-open' : ''
+        }`}
+      >
+        {/* =====================================================
+            NAVBAR AMBIENT 3D LIGHT
+        ===================================================== */}
 
-      <header className="ce-navbar">
+        <div className="ce-navbar-orb ce-navbar-orb-one" />
+        <div className="ce-navbar-orb ce-navbar-orb-two" />
 
         <div className="ce-navbar-inner">
 
-          {/* =====================================================
-              LOGO
-          ===================================================== */}
+          {/* ===================================================
+              BRAND
+          =================================================== */}
 
           <Link
             to="/"
             className="ce-brand"
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={closeMobileMenu}
+            aria-label="CivicEye AI home"
           >
-            <div className="ce-brand-icon">
-              <Shield
-                className="w-5 h-5"
-                fill="rgba(255,255,255,0.18)"
-                strokeWidth={2.2}
-              />
+            <div className="ce-brand-icon-wrap">
+              <div className="ce-brand-icon">
+                <Shield
+                  className="w-5 h-5"
+                  fill="rgba(255,255,255,0.18)"
+                  strokeWidth={2.2}
+                />
+              </div>
+
+              <span className="ce-brand-orbit" />
             </div>
 
-            <span className="ce-brand-name">
-              CivicEye
-              <span className="text-blue-400 ml-1">
-                AI
+            <div className="ce-brand-copy">
+              <span className="ce-brand-name">
+                CivicEye
+                <span className="ce-brand-ai">
+                  AI
+                </span>
               </span>
-            </span>
+
+              <span className="ce-brand-subtitle">
+                Civic Intelligence
+              </span>
+            </div>
           </Link>
 
-          {/* =====================================================
+          {/* ===================================================
               DESKTOP NAVIGATION
-          ===================================================== */}
+          =================================================== */}
 
-          <nav className="ce-nav-center">
+          <nav
+            className="ce-nav-center"
+            aria-label="Primary navigation"
+          >
+            <div className="ce-nav-pill">
+              {navLinks.map((link) => {
+                const active = isActive(link.path);
+                const Icon = link.icon;
 
-            {navLinks.map((link) => {
-              const active = isActive(link.path);
+                return (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    className={`ce-nav-link ${
+                      active ? 'active' : ''
+                    }`}
+                    aria-current={
+                      active ? 'page' : undefined
+                    }
+                  >
+                    <Icon className="ce-nav-link-icon" />
 
-              return (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`ce-nav-link ${
-                    active ? 'active' : ''
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
+                    <span>{link.label}</span>
 
+                    {active && (
+                      <span className="ce-nav-active-dot" />
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
           </nav>
 
-          {/* =====================================================
+          {/* ===================================================
               RIGHT ACTIONS
-          ===================================================== */}
+          =================================================== */}
 
           <div className="ce-nav-actions">
 
-            {/* Theme */}
+            {/* =================================================
+                THEME
+            ================================================= */}
+
             <button
               type="button"
               onClick={toggleTheme}
-              className="ce-icon-btn"
+              className="ce-nav-control ce-theme-btn"
               title={
                 isDark
                   ? 'Switch to light mode'
                   : 'Switch to dark mode'
               }
+              aria-label={
+                isDark
+                  ? 'Switch to light mode'
+                  : 'Switch to dark mode'
+              }
             >
-              {isDark ? (
-                <Sun
-                  className="w-4 h-4 text-amber-300"
-                />
-              ) : (
-                <Moon
-                  className="w-4 h-4"
-                />
-              )}
+              <span className="ce-control-icon">
+                {isDark ? (
+                  <Sun className="w-4 h-4" />
+                ) : (
+                  <Moon className="w-4 h-4" />
+                )}
+              </span>
+
+              <span className="ce-control-label">
+                {isDark ? 'Light' : 'Dark'}
+              </span>
             </button>
 
-            {/* Language */}
+            {/* =================================================
+                LANGUAGE
+            ================================================= */}
+
             <button
               type="button"
               onClick={toggleLanguage}
-              className="ce-language-btn"
+              className="ce-nav-control ce-language-btn"
               title="Toggle language"
+              aria-label="Toggle language"
             >
               <Globe className="w-4 h-4" />
 
               <span>
                 {lang === 'en'
-                  ? 'English'
+                  ? 'EN'
                   : 'हिन्दी'}
               </span>
 
-              <ChevronDown className="w-3 h-3" />
+              <ChevronDown className="w-3 h-3 opacity-50" />
             </button>
 
             {/* =================================================
                 ROLE SWITCHER
             ================================================= */}
 
-            <div className="relative hidden lg:block">
-
+            <div className="ce-role-wrapper">
               <button
                 type="button"
                 onClick={() =>
-                  setRoleMenuOpen(
-                    !roleMenuOpen
-                  )
+                  setRoleMenuOpen((open) => !open)
                 }
-                className="ce-role-btn"
+                className={`ce-role-btn ${
+                  roleMenuOpen ? 'open' : ''
+                }`}
+                aria-expanded={roleMenuOpen}
+                aria-haspopup="menu"
               >
-                <span className="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.8)]" />
+                <span className="ce-role-status" />
 
-                <span className="role-text capitalize">
-                  {user?.role?.toLowerCase() ||
-                    'Citizen'}
+                <span className="ce-role-label">
+                  {currentRole}
                 </span>
 
                 <ChevronDown
-                  className={`w-3 h-3 transition-transform ${
+                  className={`w-3.5 h-3.5 transition-transform ${
                     roleMenuOpen
                       ? 'rotate-180'
                       : ''
@@ -234,36 +294,31 @@ export function Navbar() {
                 />
               </button>
 
-              {/* Role dropdown */}
+              {/* ROLE DROPDOWN */}
+
               {roleMenuOpen && (
-                <div
-                  className="
-                    absolute
-                    right-0
-                    top-[48px]
-                    w-72
-                    overflow-hidden
-                    rounded-2xl
-                    border
-                    border-slate-700/60
-                    bg-[#0b1220]
-                    shadow-2xl
-                    shadow-black/40
-                    z-[1100]
-                  "
-                >
+                <div className="ce-role-dropdown">
 
-                  <div className="px-4 py-3 border-b border-slate-800">
-                    <p className="text-[10px] uppercase tracking-[0.14em] font-bold text-slate-500">
-                      Demo Persona
-                    </p>
+                  <div className="ce-role-dropdown-glow" />
 
-                    <p className="mt-1 text-xs text-slate-400">
-                      Switch application experience
-                    </p>
+                  <div className="ce-role-dropdown-header">
+                    <div className="ce-role-dropdown-icon">
+                      <Settings2 className="w-4 h-4" />
+                    </div>
+
+                    <div>
+                      <p className="ce-role-dropdown-kicker">
+                        Application Mode
+                      </p>
+
+                      <p className="ce-role-dropdown-title">
+                        Switch workspace
+                      </p>
+                    </div>
                   </div>
 
                   {/* Citizen */}
+
                   <button
                     type="button"
                     onClick={() =>
@@ -272,45 +327,31 @@ export function Navbar() {
                         '/citizen'
                       )
                     }
-                    className={`
-                      w-full
-                      px-4
-                      py-3
-                      flex
-                      items-center
-                      justify-between
-                      text-left
-                      transition-colors
-                      hover:bg-slate-800/60
-                      ${
-                        isCitizen
-                          ? 'bg-blue-500/10'
-                          : ''
-                      }
-                    `}
+                    className={`ce-role-option ${
+                      isCitizen ? 'selected' : ''
+                    }`}
                   >
-                    <div>
-                      <p
-                        className={`text-sm font-bold ${
-                          isCitizen
-                            ? 'text-blue-400'
-                            : 'text-slate-200'
-                        }`}
-                      >
+                    <div className="ce-role-option-icon citizen">
+                      <Users className="w-4 h-4" />
+                    </div>
+
+                    <div className="ce-role-option-content">
+                      <p>
                         Citizen Portal
                       </p>
 
-                      <p className="text-[11px] text-slate-500 mt-0.5">
+                      <span>
                         Public reporting & tracking
-                      </p>
+                      </span>
                     </div>
 
                     {isCitizen && (
-                      <Check className="w-4 h-4 text-blue-400" />
+                      <Check className="ce-role-check" />
                     )}
                   </button>
 
                   {/* Authority */}
+
                   <button
                     type="button"
                     onClick={() =>
@@ -319,45 +360,31 @@ export function Navbar() {
                         '/authority'
                       )
                     }
-                    className={`
-                      w-full
-                      px-4
-                      py-3
-                      flex
-                      items-center
-                      justify-between
-                      text-left
-                      transition-colors
-                      hover:bg-slate-800/60
-                      ${
-                        isAuthority
-                          ? 'bg-blue-500/10'
-                          : ''
-                      }
-                    `}
+                    className={`ce-role-option ${
+                      isAuthority ? 'selected' : ''
+                    }`}
                   >
-                    <div>
-                      <p
-                        className={`text-sm font-bold ${
-                          isAuthority
-                            ? 'text-blue-400'
-                            : 'text-slate-200'
-                        }`}
-                      >
+                    <div className="ce-role-option-icon authority">
+                      <Building2 className="w-4 h-4" />
+                    </div>
+
+                    <div className="ce-role-option-content">
+                      <p>
                         Authority Command
                       </p>
 
-                      <p className="text-[11px] text-slate-500 mt-0.5">
+                      <span>
                         Municipal operations
-                      </p>
+                      </span>
                     </div>
 
                     {isAuthority && (
-                      <Check className="w-4 h-4 text-blue-400" />
+                      <Check className="ce-role-check" />
                     )}
                   </button>
 
                   {/* Admin */}
+
                   <button
                     type="button"
                     onClick={() =>
@@ -366,139 +393,100 @@ export function Navbar() {
                         '/admin'
                       )
                     }
-                    className={`
-                      w-full
-                      px-4
-                      py-3
-                      flex
-                      items-center
-                      justify-between
-                      text-left
-                      transition-colors
-                      hover:bg-slate-800/60
-                      ${
-                        isAdmin
-                          ? 'bg-blue-500/10'
-                          : ''
-                      }
-                    `}
+                    className={`ce-role-option ${
+                      isAdmin ? 'selected' : ''
+                    }`}
                   >
-                    <div>
-                      <p
-                        className={`text-sm font-bold ${
-                          isAdmin
-                            ? 'text-blue-400'
-                            : 'text-slate-200'
-                        }`}
-                      >
+                    <div className="ce-role-option-icon admin">
+                      <Shield className="w-4 h-4" />
+                    </div>
+
+                    <div className="ce-role-option-content">
+                      <p>
                         Municipal Admin
                       </p>
 
-                      <p className="text-[11px] text-slate-500 mt-0.5">
+                      <span>
                         System administration
-                      </p>
+                      </span>
                     </div>
 
                     {isAdmin && (
-                      <Check className="w-4 h-4 text-blue-400" />
+                      <Check className="ce-role-check" />
                     )}
                   </button>
 
                 </div>
               )}
-
             </div>
 
-            {/* Notifications */}
-            <div className="hidden sm:block">
+            {/* =================================================
+                NOTIFICATIONS
+            ================================================= */}
+
+            <div className="ce-notification-wrapper">
               <NotificationDropdown />
             </div>
 
-            {/* Login */}
+            {/* =================================================
+                LOGIN
+            ================================================= */}
+
             <Link
               to="/login"
-              className="
-                hidden
-                xl:inline-flex
-                items-center
-                gap-1.5
-                h-[39px]
-                px-3
-                rounded-lg
-                text-xs
-                font-bold
-                text-slate-400
-                hover:text-white
-                transition-colors
-              "
+              className="ce-login-btn"
             >
               <LogIn className="w-4 h-4" />
-              Login
+              <span>Login</span>
             </Link>
 
-            {/* Signup */}
+            {/* =================================================
+                SIGN UP
+            ================================================= */}
+
             <Link
               to="/signup"
-              className="
-                hidden
-                xl:inline-flex
-                items-center
-                gap-1.5
-                h-[39px]
-                px-3
-                rounded-lg
-                text-xs
-                font-bold
-                text-slate-300
-                border
-                border-slate-700/70
-                hover:bg-slate-800
-                hover:text-white
-                transition-colors
-              "
+              className="ce-signup-btn"
             >
               <UserPlus className="w-4 h-4" />
-              Sign Up
+              <span>Sign Up</span>
             </Link>
 
-            {/* Dashboard */}
+            {/* =================================================
+                DASHBOARD
+            ================================================= */}
+
             <Link
               to={getDashboardPath()}
               className="ce-dashboard-btn"
             >
-              <span className="hidden sm:inline">
-                Launch Dashboard
+              <span className="ce-dashboard-dot" />
+
+              <span className="ce-dashboard-label">
+                <span className="ce-dashboard-small">
+                  Workspace
+                </span>
+
+                <span className="ce-dashboard-main">
+                  Dashboard
+                </span>
               </span>
 
-              <span className="sm:hidden">
-                Dashboard
-              </span>
-
-              <ArrowUpRight className="w-4 h-4 ml-1" />
+              <ArrowUpRight className="w-4 h-4" />
             </Link>
 
-            {/* Mobile Menu */}
+            {/* =================================================
+                MOBILE MENU BUTTON
+            ================================================= */}
+
             <button
               type="button"
               onClick={() =>
-                setMobileMenuOpen(
-                  !mobileMenuOpen
-                )
+                setMobileMenuOpen((open) => !open)
               }
-              className="
-                lg:hidden
-                w-10
-                h-10
-                flex
-                items-center
-                justify-center
-                rounded-xl
-                border
-                border-slate-700
-                bg-slate-900
-                text-slate-300
-              "
+              className="ce-mobile-menu-btn"
               aria-label="Toggle navigation"
+              aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? (
                 <X className="w-5 h-5" />
@@ -510,66 +498,238 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* =======================================================
-            MOBILE MENU
-        ======================================================= */}
+        {/* =====================================================
+            MOBILE NAVIGATION
+        ===================================================== */}
 
         {mobileMenuOpen && (
-          <div className="ce-mobile-menu lg:hidden">
+          <div className="ce-mobile-menu">
 
-            <div className="px-4 py-4 space-y-1">
+            <div className="ce-mobile-menu-inner">
 
-              {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  onClick={() =>
-                    setMobileMenuOpen(false)
-                  }
-                  className={`
-                    flex
-                    items-center
-                    justify-between
-                    px-4
-                    py-3
-                    rounded-xl
-                    text-sm
-                    font-semibold
-                    transition-colors
-                    ${
-                      isActive(link.path)
-                        ? 'bg-blue-500/10 text-blue-400'
-                        : 'text-slate-300 hover:bg-slate-800'
-                    }
-                  `}
-                >
-                  {link.label}
+              {/* Mobile Navigation */}
 
-                  {isActive(link.path) && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-                  )}
-                </Link>
-              ))}
+              <div className="ce-mobile-section">
 
-              <div className="pt-3 mt-2 border-t border-slate-800">
+                <div className="ce-mobile-section-label">
+                  Navigation
+                </div>
+
+                {navLinks.map((link) => {
+                  const active = isActive(link.path);
+                  const Icon = link.icon;
+
+                  return (
+                    <Link
+                      key={link.path}
+                      to={link.path}
+                      onClick={closeMobileMenu}
+                      className={`ce-mobile-nav-link ${
+                        active ? 'active' : ''
+                      }`}
+                    >
+                      <span className="ce-mobile-nav-icon">
+                        <Icon className="w-4 h-4" />
+                      </span>
+
+                      <span>
+                        {link.label}
+                      </span>
+
+                      {active && (
+                        <span className="ce-mobile-active">
+                          Active
+                        </span>
+                      )}
+                    </Link>
+                  );
+                })}
+              </div>
+
+              {/* Controls */}
+
+              <div className="ce-mobile-section">
+
+                <div className="ce-mobile-section-label">
+                  Controls
+                </div>
+
+                <div className="ce-mobile-control-grid">
+
+                  {/* Theme */}
+
+                  <button
+                    type="button"
+                    onClick={toggleTheme}
+                    className="ce-mobile-control"
+                  >
+                    <span className="ce-mobile-control-icon">
+                      {isDark ? (
+                        <Sun className="w-4 h-4" />
+                      ) : (
+                        <Moon className="w-4 h-4" />
+                      )}
+                    </span>
+
+                    <span>
+                      {isDark
+                        ? 'Light mode'
+                        : 'Dark mode'}
+                    </span>
+                  </button>
+
+                  {/* Language */}
+
+                  <button
+                    type="button"
+                    onClick={toggleLanguage}
+                    className="ce-mobile-control"
+                  >
+                    <span className="ce-mobile-control-icon">
+                      <Globe className="w-4 h-4" />
+                    </span>
+
+                    <span>
+                      {lang === 'en'
+                        ? 'English'
+                        : 'हिन्दी'}
+                    </span>
+                  </button>
+
+                  {/* Notifications */}
+
+                  <div className="ce-mobile-control ce-mobile-notification-control">
+                    <span className="ce-mobile-control-icon">
+                      <Bell className="w-4 h-4" />
+                    </span>
+
+                    <span>
+                      Notifications
+                    </span>
+
+                    <div className="ce-mobile-notification">
+                      <NotificationDropdown />
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              {/* Role Switcher */}
+
+              <div className="ce-mobile-section">
+
+                <div className="ce-mobile-section-label">
+                  Current Workspace
+                </div>
+
+                <div className="ce-mobile-role-card">
+
+                  <div className="ce-mobile-role-header">
+                    <div className="ce-mobile-role-avatar">
+                      <Shield className="w-4 h-4" />
+                    </div>
+
+                    <div>
+                      <p>
+                        {currentRole}
+                      </p>
+
+                      <span>
+                        Switch workspace
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="ce-mobile-role-options">
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        changeRole(
+                          'CITIZEN',
+                          '/citizen'
+                        )
+                      }
+                      className={`ce-mobile-role-option ${
+                        isCitizen
+                          ? 'selected'
+                          : ''
+                      }`}
+                    >
+                      <Users className="w-4 h-4" />
+
+                      <span>
+                        Citizen
+                      </span>
+
+                      {isCitizen && (
+                        <Check className="w-4 h-4 ml-auto" />
+                      )}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        changeRole(
+                          'AUTHORITY',
+                          '/authority'
+                        )
+                      }
+                      className={`ce-mobile-role-option ${
+                        isAuthority
+                          ? 'selected'
+                          : ''
+                      }`}
+                    >
+                      <Building2 className="w-4 h-4" />
+
+                      <span>
+                        Authority
+                      </span>
+
+                      {isAuthority && (
+                        <Check className="w-4 h-4 ml-auto" />
+                      )}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        changeRole(
+                          'ADMIN',
+                          '/admin'
+                        )
+                      }
+                      className={`ce-mobile-role-option ${
+                        isAdmin
+                          ? 'selected'
+                          : ''
+                      }`}
+                    >
+                      <Shield className="w-4 h-4" />
+
+                      <span>
+                        Admin
+                      </span>
+
+                      {isAdmin && (
+                        <Check className="w-4 h-4 ml-auto" />
+                      )}
+                    </button>
+
+                  </div>
+                </div>
+              </div>
+
+              {/* Account */}
+
+              <div className="ce-mobile-account">
 
                 <Link
                   to="/login"
-                  onClick={() =>
-                    setMobileMenuOpen(false)
-                  }
-                  className="
-                    flex
-                    items-center
-                    gap-2
-                    px-4
-                    py-3
-                    rounded-xl
-                    text-sm
-                    font-semibold
-                    text-slate-300
-                    hover:bg-slate-800
-                  "
+                  onClick={closeMobileMenu}
+                  className="ce-mobile-login"
                 >
                   <LogIn className="w-4 h-4" />
                   Login
@@ -577,58 +737,38 @@ export function Navbar() {
 
                 <Link
                   to="/signup"
-                  onClick={() =>
-                    setMobileMenuOpen(false)
-                  }
-                  className="
-                    flex
-                    items-center
-                    gap-2
-                    px-4
-                    py-3
-                    rounded-xl
-                    text-sm
-                    font-semibold
-                    text-slate-300
-                    hover:bg-slate-800
-                  "
+                  onClick={closeMobileMenu}
+                  className="ce-mobile-signup"
                 >
                   <UserPlus className="w-4 h-4" />
                   Sign Up
                 </Link>
 
-                <Link
-                  to={getDashboardPath()}
-                  onClick={() =>
-                    setMobileMenuOpen(false)
-                  }
-                  className="
-                    mt-2
-                    flex
-                    items-center
-                    justify-center
-                    gap-2
-                    w-full
-                    h-11
-                    rounded-xl
-                    bg-gradient-to-r
-                    from-blue-600
-                    to-indigo-600
-                    text-white
-                    text-sm
-                    font-bold
-                  "
-                >
-                  Launch Dashboard
-                  <ArrowUpRight className="w-4 h-4" />
-                </Link>
-
               </div>
+
+              {/* Dashboard */}
+
+              <Link
+                to={getDashboardPath()}
+                onClick={closeMobileMenu}
+                className="ce-mobile-dashboard"
+              >
+                <div>
+                  <span>
+                    YOUR WORKSPACE
+                  </span>
+
+                  <strong>
+                    Launch Dashboard
+                  </strong>
+                </div>
+
+                <ArrowUpRight className="w-5 h-5" />
+              </Link>
 
             </div>
           </div>
         )}
-
       </header>
     </>
   );
