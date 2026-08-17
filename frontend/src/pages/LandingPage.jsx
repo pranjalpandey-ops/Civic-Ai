@@ -1152,1002 +1152,1196 @@ export function LandingPage() {
           SEARCH
       ======================================================== */}
 
-      <section className="relative z-30 mx-auto max-w-4xl px-5 pb-20 sm:px-8">
+     {/* ========================================================
+    AI CIVIC SEARCH
+======================================================== */}
 
-        <form
-          onSubmit={handleSearch}
+<section className="relative z-30 mx-auto max-w-5xl px-5 pb-20 sm:px-8">
+
+  <div className="mx-auto max-w-3xl text-center">
+
+    {/* Section label */}
+    <div
+      className={`
+        inline-flex
+        items-center
+        gap-2
+        rounded-full
+        border
+        px-3
+        py-1.5
+        text-[9px]
+        font-black
+        uppercase
+        tracking-[0.16em]
+        backdrop-blur-xl
+        ${
+          isDark
+            ? 'border-blue-400/10 bg-blue-500/[0.06] text-blue-400'
+            : 'border-blue-200 bg-blue-50 text-blue-600'
+        }
+      `}
+    >
+      <Sparkles className="h-3.5 w-3.5" />
+      AI Civic Intelligence
+    </div>
+
+    <h2
+      className={`
+        mt-4
+        text-2xl
+        font-black
+        tracking-[-0.04em]
+        sm:text-3xl
+        ${
+          isDark
+            ? 'text-white'
+            : 'text-slate-950'
+        }
+      `}
+    >
+      Find an issue across the city
+    </h2>
+
+    <p
+      className={`
+        mx-auto
+        mt-3
+        max-w-xl
+        text-xs
+        leading-6
+        sm:text-sm
+        ${subtle}
+      `}
+    >
+      Search locations, complaints, roads, waterlogging,
+      traffic issues and other civic signals.
+    </p>
+
+  </div>
+
+  {/* ======================================================
+      SEARCH COMMAND BAR
+  ====================================================== */}
+
+  <form
+    onSubmit={handleSearch}
+    className={`
+      group
+      relative
+      mx-auto
+      mt-8
+      max-w-4xl
+      rounded-2xl
+      border
+      p-2
+      shadow-2xl
+      backdrop-blur-2xl
+      transition-all
+      duration-300
+      ${
+        isDark
+          ? `
+            border-white/[0.08]
+            bg-[#0b1220]/85
+            shadow-black/30
+            hover:border-blue-500/20
+            focus-within:border-blue-500/40
+            focus-within:shadow-blue-500/10
+          `
+          : `
+            border-slate-200
+            bg-white/85
+            shadow-slate-300/30
+            hover:border-blue-200
+            focus-within:border-blue-300
+            focus-within:shadow-blue-200/30
+          `
+      }
+    `}
+  >
+
+    <div className="flex items-center gap-2">
+
+      {/* Search icon */}
+
+      <div
+        className={`
+          ml-1
+          flex
+          h-11
+          w-11
+          shrink-0
+          items-center
+          justify-center
+          rounded-xl
+          transition-all
+          duration-300
+          group-focus-within:scale-105
+          ${
+            isDark
+              ? 'bg-blue-500/10 text-blue-400 group-focus-within:bg-blue-500/15'
+              : 'bg-blue-50 text-blue-600 group-focus-within:bg-blue-100'
+          }
+        `}
+      >
+        <Search className="h-4.5 w-4.5" />
+      </div>
+
+      {/* Input */}
+
+      <div className="min-w-0 flex-1">
+
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(event) =>
+            setSearchQuery(event.target.value)
+          }
+          placeholder={
+            t('searchPlaceholder') ||
+            'Search civic issues, locations or reports...'
+          }
+          aria-label={
+            t('searchPlaceholder') ||
+            'Search civic issues, locations or reports'
+          }
           className={`
-            group
-            relative
-            rounded-2xl
-            border
-            p-2
-            shadow-2xl
-            backdrop-blur-xl
-            transition-all
-            duration-300
+            h-11
+            w-full
+            min-w-0
+            bg-transparent
+            px-2
+            text-sm
+            font-semibold
+            outline-none
+            sm:text-base
             ${
               isDark
-                ? 'border-white/[0.08] bg-[#0b1220]/85 shadow-black/30 focus-within:border-blue-500/30'
-                : 'border-white bg-white/80 shadow-slate-300/30 focus-within:border-blue-200'
+                ? 'text-white placeholder:text-slate-600'
+                : 'text-slate-900 placeholder:text-slate-400'
             }
           `}
-        >
+        />
 
-          <div className="flex items-center">
+      </div>
 
-            <div
-              className={`
-                ml-2
-                flex
-                h-10
-                w-10
-                shrink-0
-                items-center
-                justify-center
-                rounded-xl
-                ${
-                  isDark
-                    ? 'bg-blue-500/10 text-blue-400'
-                    : 'bg-blue-50 text-blue-600'
-                }
-              `}
-            >
-              <Search className="h-4 w-4" />
-            </div>
+      {/* AI indicator */}
 
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(event) =>
-                setSearchQuery(event.target.value)
-              }
-              placeholder={t('searchPlaceholder')}
-              aria-label={t('searchPlaceholder')}
-              className={`
-                h-12
-                min-w-0
-                flex-1
-                bg-transparent
-                px-4
-                text-sm
-                font-medium
-                outline-none
-                sm:text-base
-                ${
-                  isDark
-                    ? 'text-white placeholder:text-slate-600'
-                    : 'text-slate-900 placeholder:text-slate-400'
-                }
-              `}
-            />
+      <div
+        className={`
+          hidden
+          items-center
+          gap-1.5
+          rounded-lg
+          border
+          px-2.5
+          py-1.5
+          text-[9px]
+          font-black
+          uppercase
+          tracking-wider
+          sm:flex
+          ${
+            isDark
+              ? 'border-violet-400/10 bg-violet-500/10 text-violet-400'
+              : 'border-violet-200 bg-violet-50 text-violet-600'
+          }
+        `}
+      >
+        <Sparkles className="h-3 w-3" />
+        AI
+      </div>
 
-            <div
-              className={`
-                mr-2
-                hidden
-                items-center
-                gap-1
-                rounded-lg
-                px-2.5
-                py-1.5
-                text-[9px]
-                font-black
-                uppercase
-                tracking-wider
-                sm:flex
-                ${
-                  isDark
-                    ? 'bg-violet-500/10 text-violet-400'
-                    : 'bg-violet-50 text-violet-600'
-                }
-              `}
-            >
-              <Sparkles className="h-3 w-3" />
-              AI
-            </div>
+      {/* Search button */}
 
-            <button
-              type="submit"
-              className="
-                h-11
-                shrink-0
-                rounded-xl
-                bg-gradient-to-r
-                from-blue-600
-                to-indigo-600
-                px-4
-                text-xs
-                font-bold
-                text-white
-                shadow-lg
-                shadow-blue-600/20
-                transition-all
-                duration-300
-                hover:-translate-y-0.5
-                hover:shadow-xl
-                hover:shadow-blue-600/30
-                sm:px-5
-              "
-            >
-              {t('search')}
-            </button>
+      <button
+        type="submit"
+        disabled={!searchQuery.trim()}
+        className="
+          group/search
+          flex
+          h-11
+          shrink-0
+          items-center
+          gap-2
+          rounded-xl
+          bg-gradient-to-r
+          from-blue-600
+          to-indigo-600
+          px-4
+          text-xs
+          font-black
+          text-white
+          shadow-lg
+          shadow-blue-600/20
+          transition-all
+          duration-300
+          hover:-translate-y-0.5
+          hover:shadow-xl
+          hover:shadow-blue-600/30
+          disabled:cursor-not-allowed
+          disabled:opacity-40
+          sm:px-5
+        "
+      >
+        <span className="hidden sm:inline">
+          {t('search') || 'Search'}
+        </span>
 
-          </div>
+        <Search
+          className="
+            h-4
+            w-4
+            transition-transform
+            duration-300
+            group-hover/search:scale-110
+          "
+        />
+      </button>
 
-        </form>
+    </div>
 
-        <div className={`mt-3 flex items-center justify-center gap-2 text-[9px] font-bold ${subtle}`}>
-          <ScanLine className="h-3.5 w-3.5 text-blue-500" />
-          AI-assisted civic issue discovery
-        </div>
+  </form>
 
-      </section>
+  {/* ======================================================
+      QUICK SEARCH SUGGESTIONS
+  ====================================================== */}
+
+  <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+
+    <span
+      className={`
+        mr-1
+        text-[9px]
+        font-bold
+        uppercase
+        tracking-wider
+        ${subtle}
+      `}
+    >
+      Try:
+    </span>
+
+    {[
+      'Waterlogging',
+      'Potholes',
+      'Traffic',
+      'Street lights',
+    ].map((suggestion) => (
+      <button
+        key={suggestion}
+        type="button"
+        onClick={() => {
+          setSearchQuery(suggestion);
+        }}
+        className={`
+          rounded-full
+          border
+          px-3
+          py-1.5
+          text-[9px]
+          font-bold
+          transition-all
+          duration-200
+          hover:-translate-y-0.5
+          ${
+            isDark
+              ? `
+                border-white/[0.07]
+                bg-white/[0.025]
+                text-slate-400
+                hover:border-blue-400/20
+                hover:bg-blue-500/[0.06]
+                hover:text-blue-400
+              `
+              : `
+                border-slate-200
+                bg-white/70
+                text-slate-500
+                hover:border-blue-200
+                hover:bg-blue-50
+                hover:text-blue-600
+              `
+          }
+        `}
+      >
+        {suggestion}
+      </button>
+    ))}
+
+  </div>
+
+  {/* AI status */}
+
+  <div
+    className={`
+      mt-5
+      flex
+      items-center
+      justify-center
+      gap-2
+      text-[9px]
+      font-bold
+      ${subtle}
+    `}
+  >
+    <span className="relative flex h-2 w-2">
+
+      <span className="absolute inset-0 animate-ping rounded-full bg-emerald-400 opacity-50" />
+
+      <span className="relative h-2 w-2 rounded-full bg-emerald-500" />
+
+    </span>
+
+    <ScanLine className="h-3.5 w-3.5 text-blue-500" />
+
+    AI-assisted civic issue discovery is online
+  </div>
+
+</section>
 
       {/* ========================================================
           SYSTEM OVERVIEW
       ======================================================== */}
 
-      <section className="relative z-10 px-5 py-20 sm:px-8 lg:py-28">
+{/* ========================================================
+    SYSTEM OVERVIEW
+======================================================== */}
 
-        <div className="mx-auto max-w-7xl">
+<section className="relative z-10 px-5 py-20 sm:px-8 lg:py-28">
 
-          <div className="max-w-3xl">
+  <div className="mx-auto max-w-7xl">
 
-            <div
-              className={`
-                inline-flex
-                items-center
-                gap-2
-                rounded-full
-                px-3
-                py-1.5
-                text-[9px]
-                font-black
-                uppercase
-                tracking-[0.16em]
-                ${
-                  isDark
-                    ? 'bg-blue-500/10 text-blue-400'
-                    : 'bg-blue-50 text-blue-600'
-                }
-              `}
-            >
-              <Layers3 className="h-3.5 w-3.5" />
-              {t('systemOverview')}
-            </div>
+    {/* ======================================================
+        SECTION HEADER
+    ====================================================== */}
 
-            <h2
-              className={`
-                mt-5
-                text-3xl
-                font-black
-                tracking-[-0.04em]
-                sm:text-4xl
-                lg:text-5xl
-                ${isDark ? 'text-white' : 'text-slate-950'}
-              `}
-            >
+    <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
 
-              {t('intelligenceThatMoves')}
+      <div className="max-w-3xl">
 
-              <span
-                className="
-                  bg-gradient-to-r
-                  from-blue-500
-                  via-violet-500
-                  to-cyan-400
-                  bg-clip-text
-                  text-transparent
-                "
-              >
-                {' '}
-                {t('citiesForward')}
-              </span>
+        {/* Kicker */}
 
-            </h2>
+        <div
+          className={`
+            inline-flex
+            items-center
+            gap-2
+            rounded-full
+            border
+            px-3
+            py-1.5
+            text-[9px]
+            font-black
+            uppercase
+            tracking-[0.16em]
+            ${
+              isDark
+                ? 'border-blue-400/10 bg-blue-500/10 text-blue-400'
+                : 'border-blue-200 bg-blue-50 text-blue-600'
+            }
+          `}
+        >
+          <Layers3 className="h-3.5 w-3.5" />
 
-            <p className={`mt-5 max-w-2xl text-sm leading-7 sm:text-base ${muted}`}>
-              {t('liveIntelligenceNCR')}
-            </p>
+          {t('systemOverview')}
+        </div>
 
-          </div>
+        {/* Heading */}
 
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <h2
+          className={`
+            mt-5
+            text-3xl
+            font-black
+            leading-[1.05]
+            tracking-[-0.045em]
+            sm:text-4xl
+            lg:text-5xl
+            ${
+              isDark
+                ? 'text-white'
+                : 'text-slate-950'
+            }
+          `}
+        >
+          {t('intelligenceThatMoves')}
 
-            {stats.map((stat) => {
+          <br />
 
-              const Icon = stat.icon;
+          <span
+            className="
+              bg-gradient-to-r
+              from-blue-500
+              via-violet-500
+              to-cyan-400
+              bg-clip-text
+              text-transparent
+            "
+          >
+            {t('citiesForward')}
+          </span>
+        </h2>
 
-              return (
-                <div
-                  key={stat.label}
-                  className={`
-                    group
-                    relative
-                    overflow-hidden
-                    rounded-2xl
-                    border
-                    p-5
-                    shadow-sm
-                    transition-all
-                    duration-500
-                    hover:-translate-y-2
-                    hover:[transform:perspective(700px)_rotateX(2deg)_rotateY(-2deg)]
-                    ${
-                      isDark
-                        ? 'border-white/[0.07] bg-[#0b1220]/70 hover:border-blue-500/20 hover:bg-[#0e1729]'
-                        : 'border-slate-200/70 bg-white/70 hover:border-blue-200 hover:bg-white'
-                    }
-                  `}
-                >
+        {/* Description */}
 
-                  <div
-                    className={`
-                      absolute
-                      left-0
-                      top-0
-                      h-1
-                      w-full
-                      bg-gradient-to-r
-                      ${stat.gradient}
-                    `}
-                  />
+        <p
+          className={`
+            mt-5
+            max-w-2xl
+            text-sm
+            leading-7
+            sm:text-base
+            ${muted}
+          `}
+        >
+          {t('liveIntelligenceNCR')}
+        </p>
 
-                  <div className="flex items-center justify-between">
+      </div>
 
-                    <div
-                      className={`
-                        flex
-                        h-10
-                        w-10
-                        items-center
-                        justify-center
-                        rounded-xl
-                        ${
-                          isDark
-                            ? 'bg-blue-500/10'
-                            : 'bg-blue-50'
-                        }
-                      `}
-                    >
-                      <Icon className="h-4 w-4 text-blue-500" />
-                    </div>
+      {/* Live status */}
 
-                    <ArrowRight
-                      className={`
-                        h-4
-                        w-4
-                        transition-all
-                        duration-300
-                        group-hover:translate-x-1
-                        ${
-                          isDark
-                            ? 'text-slate-700 group-hover:text-blue-400'
-                            : 'text-slate-300 group-hover:text-blue-500'
-                        }
-                      `}
-                    />
+      <div
+        className={`
+          flex
+          w-fit
+          items-center
+          gap-3
+          rounded-xl
+          border
+          px-4
+          py-3
+          backdrop-blur-xl
+          ${
+            isDark
+              ? 'border-white/[0.07] bg-white/[0.025]'
+              : 'border-slate-200 bg-white/70'
+          }
+        `}
+      >
 
-                  </div>
+        <div className="relative flex h-2.5 w-2.5">
 
-                  <div
-                    className={`
-                      mt-7
-                      text-3xl
-                      font-black
-                      tracking-tight
-                      ${isDark ? 'text-white' : 'text-slate-950'}
-                    `}
-                  >
-                    {stat.value}
-                  </div>
+          <span className="absolute inset-0 animate-ping rounded-full bg-emerald-400 opacity-50" />
 
-                  <div
-                    className={`
-                      mt-1
-                      text-xs
-                      font-bold
-                      ${isDark ? 'text-slate-300' : 'text-slate-700'}
-                    `}
-                  >
-                    {stat.label}
-                  </div>
-
-                  <p className={`mt-2 text-[10px] leading-5 ${subtle}`}>
-                    {stat.description}
-                  </p>
-
-                </div>
-              );
-            })}
-
-          </div>
+          <span className="relative h-2.5 w-2.5 rounded-full bg-emerald-500" />
 
         </div>
 
-      </section>
+        <div>
+
+          <p
+            className={`
+              text-[9px]
+              font-black
+              uppercase
+              tracking-[0.12em]
+              ${
+                isDark
+                  ? 'text-white'
+                  : 'text-slate-900'
+              }
+            `}
+          >
+            Network Operational
+          </p>
+
+          <p
+            className={`
+              mt-0.5
+              text-[8px]
+              font-medium
+              ${subtle}
+            `}
+          >
+            Real-time civic intelligence
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    {/* ======================================================
+        STAT CARDS
+    ====================================================== */}
+
+    <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+
+      {stats.map((stat, index) => {
+
+        const Icon = stat.icon;
+
+        return (
+          <div
+            key={stat.label}
+            className={`
+              group
+              relative
+              overflow-hidden
+              rounded-2xl
+              border
+              p-5
+              shadow-sm
+              transition-all
+              duration-500
+              hover:-translate-y-2
+              ${
+                isDark
+                  ? `
+                    border-white/[0.07]
+                    bg-[#0b1220]/70
+                    hover:border-blue-500/25
+                    hover:bg-[#0e1729]
+                    hover:shadow-2xl
+                    hover:shadow-blue-950/20
+                  `
+                  : `
+                    border-slate-200/70
+                    bg-white/75
+                    hover:border-blue-200
+                    hover:bg-white
+                    hover:shadow-xl
+                    hover:shadow-blue-100/40
+                  `
+              }
+            `}
+          >
+
+            {/* ==================================================
+                TOP GRADIENT
+            ================================================== */}
+
+            <div
+              className={`
+                absolute
+                left-0
+                top-0
+                h-1
+                w-full
+                bg-gradient-to-r
+                ${stat.gradient}
+              `}
+            />
+
+            {/* ==================================================
+                BACKGROUND GLOW
+            ================================================== */}
+
+            <div
+              className={`
+                pointer-events-none
+                absolute
+                -right-12
+                -top-12
+                h-32
+                w-32
+                rounded-full
+                bg-gradient-to-br
+                ${stat.gradient}
+                opacity-0
+                blur-3xl
+                transition-opacity
+                duration-500
+                group-hover:opacity-10
+              `}
+            />
+
+            {/* ==================================================
+                CARD HEADER
+            ================================================== */}
+
+            <div className="relative flex items-center justify-between">
+
+              {/* Icon */}
+
+              <div
+                className={`
+                  flex
+                  h-11
+                  w-11
+                  items-center
+                  justify-center
+                  rounded-xl
+                  border
+                  transition-all
+                  duration-500
+                  group-hover:scale-105
+                  ${
+                    isDark
+                      ? 'border-blue-400/10 bg-blue-500/10'
+                      : 'border-blue-100 bg-blue-50'
+                  }
+                `}
+              >
+                <Icon
+                  className="
+                    h-4.5
+                    w-4.5
+                    text-blue-500
+                  "
+                />
+              </div>
+
+              {/* Number */}
+
+              <span
+                className={`
+                  text-[9px]
+                  font-black
+                  tracking-[0.15em]
+                  ${
+                    isDark
+                      ? 'text-slate-700'
+                      : 'text-slate-300'
+                  }
+                `}
+              >
+                0{index + 1}
+              </span>
+
+            </div>
+
+            {/* ==================================================
+                VALUE
+            ================================================== */}
+
+            <div
+              className={`
+                relative
+                mt-7
+                text-3xl
+                font-black
+                tracking-[-0.04em]
+                ${
+                  isDark
+                    ? 'text-white'
+                    : 'text-slate-950'
+                }
+              `}
+            >
+              {stat.value}
+            </div>
+
+            {/* ==================================================
+                LABEL
+            ================================================== */}
+
+            <div
+              className={`
+                relative
+                mt-1.5
+                text-xs
+                font-black
+                ${
+                  isDark
+                    ? 'text-slate-200'
+                    : 'text-slate-700'
+                }
+              `}
+            >
+              {stat.label}
+            </div>
+
+            {/* ==================================================
+                DESCRIPTION
+            ================================================== */}
+
+            <p
+              className={`
+                relative
+                mt-2
+                text-[10px]
+                leading-5
+                ${subtle}
+              `}
+            >
+              {stat.description}
+            </p>
+
+            {/* ==================================================
+                BOTTOM STATUS
+            ================================================== */}
+
+            <div
+              className={`
+                relative
+                mt-5
+                flex
+                items-center
+                gap-2
+                border-t
+                pt-3
+                text-[8px]
+                font-bold
+                uppercase
+                tracking-wider
+                ${
+                  isDark
+                    ? 'border-white/[0.05] text-slate-600'
+                    : 'border-slate-100 text-slate-400'
+                }
+              `}
+            >
+
+              <span
+                className={`
+                  h-1.5
+                  w-1.5
+                  rounded-full
+                  ${
+                    index === 3
+                      ? 'bg-emerald-500'
+                      : 'bg-blue-500'
+                  }
+                `}
+              />
+
+              {index === 0 && 'Live signal feed'}
+              {index === 1 && 'AI verification active'}
+              {index === 2 && 'Response monitoring'}
+              {index === 3 && 'Community activity'}
+
+            </div>
+
+          </div>
+        );
+      })}
+
+    </div>
+
+  </div>
+
+</section>
 
       {/* ========================================================
           3D CIVIC INTELLIGENCE PIPELINE
       ======================================================== */}
 
-      <section
+{/* ========================================================
+    CIVICEYE INTELLIGENCE PIPELINE
+======================================================== */}
+
+<section
+  className={`
+    relative
+    overflow-hidden
+    border-y
+    px-5
+    py-24
+    sm:px-8
+    lg:py-32
+    ${
+      isDark
+        ? 'border-white/[0.05] bg-[#090e19]'
+        : 'border-slate-200/70 bg-white/40'
+    }
+  `}
+>
+
+  {/* ======================================================
+      BACKGROUND ATMOSPHERE
+  ====================================================== */}
+
+  <div className="pointer-events-none absolute inset-0 overflow-hidden">
+
+    <div
+      className={`
+        absolute
+        left-[10%]
+        top-1/2
+        h-72
+        w-72
+        -translate-y-1/2
+        rounded-full
+        blur-[120px]
+        ${
+          isDark
+            ? 'bg-violet-600/[0.06]'
+            : 'bg-violet-300/[0.12]'
+        }
+      `}
+    />
+
+    <div
+      className={`
+        absolute
+        right-[5%]
+        top-[20%]
+        h-64
+        w-64
+        rounded-full
+        blur-[110px]
+        ${
+          isDark
+            ? 'bg-cyan-500/[0.05]'
+            : 'bg-cyan-300/[0.10]'
+        }
+      `}
+    />
+
+    {/* Technical grid */}
+
+    <div
+      className={`
+        absolute
+        inset-0
+        opacity-[0.025]
+        ${isDark ? '' : 'opacity-[0.04]'}
+      `}
+      style={{
+        backgroundImage:
+          'linear-gradient(#64748b 1px, transparent 1px), linear-gradient(90deg, #64748b 1px, transparent 1px)',
+        backgroundSize: '42px 42px',
+      }}
+    />
+
+  </div>
+
+  <div className="relative mx-auto max-w-7xl">
+
+    {/* ====================================================
+        SECTION HEADER
+    ==================================================== */}
+
+    <div className="max-w-3xl">
+
+      <div
         className={`
-          relative
-          overflow-hidden
-          border-y
-          px-5
-          py-24
-          sm:px-8
-          lg:py-32
+          inline-flex
+          items-center
+          gap-2
+          rounded-full
+          border
+          px-3
+          py-1.5
+          text-[9px]
+          font-black
+          uppercase
+          tracking-[0.16em]
           ${
             isDark
-              ? 'border-white/[0.05] bg-[#090e19]'
-              : 'border-slate-200/70 bg-white/40'
+              ? 'border-violet-400/10 bg-violet-500/10 text-violet-400'
+              : 'border-violet-200 bg-violet-50 text-violet-600'
           }
         `}
       >
+        <Radar className="h-3.5 w-3.5" />
 
-        <div className="mx-auto max-w-7xl">
+        {t('civicEyeLoop')}
 
-          <div className="max-w-3xl">
+        <span
+          className={`
+            ml-1
+            h-1
+            w-1
+            rounded-full
+            ${
+              isDark
+                ? 'bg-violet-400'
+                : 'bg-violet-500'
+            }
+          `}
+        />
+      </div>
 
+      <h2
+        className={`
+          mt-5
+          text-3xl
+          font-black
+          leading-[1.05]
+          tracking-[-0.045em]
+          sm:text-4xl
+          lg:text-5xl
+          ${
+            isDark
+              ? 'text-white'
+              : 'text-slate-950'
+          }
+        `}
+      >
+        {t('fromCitizenSignal')}
+
+        <br />
+
+        <span
+          className="
+            bg-gradient-to-r
+            from-violet-500
+            via-blue-500
+            to-cyan-400
+            bg-clip-text
+            text-transparent
+          "
+        >
+          {t('toCityAction')}
+        </span>
+      </h2>
+
+      <p
+        className={`
+          mt-5
+          max-w-2xl
+          text-sm
+          leading-7
+          sm:text-base
+          ${muted}
+        `}
+      >
+        {t('completeLifecycle')}
+      </p>
+
+    </div>
+
+    {/* ====================================================
+        PIPELINE
+    ==================================================== */}
+
+    <div className="relative mt-16">
+
+      {/* Desktop connection line */}
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          left-[10%]
+          right-[10%]
+          top-[78px]
+          hidden
+          h-px
+          lg:block
+        "
+      >
+
+        <div
+          className="
+            h-full
+            w-full
+            bg-gradient-to-r
+            from-blue-500/0
+            via-blue-500/40
+            via-violet-500/50
+            to-cyan-500/0
+          "
+        />
+
+      </div>
+
+      {/* Animated beam */}
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          left-[10%]
+          top-[78px]
+          hidden
+          h-px
+          w-20
+          animate-pulse
+          bg-gradient-to-r
+          from-transparent
+          via-white
+          to-transparent
+          opacity-60
+          lg:block
+        "
+      />
+
+      <div className="grid gap-5 lg:grid-cols-4">
+
+        {processSteps.map((step, index) => {
+
+          const Icon = step.icon;
+
+          const stepColor =
+            step.color.includes('blue')
+              ? '#3b82f6'
+              : step.color.includes('violet')
+                ? '#8b5cf6'
+                : step.color.includes('cyan')
+                  ? '#06b6d4'
+                  : '#10b981';
+
+          return (
             <div
+              key={step.number}
               className={`
-                inline-flex
-                items-center
-                gap-2
-                rounded-full
-                px-3
-                py-1.5
-                text-[9px]
-                font-black
-                uppercase
-                tracking-[0.16em]
+                group
+                relative
+                overflow-hidden
+                rounded-3xl
+                border
+                p-6
+                transition-all
+                duration-500
+                hover:-translate-y-3
                 ${
                   isDark
-                    ? 'bg-violet-500/10 text-violet-400'
-                    : 'bg-violet-50 text-violet-600'
+                    ? `
+                      border-white/[0.07]
+                      bg-[#0c1423]/80
+                      hover:border-white/[0.13]
+                      hover:bg-[#0e1729]
+                      hover:shadow-2xl
+                    `
+                    : `
+                      border-slate-200
+                      bg-white/80
+                      hover:border-slate-300
+                      hover:bg-white
+                      hover:shadow-xl
+                    `
                 }
               `}
-            >
-              <Radar className="h-3.5 w-3.5" />
-              {t('civicEyeLoop')}
-            </div>
-
-            <h2
-              className={`
-                mt-5
-                text-3xl
-                font-black
-                tracking-[-0.04em]
-                sm:text-4xl
-                lg:text-5xl
-                ${isDark ? 'text-white' : 'text-slate-950'}
-              `}
+              style={{
+                transformStyle: 'preserve-3d',
+              }}
             >
 
-              {t('fromCitizenSignal')}
+              {/* ==================================================
+                  CARD GLOW
+              ================================================== */}
 
-              <br />
-
-              <span
+              <div
                 className="
-                  bg-gradient-to-r
-                  from-violet-500
-                  via-blue-500
-                  to-cyan-400
-                  bg-clip-text
-                  text-transparent
+                  pointer-events-none
+                  absolute
+                  -right-20
+                  -top-20
+                  h-40
+                  w-40
+                  rounded-full
+                  opacity-0
+                  blur-3xl
+                  transition-opacity
+                  duration-500
+                  group-hover:opacity-20
                 "
-              >
-                {t('toCityAction')}
-              </span>
+                style={{
+                  backgroundColor: stepColor,
+                }}
+              />
 
-            </h2>
+              {/* ==================================================
+                  CARD HEADER
+              ================================================== */}
 
-            <p className={`mt-5 max-w-2xl text-sm leading-7 sm:text-base ${muted}`}>
-              {t('completeLifecycle')}
-            </p>
+              <div className="relative flex items-center justify-between">
 
-          </div>
+                <div className="flex items-center gap-2">
 
-          {/* Pipeline */}
-
-          <div className="relative mt-16 [perspective:1000px]">
-
-            {/* Connection beam */}
-
-            <div
-              className="
-                absolute
-                left-[12%]
-                right-[12%]
-                top-[72px]
-                hidden
-                h-px
-                bg-gradient-to-r
-                from-blue-500/0
-                via-violet-500/50
-                to-cyan-500/0
-                lg:block
-              "
-            />
-
-            <div className="grid gap-5 lg:grid-cols-4">
-
-              {processSteps.map((step, index) => {
-
-                const Icon = step.icon;
-
-                return (
-                  <div
-                    key={step.number}
+                  <span
                     className={`
-                      group
-                      relative
-                      overflow-hidden
-                      rounded-3xl
-                      border
-                      p-6
-                      transition-all
-                      duration-500
-                      hover:-translate-y-3
+                      text-[10px]
+                      font-black
+                      tracking-[0.2em]
                       ${
                         isDark
-                          ? 'border-white/[0.07] bg-[#0c1423]/80 hover:border-white/10'
-                          : 'border-slate-200 bg-white/75 hover:border-slate-300'
+                          ? 'text-slate-600'
+                          : 'text-slate-300'
                       }
                     `}
-                    style={{
-                      transformStyle: 'preserve-3d',
-                    }}
                   >
+                    {step.number}
+                  </span>
 
-                    {/* Number */}
+                  <span
+                    className="h-px w-5"
+                    style={{
+                      backgroundColor: `${stepColor}40`,
+                    }}
+                  />
 
-                    <div className="flex items-center justify-between">
+                </div>
 
-                      <span
-                        className={`
-                          text-[10px]
-                          font-black
-                          tracking-[0.2em]
-                          ${
-                            isDark
-                              ? 'text-slate-700'
-                              : 'text-slate-300'
-                          }
-                        `}
-                      >
-                        {step.number}
-                      </span>
+                {index < processSteps.length - 1 && (
+                  <ChevronRight
+                    className={`
+                      hidden
+                      h-4
+                      w-4
+                      lg:block
+                      transition-all
+                      duration-300
+                      group-hover:translate-x-1
+                      ${
+                        isDark
+                          ? 'text-slate-700 group-hover:text-slate-500'
+                          : 'text-slate-300 group-hover:text-slate-500'
+                      }
+                    `}
+                  />
+                )}
 
-                      {index < processSteps.length - 1 && (
-                        <ChevronRight
-                          className={`
-                            hidden
-                            h-4
-                            w-4
-                            lg:block
-                            ${
-                              isDark
-                                ? 'text-slate-700'
-                                : 'text-slate-300'
-                            }
-                          `}
-                        />
-                      )}
+              </div>
 
-                    </div>
+              {/* ==================================================
+                  ICON
+              ================================================== */}
 
-                    {/* Icon 3D */}
+              <div
+                className="
+                  relative
+                  mt-8
+                  flex
+                  h-16
+                  w-16
+                  items-center
+                  justify-center
+                  rounded-2xl
+                  border
+                  shadow-lg
+                  transition-all
+                  duration-500
+                  group-hover:[transform:translateZ(25px)_rotateX(-5deg)_rotateY(8deg)_scale(1.05)]
+                "
+                style={{
+                  color: stepColor,
+                  borderColor: `${stepColor}35`,
+                  backgroundColor: `${stepColor}0D`,
+                  boxShadow: `0 15px 40px ${step.glow}`,
+                }}
+              >
 
-                    <div
-                      className="
-                        mt-8
-                        flex
-                        h-14
-                        w-14
-                        items-center
-                        justify-center
-                        rounded-2xl
-                        border
-                        border-current
-                        bg-current/5
-                        shadow-lg
-                        transition-all
-                        duration-500
-                        group-hover:[transform:translateZ(25px)_rotateX(-5deg)_rotateY(8deg)]
-                      "
-                      style={{
-                        color: step.color.includes('blue')
-                          ? '#3b82f6'
-                          : step.color.includes('violet')
-                            ? '#8b5cf6'
-                            : step.color.includes('cyan')
-                              ? '#06b6d4'
-                              : '#10b981',
-                        boxShadow: `0 15px 35px ${step.glow}`,
-                      }}
-                    >
-                      <Icon className="h-6 w-6" />
-                    </div>
-
-                    <h3
-                      className={`
-                        mt-7
-                        text-lg
-                        font-black
-                        tracking-tight
-                        ${
-                          isDark
-                            ? 'text-white'
-                            : 'text-slate-950'
-                        }
-                      `}
-                    >
-                      {step.title}
-                    </h3>
-
-                    <p className={`mt-3 text-xs leading-6 ${muted}`}>
-                      {step.description}
-                    </p>
-
-                    {/* Bottom glow */}
-
-                    <div
-                      className="
-                        pointer-events-none
-                        absolute
-                        -bottom-16
-                        -right-16
-                        h-32
-                        w-32
-                        rounded-full
-                        blur-3xl
-                        opacity-0
-                        transition-opacity
-                        duration-500
-                        group-hover:opacity-100
-                      "
-                      style={{
-                        backgroundColor: step.glow,
-                      }}
-                    />
-
-                  </div>
-                );
-              })}
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-      {/* ========================================================
-          LIVE CITY MAP
-      ======================================================== */}
-
-      <section className="relative z-10 px-5 py-20 sm:px-8 lg:py-28">
-
-        <div className="mx-auto max-w-7xl">
-
-          <div
-            className={`
-              overflow-hidden
-              rounded-[2rem]
-              border
-              p-2
-              shadow-2xl
-              ${
-                isDark
-                  ? 'border-white/[0.07] bg-[#0b1220]/80 shadow-black/20'
-                  : 'border-white bg-white/70 shadow-slate-300/20'
-              }
-            `}
-          >
-
-            <div className="grid lg:grid-cols-[1.1fr_0.9fr]">
-
-              {/* MAP */}
-
-              <div className="relative min-h-[390px] overflow-hidden rounded-[1.5rem] lg:min-h-[560px]">
-
-                <LeafletMap
-                  complaints={complaints.slice(0, 8)}
-                  center={[28.6280, 77.3649]}
-                  zoom={13}
-                  height="100%"
-                  interactive={false}
-                />
+                {/* Icon glow */}
 
                 <div
                   className="
                     absolute
-                    left-5
-                    top-5
-                    z-[400]
-                    flex
-                    items-center
-                    gap-2
+                    inset-2
                     rounded-xl
-                    border
-                    border-white/70
-                    bg-white/90
-                    px-3
-                    py-2
-                    shadow-xl
-                    backdrop-blur-xl
+                    opacity-0
+                    blur-md
+                    transition-opacity
+                    duration-500
+                    group-hover:opacity-60
                   "
-                >
+                  style={{
+                    backgroundColor: stepColor,
+                  }}
+                />
 
-                  <span className="relative flex h-2 w-2">
-
-                    <span className="absolute inset-0 animate-ping rounded-full bg-emerald-400 opacity-60" />
-
-                    <span className="relative h-2 w-2 rounded-full bg-emerald-500" />
-
-                  </span>
-
-                  <span className="text-[9px] font-black uppercase tracking-wider text-slate-800">
-                    {t('liveCityMap')}
-                  </span>
-
-                </div>
+                <Icon className="relative h-6 w-6" />
 
               </div>
 
-              {/* MAP CONTENT */}
+              {/* ==================================================
+                  STEP TITLE
+              ================================================== */}
 
-              <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-12">
-
-                <div
-                  className={`
-                    inline-flex
-                    w-fit
-                    items-center
-                    gap-2
-                    rounded-full
-                    px-3
-                    py-1.5
-                    text-[9px]
-                    font-black
-                    uppercase
-                    tracking-[0.16em]
-                    ${
-                      isDark
-                        ? 'bg-cyan-500/10 text-cyan-400'
-                        : 'bg-cyan-50 text-cyan-600'
-                    }
-                  `}
-                >
-                  <Globe2 className="h-3.5 w-3.5" />
-                  {t('liveCityPreview')}
-                </div>
-
-                <h2
-                  className={`
-                    mt-5
-                    text-3xl
-                    font-black
-                    tracking-[-0.04em]
-                    sm:text-4xl
-                    ${
-                      isDark
-                        ? 'text-white'
-                        : 'text-slate-950'
-                    }
-                  `}
-                >
-
-                  {t('seeEverySignal')}
-
-                  <br />
-
-                  <span
-                    className="
-                      bg-gradient-to-r
-                      from-blue-500
-                      via-violet-500
-                      to-cyan-400
-                      bg-clip-text
-                      text-transparent
-                    "
-                  >
-                    {t('trackEveryAction')}
-                  </span>
-
-                </h2>
-
-                <p className={`mt-5 max-w-lg text-sm leading-7 ${muted}`}>
-                  {t('liveCityDescription')}
-                </p>
-
-                <div className="mt-8 grid grid-cols-2 gap-3">
-
-                  <div
-                    className={`
-                      rounded-xl
-                      border
-                      p-4
-                      ${
-                        isDark
-                          ? 'border-white/[0.07] bg-white/[0.025]'
-                          : 'border-slate-200 bg-white/70'
-                      }
-                    `}
-                  >
-
-                    <Map className="h-4 w-4 text-blue-500" />
-
-                    <p
-                      className={`
-                        mt-3
-                        text-xl
-                        font-black
-                        ${isDark ? 'text-white' : 'text-slate-950'}
-                      `}
-                    >
-                      24
-                    </p>
-
-                    <p className={`text-[10px] ${subtle}`}>
-                      {t('activeSignals')}
-                    </p>
-
-                  </div>
-
-                  <div
-                    className={`
-                      rounded-xl
-                      border
-                      p-4
-                      ${
-                        isDark
-                          ? 'border-white/[0.07] bg-white/[0.025]'
-                          : 'border-slate-200 bg-white/70'
-                      }
-                    `}
-                  >
-
-                    <Database className="h-4 w-4 text-violet-500" />
-
-                    <p
-                      className={`
-                        mt-3
-                        text-xl
-                        font-black
-                        ${isDark ? 'text-white' : 'text-slate-950'}
-                      `}
-                    >
-                      18
-                    </p>
-
-                    <p className={`text-[10px] ${subtle}`}>
-                      {t('aiVerified')}
-                    </p>
-
-                  </div>
-
-                  <div
-                    className={`
-                      rounded-xl
-                      border
-                      p-4
-                      ${
-                        isDark
-                          ? 'border-white/[0.07] bg-white/[0.025]'
-                          : 'border-slate-200 bg-white/70'
-                      }
-                    `}
-                  >
-
-                    <Clock3 className="h-4 w-4 text-orange-500" />
-
-                    <p
-                      className={`
-                        mt-3
-                        text-xl
-                        font-black
-                        ${isDark ? 'text-white' : 'text-slate-950'}
-                      `}
-                    >
-                      7
-                    </p>
-
-                    <p className={`text-[10px] ${subtle}`}>
-                      {t('inProgressShort')}
-                    </p>
-
-                  </div>
-
-                  <div
-                    className={`
-                      rounded-xl
-                      border
-                      p-4
-                      ${
-                        isDark
-                          ? 'border-white/[0.07] bg-white/[0.025]'
-                          : 'border-slate-200 bg-white/70'
-                      }
-                    `}
-                  >
-
-                    <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-
-                    <p
-                      className="
-                        mt-3
-                        text-xl
-                        font-black
-                        text-emerald-500
-                      "
-                    >
-                      94.6%
-                    </p>
-
-                    <p className={`text-[10px] ${subtle}`}>
-                      {t('resolved')}
-                    </p>
-
-                  </div>
-
-                </div>
-
-                <Link
-                  to="/map"
-                  className="
-                    group
-                    mt-8
-                    inline-flex
-                    w-fit
-                    items-center
-                    gap-2
-                    text-sm
-                    font-black
-                    text-blue-500
-                    transition-colors
-                    hover:text-blue-400
-                  "
-                >
-
-                  {t('openLiveMap')}
-
-                  <ArrowRight
-                    className="
-                      h-4
-                      w-4
-                      transition-transform
-                      duration-300
-                      group-hover:translate-x-1
-                    "
-                  />
-
-                </Link>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-      {/* ========================================================
-          FINAL CTA
-      ======================================================== */}
-
-      <section className="relative z-10 px-5 pb-24 sm:px-8 lg:pb-32">
-
-        <div className="mx-auto max-w-7xl">
-
-          <div
-            className={`
-              relative
-              overflow-hidden
-              rounded-[2rem]
-              border
-              px-6
-              py-20
-              text-center
-              sm:px-10
-              ${
-                isDark
-                  ? 'border-blue-500/10 bg-gradient-to-br from-blue-600/[0.09] via-violet-600/[0.05] to-cyan-500/[0.06]'
-                  : 'border-blue-100 bg-gradient-to-br from-blue-50 via-white to-cyan-50'
-              }
-            `}
-          >
-
-            {/* 3D rings */}
-
-            <div className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 [perspective:800px]">
-
-              <div
+              <h3
                 className={`
-                  absolute
-                  inset-[20%]
-                  rounded-full
-                  border
-                  ${
-                    isDark
-                      ? 'border-blue-400/10'
-                      : 'border-blue-300/30'
-                  }
-                `}
-                style={{
-                  transform:
-                    'rotateX(65deg) rotateZ(20deg)',
-                }}
-              />
-
-              <div
-                className={`
-                  absolute
-                  inset-[30%]
-                  rounded-full
-                  border
-                  ${
-                    isDark
-                      ? 'border-violet-400/10'
-                      : 'border-violet-300/30'
-                  }
-                `}
-                style={{
-                  transform:
-                    'rotateX(65deg) rotateZ(-30deg)',
-                }}
-              />
-
-            </div>
-
-            <div className="relative">
-
-              <div
-                className={`
-                  inline-flex
-                  items-center
-                  gap-2
-                  rounded-full
-                  border
-                  px-3
-                  py-1.5
-                  text-[9px]
+                  relative
+                  mt-7
+                  text-lg
                   font-black
-                  uppercase
-                  tracking-[0.16em]
-                  ${
-                    isDark
-                      ? 'border-blue-400/10 bg-blue-500/10 text-blue-400'
-                      : 'border-blue-100 bg-white text-blue-600'
-                  }
-                `}
-              >
-
-                <Shield className="h-3.5 w-3.5" />
-
-                {t('builtForTransparency')}
-
-              </div>
-
-              <h2
-                className={`
-                  mx-auto
-                  mt-6
-                  max-w-4xl
-                  text-3xl
-                  font-black
-                  tracking-[-0.05em]
-                  sm:text-5xl
-                  lg:text-6xl
+                  tracking-tight
                   ${
                     isDark
                       ? 'text-white'
@@ -2155,108 +2349,1200 @@ export function LandingPage() {
                   }
                 `}
               >
+                {step.title}
+              </h3>
 
-                {t('smarterCitiesStart')}
+              {/* ==================================================
+                  DESCRIPTION
+              ================================================== */}
 
-                <br />
-
-                <span
-                  className="
-                    bg-gradient-to-r
-                    from-blue-500
-                    via-violet-500
-                    to-cyan-400
-                    bg-clip-text
-                    text-transparent
-                  "
-                >
-                  {t('withSingleReport')}
-                </span>
-
-              </h2>
-
-              <p className={`mx-auto mt-5 max-w-xl text-sm leading-7 ${muted}`}>
-                {t('everyReportBecomes')}
+              <p
+                className={`
+                  relative
+                  mt-3
+                  min-h-[72px]
+                  text-xs
+                  leading-6
+                  ${muted}
+                `}
+              >
+                {step.description}
               </p>
 
-              <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              {/* ==================================================
+                  STATUS
+              ================================================== */}
 
-                <Link
-                  to="/report"
-                  className="
-                    group
-                    inline-flex
-                    h-12
-                    items-center
-                    gap-2
-                    rounded-xl
-                    bg-gradient-to-r
-                    from-blue-600
-                    to-indigo-600
-                    px-5
-                    text-sm
-                    font-bold
-                    text-white
-                    shadow-lg
-                    shadow-blue-600/20
-                    transition-all
-                    duration-300
-                    hover:-translate-y-1
-                    hover:shadow-xl
-                  "
-                >
+              <div
+                className={`
+                  relative
+                  mt-5
+                  flex
+                  items-center
+                  gap-2
+                  border-t
+                  pt-4
+                  text-[8px]
+                  font-black
+                  uppercase
+                  tracking-[0.12em]
+                  ${
+                    isDark
+                      ? 'border-white/[0.05] text-slate-600'
+                      : 'border-slate-100 text-slate-400'
+                  }
+                `}
+              >
 
-                  {t('reportIssue')}
+                <span className="relative flex h-1.5 w-1.5">
 
-                  <ArrowRight
-                    className="
-                      h-4
-                      w-4
-                      transition-transform
-                      group-hover:translate-x-1
-                    "
+                  <span
+                    className="absolute inset-0 animate-ping rounded-full opacity-50"
+                    style={{
+                      backgroundColor: stepColor,
+                    }}
                   />
 
-                </Link>
+                  <span
+                    className="relative h-1.5 w-1.5 rounded-full"
+                    style={{
+                      backgroundColor: stepColor,
+                    }}
+                  />
 
-                <Link
-                  to="/map"
-                  className={`
-                    inline-flex
-                    h-12
-                    items-center
-                    gap-2
-                    rounded-xl
-                    border
-                    px-5
-                    text-sm
-                    font-bold
-                    transition-all
-                    duration-300
-                    hover:-translate-y-1
-                    ${
-                      isDark
-                        ? 'border-white/10 bg-white/[0.04] text-white hover:bg-white/[0.08]'
-                        : 'border-slate-200 bg-white text-slate-800 hover:border-blue-200 hover:text-blue-600'
-                    }
-                  `}
-                >
+                </span>
 
-                  <MapPin className="h-4 w-4 text-blue-500" />
-
-                  {t('exploreLiveCity')}
-
-                </Link>
+                {index === 0 && 'Signal received'}
+                {index === 1 && 'AI processing'}
+                {index === 2 && 'Response active'}
+                {index === 3 && 'Public visibility'}
 
               </div>
+
+              {/* ==================================================
+                  BOTTOM ACCENT
+              ================================================== */}
+
+              <div
+                className="
+                  absolute
+                  bottom-0
+                  left-0
+                  h-[2px]
+                  w-0
+                  transition-all
+                  duration-500
+                  group-hover:w-full
+                "
+                style={{
+                  background: `linear-gradient(90deg, transparent, ${stepColor}, transparent)`,
+                }}
+              />
+
+            </div>
+          );
+        })}
+
+      </div>
+
+    </div>
+
+    {/* ====================================================
+        PIPELINE SUMMARY
+    ==================================================== */}
+
+    <div
+      className={`
+        mt-8
+        flex
+        flex-col
+        gap-4
+        rounded-2xl
+        border
+        px-5
+        py-4
+        sm:flex-row
+        sm:items-center
+        sm:justify-between
+        ${
+          isDark
+            ? 'border-white/[0.06] bg-white/[0.02]'
+            : 'border-slate-200 bg-white/60'
+        }
+      `}
+    >
+
+      <div className="flex items-center gap-3">
+
+        <div
+          className={`
+            flex
+            h-9
+            w-9
+            shrink-0
+            items-center
+            justify-center
+            rounded-xl
+            ${
+              isDark
+                ? 'bg-blue-500/10 text-blue-400'
+                : 'bg-blue-50 text-blue-600'
+            }
+          `}
+        >
+          <Activity className="h-4 w-4" />
+        </div>
+
+        <div>
+
+          <p
+            className={`
+              text-[10px]
+              font-black
+              ${
+                isDark
+                  ? 'text-white'
+                  : 'text-slate-900'
+              }
+            `}
+          >
+            Continuous civic intelligence loop
+          </p>
+
+          <p
+            className={`
+              mt-0.5
+              text-[8px]
+              ${subtle}
+            `}
+          >
+            Every report moves through the same transparent workflow.
+          </p>
+
+        </div>
+
+      </div>
+
+      <div
+        className={`
+          flex
+          items-center
+          gap-2
+          text-[8px]
+          font-black
+          uppercase
+          tracking-wider
+          ${
+            isDark
+              ? 'text-emerald-400'
+              : 'text-emerald-600'
+          }
+        `}
+      >
+
+        <CheckCircle2 className="h-3.5 w-3.5" />
+
+        End-to-end visibility
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+      {/* ========================================================
+          LIVE CITY MAP
+      ======================================================== */}
+
+{/* ========================================================
+    LIVE CITY INTELLIGENCE MAP
+======================================================== */}
+
+<section className="relative z-10 px-5 py-20 sm:px-8 lg:py-28">
+
+  <div className="mx-auto max-w-7xl">
+
+    {/* ======================================================
+        MAIN CONTAINER
+    ====================================================== */}
+
+    <div
+      className={`
+        relative
+        overflow-hidden
+        rounded-[2rem]
+        border
+        p-2
+        shadow-2xl
+        ${
+          isDark
+            ? 'border-white/[0.07] bg-[#0b1220]/80 shadow-black/30'
+            : 'border-slate-200/70 bg-white/75 shadow-slate-300/30'
+        }
+      `}
+    >
+
+      {/* Background glow */}
+
+      <div
+        className={`
+          pointer-events-none
+          absolute
+          -right-32
+          -top-32
+          h-80
+          w-80
+          rounded-full
+          blur-[110px]
+          ${
+            isDark
+              ? 'bg-blue-600/[0.08]'
+              : 'bg-blue-400/[0.10]'
+          }
+        `}
+      />
+
+      <div className="relative grid lg:grid-cols-[1.1fr_0.9fr]">
+
+        {/* ==================================================
+            MAP AREA
+        ================================================== */}
+
+        <div
+          className={`
+            group
+            relative
+            min-h-[390px]
+            overflow-hidden
+            rounded-[1.5rem]
+            lg:min-h-[560px]
+          `}
+        >
+
+          {/* Actual map */}
+
+          <LeafletMap
+            complaints={complaints.slice(0, 8)}
+            center={[28.6280, 77.3649]}
+            zoom={13}
+            height="100%"
+            interactive={false}
+          />
+
+          {/* Map overlay */}
+
+          <div
+            className="
+              pointer-events-none
+              absolute
+              inset-0
+              z-[300]
+              bg-gradient-to-t
+              from-slate-950/40
+              via-transparent
+              to-slate-950/10
+            "
+          />
+
+          {/* ==================================================
+              LIVE MAP BADGE
+          ================================================== */}
+
+          <div
+            className="
+              absolute
+              left-5
+              top-5
+              z-[400]
+              flex
+              items-center
+              gap-2
+              rounded-xl
+              border
+              border-white/70
+              bg-white/90
+              px-3
+              py-2
+              shadow-xl
+              backdrop-blur-xl
+            "
+          >
+
+            <span className="relative flex h-2 w-2">
+
+              <span
+                className="
+                  absolute
+                  inset-0
+                  animate-ping
+                  rounded-full
+                  bg-emerald-400
+                  opacity-60
+                "
+              />
+
+              <span
+                className="
+                  relative
+                  h-2
+                  w-2
+                  rounded-full
+                  bg-emerald-500
+                "
+              />
+
+            </span>
+
+            <span className="text-[9px] font-black uppercase tracking-wider text-slate-800">
+              {t('liveCityMap')}
+            </span>
+
+          </div>
+
+          {/* ==================================================
+              MAP STATUS PANEL
+          ================================================== */}
+
+          <div
+            className="
+              absolute
+              bottom-5
+              left-5
+              z-[400]
+              rounded-2xl
+              border
+              border-white/20
+              bg-slate-950/75
+              px-4
+              py-3
+              shadow-2xl
+              backdrop-blur-xl
+            "
+          >
+
+            <div className="flex items-center gap-2">
+
+              <Radio className="h-3.5 w-3.5 text-cyan-400" />
+
+              <span className="text-[8px] font-black uppercase tracking-[0.14em] text-white">
+                NCR Intelligence Network
+              </span>
+
+            </div>
+
+            <div className="mt-2 flex items-center gap-3">
+
+              <span className="text-[9px] font-bold text-slate-400">
+                24 active signals
+              </span>
+
+              <span className="h-1 w-1 rounded-full bg-emerald-400" />
+
+              <span className="text-[9px] font-bold text-emerald-400">
+                Operational
+              </span>
 
             </div>
 
           </div>
 
+          {/* ==================================================
+              SCANNING LINE
+          ================================================== */}
+
+          <div
+            className="
+              pointer-events-none
+              absolute
+              left-0
+              right-0
+              top-0
+              z-[350]
+              h-px
+              bg-gradient-to-r
+              from-transparent
+              via-cyan-400/70
+              to-transparent
+              opacity-60
+              animate-scanline
+            "
+          />
+
         </div>
 
-      </section>
+        {/* ==================================================
+            CONTENT PANEL
+        ================================================== */}
+
+        <div
+          className="
+            relative
+            flex
+            flex-col
+            justify-center
+            p-7
+            sm:p-10
+            lg:p-12
+          "
+        >
+
+          {/* =================================================
+              LABEL
+          ================================================= */}
+
+          <div
+            className={`
+              inline-flex
+              w-fit
+              items-center
+              gap-2
+              rounded-full
+              border
+              px-3
+              py-1.5
+              text-[9px]
+              font-black
+              uppercase
+              tracking-[0.16em]
+              ${
+                isDark
+                  ? 'border-cyan-400/10 bg-cyan-500/10 text-cyan-400'
+                  : 'border-cyan-200 bg-cyan-50 text-cyan-600'
+              }
+            `}
+          >
+
+            <Globe2 className="h-3.5 w-3.5" />
+
+            {t('liveCityPreview')}
+
+          </div>
+
+          {/* =================================================
+              TITLE
+          ================================================= */}
+
+          <h2
+            className={`
+              mt-5
+              text-3xl
+              font-black
+              leading-[1.05]
+              tracking-[-0.045em]
+              sm:text-4xl
+              lg:text-[2.8rem]
+              ${
+                isDark
+                  ? 'text-white'
+                  : 'text-slate-950'
+              }
+            `}
+          >
+
+            {t('seeEverySignal')}
+
+            <br />
+
+            <span
+              className="
+                bg-gradient-to-r
+                from-blue-500
+                via-violet-500
+                to-cyan-400
+                bg-clip-text
+                text-transparent
+              "
+            >
+              {t('trackEveryAction')}
+            </span>
+
+          </h2>
+
+          {/* =================================================
+              DESCRIPTION
+          ================================================= */}
+
+          <p
+            className={`
+              mt-5
+              max-w-lg
+              text-sm
+              leading-7
+              ${muted}
+            `}
+          >
+            {t('liveCityDescription')}
+          </p>
+
+          {/* =================================================
+              LIVE STATUS
+          ================================================= */}
+
+          <div
+            className={`
+              mt-6
+              flex
+              items-center
+              gap-3
+              rounded-xl
+              border
+              px-4
+              py-3
+              ${
+                isDark
+                  ? 'border-emerald-500/10 bg-emerald-500/[0.04]'
+                  : 'border-emerald-200 bg-emerald-50/70'
+              }
+            `}
+          >
+
+            <div className="relative flex h-2 w-2">
+
+              <span className="absolute inset-0 animate-ping rounded-full bg-emerald-400 opacity-50" />
+
+              <span className="relative h-2 w-2 rounded-full bg-emerald-500" />
+
+            </div>
+
+            <div>
+
+              <p
+                className={`
+                  text-[9px]
+                  font-black
+                  uppercase
+                  tracking-wider
+                  ${
+                    isDark
+                      ? 'text-emerald-400'
+                      : 'text-emerald-600'
+                  }
+                `}
+              >
+                System operational
+              </p>
+
+              <p
+                className={`
+                  mt-0.5
+                  text-[8px]
+                  ${subtle}
+                `}
+              >
+                Live civic signals are being monitored
+              </p>
+
+            </div>
+
+          </div>
+
+          {/* =================================================
+              METRICS
+          ================================================= */}
+
+          <div className="mt-7 grid grid-cols-2 gap-3">
+
+            {/* Active signals */}
+
+            <div
+              className={`
+                group/metric
+                rounded-xl
+                border
+                p-4
+                transition-all
+                duration-300
+                hover:-translate-y-1
+                ${
+                  isDark
+                    ? 'border-white/[0.07] bg-white/[0.025] hover:border-blue-500/20'
+                    : 'border-slate-200 bg-white/70 hover:border-blue-200'
+                }
+              `}
+            >
+
+              <Map className="h-4 w-4 text-blue-500 transition-transform duration-300 group-hover/metric:scale-110" />
+
+              <p
+                className={`
+                  mt-3
+                  text-xl
+                  font-black
+                  ${
+                    isDark
+                      ? 'text-white'
+                      : 'text-slate-950'
+                  }
+                `}
+              >
+                24
+              </p>
+
+              <p className={`text-[10px] ${subtle}`}>
+                {t('activeSignals')}
+              </p>
+
+            </div>
+
+            {/* AI verified */}
+
+            <div
+              className={`
+                group/metric
+                rounded-xl
+                border
+                p-4
+                transition-all
+                duration-300
+                hover:-translate-y-1
+                ${
+                  isDark
+                    ? 'border-white/[0.07] bg-white/[0.025] hover:border-violet-500/20'
+                    : 'border-slate-200 bg-white/70 hover:border-violet-200'
+                }
+              `}
+            >
+
+              <Database className="h-4 w-4 text-violet-500 transition-transform duration-300 group-hover/metric:scale-110" />
+
+              <p
+                className={`
+                  mt-3
+                  text-xl
+                  font-black
+                  ${
+                    isDark
+                      ? 'text-white'
+                      : 'text-slate-950'
+                  }
+                `}
+              >
+                18
+              </p>
+
+              <p className={`text-[10px] ${subtle}`}>
+                {t('aiVerified')}
+              </p>
+
+            </div>
+
+            {/* In progress */}
+
+            <div
+              className={`
+                group/metric
+                rounded-xl
+                border
+                p-4
+                transition-all
+                duration-300
+                hover:-translate-y-1
+                ${
+                  isDark
+                    ? 'border-white/[0.07] bg-white/[0.025] hover:border-orange-500/20'
+                    : 'border-slate-200 bg-white/70 hover:border-orange-200'
+                }
+              `}
+            >
+
+              <Clock3 className="h-4 w-4 text-orange-500 transition-transform duration-300 group-hover/metric:scale-110" />
+
+              <p
+                className={`
+                  mt-3
+                  text-xl
+                  font-black
+                  ${
+                    isDark
+                      ? 'text-white'
+                      : 'text-slate-950'
+                  }
+                `}
+              >
+                7
+              </p>
+
+              <p className={`text-[10px] ${subtle}`}>
+                {t('inProgressShort')}
+              </p>
+
+            </div>
+
+            {/* Resolution */}
+
+            <div
+              className={`
+                group/metric
+                rounded-xl
+                border
+                p-4
+                transition-all
+                duration-300
+                hover:-translate-y-1
+                ${
+                  isDark
+                    ? 'border-white/[0.07] bg-white/[0.025] hover:border-emerald-500/20'
+                    : 'border-slate-200 bg-white/70 hover:border-emerald-200'
+                }
+              `}
+            >
+
+              <CheckCircle2 className="h-4 w-4 text-emerald-500 transition-transform duration-300 group-hover/metric:scale-110" />
+
+              <p className="mt-3 text-xl font-black text-emerald-500">
+                94.6%
+              </p>
+
+              <p className={`text-[10px] ${subtle}`}>
+                {t('resolved')}
+              </p>
+
+            </div>
+
+          </div>
+
+          {/* =================================================
+              CTA
+          ================================================= */}
+
+          <Link
+            to="/map"
+            className="
+              group
+              mt-8
+              inline-flex
+              w-fit
+              items-center
+              gap-2
+              rounded-xl
+              bg-gradient-to-r
+              from-blue-600
+              to-indigo-600
+              px-5
+              py-3
+              text-xs
+              font-black
+              text-white
+              shadow-lg
+              shadow-blue-600/20
+              transition-all
+              duration-300
+              hover:-translate-y-1
+              hover:shadow-xl
+              hover:shadow-blue-600/30
+            "
+          >
+
+            {t('openLiveMap')}
+
+            <ArrowRight
+              className="
+                h-4
+                w-4
+                transition-transform
+                duration-300
+                group-hover:translate-x-1
+              "
+            />
+
+          </Link>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+      {/* ========================================================
+          FINAL CTA
+      ======================================================== */}
+
+{/* ========================================================
+    FINAL CTA — CIVIC ACTION
+======================================================== */}
+
+<section className="relative z-10 px-5 pb-24 sm:px-8 lg:pb-32">
+
+  <div className="mx-auto max-w-7xl">
+
+    <div
+      className={`
+        relative
+        overflow-hidden
+        rounded-[2rem]
+        border
+        px-6
+        py-20
+        text-center
+        shadow-2xl
+        sm:px-10
+        lg:py-24
+        ${
+          isDark
+            ? 'border-blue-500/10 bg-gradient-to-br from-blue-600/[0.10] via-violet-600/[0.07] to-cyan-500/[0.08] shadow-black/30'
+            : 'border-blue-100 bg-gradient-to-br from-blue-50 via-white to-cyan-50 shadow-slate-300/30'
+        }
+      `}
+    >
+
+      {/* ==================================================
+          AMBIENT GLOW
+      ================================================== */}
+
+      <div
+        className={`
+          pointer-events-none
+          absolute
+          left-1/2
+          top-1/2
+          h-[420px]
+          w-[420px]
+          -translate-x-1/2
+          -translate-y-1/2
+          rounded-full
+          blur-[110px]
+          ${
+            isDark
+              ? 'bg-blue-600/[0.10]'
+              : 'bg-blue-400/[0.12]'
+          }
+        `}
+      />
+
+      <div
+        className={`
+          pointer-events-none
+          absolute
+          -right-32
+          -top-32
+          h-72
+          w-72
+          rounded-full
+          blur-[100px]
+          ${
+            isDark
+              ? 'bg-violet-600/[0.10]'
+              : 'bg-violet-400/[0.10]'
+          }
+        `}
+      />
+
+      {/* ==================================================
+          3D RINGS
+      ================================================== */}
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          left-1/2
+          top-1/2
+          h-[520px]
+          w-[520px]
+          -translate-x-1/2
+          -translate-y-1/2
+          [perspective:800px]
+        "
+      >
+
+        <div
+          className={`
+            absolute
+            inset-[16%]
+            rounded-full
+            border
+            ${
+              isDark
+                ? 'border-blue-400/[0.10]'
+                : 'border-blue-300/30'
+            }
+          `}
+          style={{
+            transform:
+              'rotateX(65deg) rotateZ(20deg)',
+          }}
+        />
+
+        <div
+          className={`
+            absolute
+            inset-[27%]
+            rounded-full
+            border
+            ${
+              isDark
+                ? 'border-violet-400/[0.10]'
+                : 'border-violet-300/30'
+            }
+          `}
+          style={{
+            transform:
+              'rotateX(65deg) rotateZ(-30deg)',
+          }}
+        />
+
+        <div
+          className={`
+            absolute
+            inset-[38%]
+            rounded-full
+            border
+            ${
+              isDark
+                ? 'border-cyan-400/[0.08]'
+                : 'border-cyan-300/30'
+            }
+          `}
+          style={{
+            transform:
+              'rotateX(65deg) rotateZ(55deg)',
+          }}
+        />
+
+      </div>
+
+      {/* ==================================================
+          CONTENT
+      ================================================== */}
+
+      <div className="relative z-10 mx-auto max-w-4xl">
+
+        {/* Badge */}
+
+        <div
+          className={`
+            inline-flex
+            items-center
+            gap-2
+            rounded-full
+            border
+            px-4
+            py-2
+            text-[9px]
+            font-black
+            uppercase
+            tracking-[0.16em]
+            ${
+              isDark
+                ? 'border-blue-400/10 bg-blue-500/10 text-blue-400'
+                : 'border-blue-100 bg-white/80 text-blue-600'
+            }
+          `}
+        >
+
+          <span className="relative flex h-2 w-2">
+
+            <span className="absolute inset-0 animate-ping rounded-full bg-emerald-400 opacity-50" />
+
+            <span className="relative h-2 w-2 rounded-full bg-emerald-500" />
+
+          </span>
+
+          <Shield className="h-3.5 w-3.5" />
+
+          {t('builtForTransparency')}
+
+        </div>
+
+        {/* Heading */}
+
+        <h2
+          className={`
+            mx-auto
+            mt-7
+            max-w-4xl
+            text-3xl
+            font-black
+            leading-[1.02]
+            tracking-[-0.055em]
+            sm:text-5xl
+            lg:text-6xl
+            ${
+              isDark
+                ? 'text-white'
+                : 'text-slate-950'
+            }
+          `}
+        >
+
+          {t('smarterCitiesStart')}
+
+          <br />
+
+          <span
+            className="
+              bg-gradient-to-r
+              from-blue-500
+              via-violet-500
+              to-cyan-400
+              bg-clip-text
+              text-transparent
+            "
+          >
+            {t('withSingleReport')}
+          </span>
+
+        </h2>
+
+        {/* Description */}
+
+        <p
+          className={`
+            mx-auto
+            mt-6
+            max-w-2xl
+            text-sm
+            leading-7
+            sm:text-base
+            ${muted}
+          `}
+        >
+          {t('everyReportBecomes')}
+        </p>
+
+        {/* ==================================================
+            ACTIONS
+        ================================================== */}
+
+        <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+
+          {/* Report */}
+
+          <Link
+            to="/report"
+            className="
+              group
+              inline-flex
+              h-12
+              items-center
+              gap-2
+              rounded-xl
+              bg-gradient-to-r
+              from-blue-600
+              to-indigo-600
+              px-6
+              text-sm
+              font-black
+              text-white
+              shadow-lg
+              shadow-blue-600/25
+              transition-all
+              duration-300
+              hover:-translate-y-1
+              hover:shadow-xl
+              hover:shadow-blue-600/35
+            "
+          >
+
+            <AlertCircle className="h-4 w-4" />
+
+            {t('reportIssue')}
+
+            <ArrowRight
+              className="
+                h-4
+                w-4
+                transition-transform
+                duration-300
+                group-hover:translate-x-1
+              "
+            />
+
+          </Link>
+
+          {/* Live Map */}
+
+          <Link
+            to="/map"
+            className={`
+              group
+              inline-flex
+              h-12
+              items-center
+              gap-2
+              rounded-xl
+              border
+              px-6
+              text-sm
+              font-black
+              transition-all
+              duration-300
+              hover:-translate-y-1
+              ${
+                isDark
+                  ? 'border-white/10 bg-white/[0.04] text-white hover:border-blue-400/20 hover:bg-white/[0.08]'
+                  : 'border-slate-200 bg-white/80 text-slate-800 hover:border-blue-200 hover:text-blue-600'
+              }
+            `}
+          >
+
+            <MapPin className="h-4 w-4 text-blue-500" />
+
+            {t('exploreLiveCity')}
+
+            <ChevronRight
+              className="
+                h-4
+                w-4
+                transition-transform
+                duration-300
+                group-hover:translate-x-1
+              "
+            />
+
+          </Link>
+
+        </div>
+
+        {/* ==================================================
+            TRUST POINTS
+        ================================================== */}
+
+        <div
+          className={`
+            mt-8
+            flex
+            flex-wrap
+            items-center
+            justify-center
+            gap-x-6
+            gap-y-3
+            text-[9px]
+            font-bold
+            ${subtle}
+          `}
+        >
+
+          <span className="flex items-center gap-2">
+            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+            AI-assisted triage
+          </span>
+
+          <span className="flex items-center gap-2">
+            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+            Transparent tracking
+          </span>
+
+          <span className="flex items-center gap-2">
+            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+            City-wide intelligence
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
 
       {/* ========================================================
           FOOTER
