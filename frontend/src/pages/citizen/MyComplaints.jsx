@@ -15,10 +15,12 @@ import { Sidebar } from '../../components/common/Sidebar';
 import { PriorityBadge, StatusBadge } from '../../components/common/Badge';
 import { useComplaints } from '../../context/ComplaintContext';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 export function MyComplaintsPage() {
   const { complaints } = useComplaints();
   const { user } = useAuth();
+  const { t = (k) => k } = useLanguage() || {};
   const navigate = useNavigate();
 
   const [search, setSearch] = useState('');
@@ -101,7 +103,7 @@ export function MyComplaintsPage() {
                 mb-2
               ">
                 <FileText className="w-3.5 h-3.5" />
-                Civic Reports
+                {t('myComplaints') || 'Civic Reports'}
               </div>
 
               <h1 className="
@@ -110,7 +112,7 @@ export function MyComplaintsPage() {
                 tracking-tight
                 text-white
               ">
-                My Complaints
+                {t('myComplaints') || 'My Complaints'}
               </h1>
 
               <p className="text-xs sm:text-sm text-slate-500 mt-2">
@@ -134,7 +136,7 @@ export function MyComplaintsPage() {
               "
             >
               <PlusCircle className="w-4 h-4" />
-              Report New Issue
+              {t('reportIssue') || 'Report New Issue'}
             </button>
           </div>
 
@@ -157,7 +159,7 @@ export function MyComplaintsPage() {
               <div className="relative flex items-center justify-between">
                 <div>
                   <p className="text-[9px] uppercase tracking-widest text-slate-600 font-bold">
-                    Total Reports
+                    {t('totalReports') || 'Total Reports'}
                   </p>
 
                   <p className="text-2xl font-black text-white mt-1">
@@ -186,7 +188,7 @@ export function MyComplaintsPage() {
 
                 <div>
                   <p className="text-[9px] uppercase tracking-widest text-slate-600 font-bold">
-                    Active
+                    {t('active') || 'Active'}
                   </p>
 
                   <p className="text-2xl font-black text-white mt-1">
@@ -215,7 +217,7 @@ export function MyComplaintsPage() {
 
                 <div>
                   <p className="text-[9px] uppercase tracking-widest text-slate-600 font-bold">
-                    Resolved
+                    {t('resolved') || 'Resolved'}
                   </p>
 
                   <p className="text-2xl font-black text-white mt-1">

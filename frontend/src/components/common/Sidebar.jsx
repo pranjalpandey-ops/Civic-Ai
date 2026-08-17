@@ -17,35 +17,37 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 export function Sidebar({ type = 'citizen' }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, logout, switchRole } = useAuth();
+  const { user, logout } = useAuth();
+  const { t = (k) => k } = useLanguage() || {};
 
   const citizenNav = [
-    { label: 'Dashboard', icon: LayoutDashboard, path: '/citizen' },
-    { label: 'Report Issue', icon: PlusCircle, path: '/report' },
-    { label: 'My Complaints', icon: FileText, path: '/citizen/complaints' },
-    { label: 'Nearby Issues', icon: MapPin, path: '/map' },
+    { label: t('dashboard') || 'Dashboard', icon: LayoutDashboard, path: '/citizen' },
+    { label: t('reportIssue') || 'Report Issue', icon: PlusCircle, path: '/report' },
+    { label: t('myComplaints') || 'My Complaints', icon: FileText, path: '/citizen/complaints' },
+    { label: t('nearbyIssues') || 'Nearby Issues', icon: MapPin, path: '/map' },
   ];
 
   const authorityNav = [
-    { label: 'Overview', icon: LayoutDashboard, path: '/authority' },
-    { label: 'Priority Queue', icon: ListTodo, path: '/authority/queue' },
-    { label: 'City Map', icon: MapPin, path: '/authority/map' },
-    { label: 'Live Feed', icon: Radio, path: '/authority/feed' },
-    { label: 'Analytics', icon: BarChart3, path: '/authority/analytics' },
-    { label: 'Departments', icon: Building2, path: '/authority/departments' },
-    { label: 'Settings', icon: Settings, path: '/authority/settings' },
+    { label: t('overview') || 'Overview', icon: LayoutDashboard, path: '/authority' },
+    { label: t('priorityQueue') || 'Priority Queue', icon: ListTodo, path: '/authority/queue' },
+    { label: t('liveMap') || 'City Map', icon: MapPin, path: '/authority/map' },
+    { label: t('liveFeed') || 'Live Feed', icon: Radio, path: '/authority/feed' },
+    { label: t('analytics') || 'Analytics', icon: BarChart3, path: '/authority/analytics' },
+    { label: t('departments') || 'Departments', icon: Building2, path: '/authority/departments' },
+    { label: t('settings') || 'Settings', icon: Settings, path: '/authority/settings' },
   ];
 
   const adminNav = [
-    { label: 'Admin Console', icon: LayoutDashboard, path: '/admin' },
-    { label: 'All Complaints', icon: FileText, path: '/admin/complaints' },
-    { label: 'Departments', icon: Building2, path: '/admin/departments' },
-    { label: 'Wards & Zones', icon: Layers, path: '/admin/wards' },
-    { label: 'Reports & Export', icon: BarChart3, path: '/admin/reports' },
+    { label: t('adminConsole') || 'Admin Console', icon: LayoutDashboard, path: '/admin' },
+    { label: t('allComplaints') || 'All Complaints', icon: FileText, path: '/admin/complaints' },
+    { label: t('departments') || 'Departments', icon: Building2, path: '/admin/departments' },
+    { label: t('wardsAndZones') || 'Wards & Zones', icon: Layers, path: '/admin/wards' },
+    { label: t('reportsAndExport') || 'Reports & Export', icon: BarChart3, path: '/admin/reports' },
   ];
 
   let navItems = citizenNav;

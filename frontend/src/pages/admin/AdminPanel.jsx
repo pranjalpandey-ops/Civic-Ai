@@ -14,9 +14,11 @@ import {
 } from 'lucide-react';
 import { Sidebar } from '../../components/common/Sidebar';
 import { useComplaints } from '../../context/ComplaintContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 export function AdminPanelPage() {
   const { complaints } = useComplaints();
+  const { t = (k) => k } = useLanguage() || {};
   const navigate = useNavigate();
 
   const [aiConfidenceThreshold, setAiConfidenceThreshold] = useState(85);

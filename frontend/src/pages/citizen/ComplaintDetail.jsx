@@ -19,6 +19,7 @@ import {
 
 import { useComplaints } from '../../context/ComplaintContext';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
 import { PriorityBadge, StatusBadge } from '../../components/common/Badge';
 import { LeafletMap } from '../../components/maps/LeafletMap';
 import { Sidebar } from '../../components/common/Sidebar';
@@ -29,6 +30,7 @@ export function ComplaintDetailPage() {
 
   const { complaints, submitFeedback } = useComplaints();
   const { user } = useAuth();
+  const { t = (k) => k } = useLanguage() || {};
 
   const [complaint, setComplaint] = useState(null);
   const [rating, setRating] = useState(5);

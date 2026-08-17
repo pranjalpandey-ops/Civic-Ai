@@ -19,6 +19,7 @@ import {
 
 import { useComplaints } from '../../context/ComplaintContext';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
 import { fetchApi } from '../../utils/api';
 
 import { SAMPLE_REPORT_PRESETS } from '../../utils/sampleImages';
@@ -42,6 +43,7 @@ export function ReportIssuePage() {
     useComplaints();
 
   const { user } = useAuth();
+  const { t = (k) => k } = useLanguage() || {};
 
   const [step, setStep] = useState(1);
 

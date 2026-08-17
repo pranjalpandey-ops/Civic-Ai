@@ -37,6 +37,7 @@ import { Sidebar } from '../../components/common/Sidebar';
 import { PriorityBadge, StatusBadge } from '../../components/common/Badge';
 import { useComplaints } from '../../context/ComplaintContext';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
 import { fetchApi } from '../../utils/api';
 
 /* =========================================================
@@ -57,6 +58,7 @@ const PRIORITY_COLORS = {
 export function AuthorityDashboard() {
   const { complaints = [] } = useComplaints();
   const { user } = useAuth();
+  const { t = (k) => k } = useLanguage() || {};
   const navigate = useNavigate();
 
   const [overview, setOverview] = useState(null);

@@ -21,9 +21,11 @@ import {
 import { Sidebar } from '../../components/common/Sidebar';
 import { LeafletMap } from '../../components/maps/LeafletMap';
 import { useComplaints } from '../../context/ComplaintContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 export function LiveCityMapPage() {
   const { complaints } = useComplaints();
+  const { t = (k) => k } = useLanguage() || {};
   const navigate = useNavigate();
 
   const [activeCategory, setActiveCategory] = useState('all');
@@ -33,12 +35,12 @@ export function LiveCityMapPage() {
   const [showFilters, setShowFilters] = useState(false);
 
   const categories = [
-    { id: 'all', label: 'All Issues' },
-    { id: 'pothole', label: 'Potholes' },
-    { id: 'garbage', label: 'Garbage' },
-    { id: 'water_leakage', label: 'Water Leaks' },
-    { id: 'broken_streetlight', label: 'Streetlights' },
-    { id: 'drainage', label: 'Drainage' },
+    { id: 'all', label: t('allCategories') || 'All Issues' },
+    { id: 'pothole', label: t('pothole') || 'Potholes' },
+    { id: 'garbage', label: t('garbage') || 'Garbage' },
+    { id: 'water_leakage', label: t('waterLeak') || 'Water Leaks' },
+    { id: 'broken_streetlight', label: t('streetlight') || 'Streetlights' },
+    { id: 'drainage', label: t('drainage') || 'Drainage' },
   ];
 
   /*

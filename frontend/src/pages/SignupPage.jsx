@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
 
 export function SignupPage() {
   const [name, setName] = useState('');
@@ -35,6 +36,7 @@ export function SignupPage() {
 
   const { register } = useAuth() || {};
   const { isDark = false, toggleTheme = () => {} } = useTheme() || {};
+  const { t = (k) => k } = useLanguage() || {};
   const navigate = useNavigate();
 
   // Real-time automatic persona classification
@@ -139,10 +141,10 @@ export function SignupPage() {
         </div>
 
         {/* Main Content */}
-        <div className="my-8 space-y-6">
+        <div className="my-6 space-y-6">
           <div>
             <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-              Create your account
+              {t('createAccount') || 'Create an account'}
             </h1>
             <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
               Join the central hub for precision urban governance and citizen engagement.

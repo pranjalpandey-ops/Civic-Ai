@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
 
 export function LoginPage() {
   const [email, setEmail] = useState('pranjal@citizen.gov.in');
@@ -27,6 +28,7 @@ export function LoginPage() {
 
   const { login } = useAuth() || {};
   const { isDark = false, toggleTheme = () => {} } = useTheme() || {};
+  const { t = (k) => k } = useLanguage() || {};
   const navigate = useNavigate();
 
   // Real-time automatic role recognition based on email/input
@@ -165,10 +167,10 @@ export function LoginPage() {
         <div className="my-8 space-y-6">
           <div>
             <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-              Welcome back
+              {t('welcomeBack') || 'Welcome back'}
             </h1>
             <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
-              Login to CivicEye AI to access the central hub.
+              {t('signIn') || 'Login'} — CivicEye AI.
             </p>
           </div>
 
