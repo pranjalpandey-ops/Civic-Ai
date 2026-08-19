@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   BrowserRouter,
   Routes,
@@ -12,37 +13,50 @@ import { ComplaintProvider } from './context/ComplaintContext';
 import { LanguageProvider } from './context/LanguageContext';
 
 import { Navbar } from './components/common/Navbar';
+import { ProtectedRoute } from './components/common/ProtectedRoute';
 
-// Pages
+// Public Pages
 import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
 import { SignupPage } from './pages/SignupPage';
 
+// Access Request
+import { AccessRequest } from './pages/AccessRequest';
+
+// Citizen
 import { CitizenDashboard } from './pages/citizen/CitizenDashboard';
 import { MyComplaintsPage } from './pages/citizen/MyComplaints';
 import { ReportIssuePage } from './pages/citizen/ReportIssueModal';
 import { ComplaintDetailPage } from './pages/citizen/ComplaintDetail';
 
+// Authority
 import { AuthorityDashboard } from './pages/authority/AuthorityDashboard';
 import { IncidentAnalysisPage } from './pages/authority/IncidentAnalysis';
 import { AuthorityQueuePage } from './pages/authority/AuthorityQueue';
 import { LiveCityMapPage } from './pages/authority/LiveCityMap';
 
+// Admin
 import { AdminPanelPage } from './pages/admin/AdminPanel';
 import { ReportsExportPage } from './pages/admin/ReportsExport';
+
 
 export function App() {
   return (
     <ThemeProvider>
+
       <LanguageProvider>
+
         <AuthProvider>
+
           <ComplaintProvider>
+
             <BrowserRouter
               future={{
                 v7_startTransition: true,
                 v7_relativeSplatPath: true,
               }}
             >
+
               <div className="min-h-screen bg-[#070b12] text-slate-100 flex flex-col">
 
                 {/* Global Navigation */}
@@ -50,10 +64,11 @@ export function App() {
 
                 {/* Application Content */}
                 <div className="flex-1 min-w-0">
+
                   <Routes>
 
                     {/* =================================================
-                        PUBLIC
+                        PUBLIC ROUTES
                     ================================================= */}
 
                     <Route
@@ -76,107 +91,197 @@ export function App() {
                       element={<LiveCityMapPage />}
                     />
 
+
                     {/* =================================================
-                        CITIZEN
+                        CITIZEN ROUTES
                     ================================================= */}
 
                     <Route
                       path="/citizen"
-                      element={<CitizenDashboard />}
+                      element={
+                        <ProtectedRoute allowedRole="CITIZEN">
+                          <CitizenDashboard />
+                        </ProtectedRoute>
+                      }
                     />
 
                     <Route
                       path="/citizen/complaints"
-                      element={<MyComplaintsPage />}
+                      element={
+                        <ProtectedRoute allowedRole="CITIZEN">
+                          <MyComplaintsPage />
+                        </ProtectedRoute>
+                      }
                     />
 
                     <Route
                       path="/report"
-                      element={<ReportIssuePage />}
+                      element={
+                        <ProtectedRoute allowedRole="CITIZEN">
+                          <ReportIssuePage />
+                        </ProtectedRoute>
+                      }
                     />
 
                     <Route
                       path="/complaints/:id"
-                      element={<ComplaintDetailPage />}
+                      element={
+                        <ProtectedRoute allowedRole="CITIZEN">
+                          <ComplaintDetailPage />
+                        </ProtectedRoute>
+                      }
                     />
 
+
                     {/* =================================================
-                        AUTHORITY
+                        ACCESS REQUEST
+                    ================================================= */}
+
+                    <Route
+                      path="/access-request"
+                      element={
+                        <ProtectedRoute allowedRole="CITIZEN">
+                          <AccessRequest />
+                        </ProtectedRoute>
+                      }
+                    />
+
+
+                    {/* =================================================
+                        AUTHORITY ROUTES
                     ================================================= */}
 
                     <Route
                       path="/authority"
-                      element={<AuthorityDashboard />}
+                      element={
+                        <ProtectedRoute allowedRole="AUTHORITY">
+                          <AuthorityDashboard />
+                        </ProtectedRoute>
+                      }
                     />
 
                     <Route
                       path="/authority/inspection"
-                      element={<IncidentAnalysisPage />}
+                      element={
+                        <ProtectedRoute allowedRole="AUTHORITY">
+                          <IncidentAnalysisPage />
+                        </ProtectedRoute>
+                      }
                     />
 
                     <Route
                       path="/authority/inspection/:id"
-                      element={<IncidentAnalysisPage />}
+                      element={
+                        <ProtectedRoute allowedRole="AUTHORITY">
+                          <IncidentAnalysisPage />
+                        </ProtectedRoute>
+                      }
                     />
 
                     <Route
                       path="/authority/queue"
-                      element={<AuthorityQueuePage />}
+                      element={
+                        <ProtectedRoute allowedRole="AUTHORITY">
+                          <AuthorityQueuePage />
+                        </ProtectedRoute>
+                      }
                     />
 
                     <Route
                       path="/authority/feed"
-                      element={<AuthorityQueuePage />}
+                      element={
+                        <ProtectedRoute allowedRole="AUTHORITY">
+                          <AuthorityQueuePage />
+                        </ProtectedRoute>
+                      }
                     />
 
                     <Route
                       path="/authority/map"
-                      element={<LiveCityMapPage />}
+                      element={
+                        <ProtectedRoute allowedRole="AUTHORITY">
+                          <LiveCityMapPage />
+                        </ProtectedRoute>
+                      }
                     />
 
                     <Route
                       path="/authority/analytics"
-                      element={<AuthorityDashboard />}
+                      element={
+                        <ProtectedRoute allowedRole="AUTHORITY">
+                          <AuthorityDashboard />
+                        </ProtectedRoute>
+                      }
                     />
 
                     <Route
                       path="/authority/departments"
-                      element={<AdminPanelPage />}
+                      element={
+                        <ProtectedRoute allowedRole="AUTHORITY">
+                          <AdminPanelPage />
+                        </ProtectedRoute>
+                      }
                     />
 
                     <Route
                       path="/authority/settings"
-                      element={<AdminPanelPage />}
+                      element={
+                        <ProtectedRoute allowedRole="AUTHORITY">
+                          <AdminPanelPage />
+                        </ProtectedRoute>
+                      }
                     />
 
+
                     {/* =================================================
-                        ADMIN
+                        ADMIN ROUTES
                     ================================================= */}
 
                     <Route
                       path="/admin"
-                      element={<AdminPanelPage />}
+                      element={
+                        <ProtectedRoute allowedRole="ADMIN">
+                          <AdminPanelPage />
+                        </ProtectedRoute>
+                      }
                     />
 
                     <Route
                       path="/admin/complaints"
-                      element={<AuthorityQueuePage />}
+                      element={
+                        <ProtectedRoute allowedRole="ADMIN">
+                          <AuthorityQueuePage />
+                        </ProtectedRoute>
+                      }
                     />
 
                     <Route
                       path="/admin/departments"
-                      element={<AdminPanelPage />}
+                      element={
+                        <ProtectedRoute allowedRole="ADMIN">
+                          <AdminPanelPage />
+                        </ProtectedRoute>
+                      }
                     />
 
                     <Route
                       path="/admin/wards"
-                      element={<AdminPanelPage />}
+                      element={
+                        <ProtectedRoute allowedRole="ADMIN">
+                          <AdminPanelPage />
+                        </ProtectedRoute>
+                      }
                     />
 
                     <Route
                       path="/admin/reports"
-                      element={<ReportsExportPage />}
+                      element={
+                        <ProtectedRoute allowedRole="ADMIN">
+                          <ReportsExportPage />
+                        </ProtectedRoute>
+                      }
                     />
+
 
                     {/* =================================================
                         FALLBACK
@@ -184,18 +289,32 @@ export function App() {
 
                     <Route
                       path="*"
-                      element={<Navigate to="/" replace />}
+                      element={
+                        <Navigate
+                          to="/"
+                          replace
+                        />
+                      }
                     />
 
                   </Routes>
+
                 </div>
+
               </div>
+
             </BrowserRouter>
+
           </ComplaintProvider>
+
         </AuthProvider>
+
       </LanguageProvider>
+
     </ThemeProvider>
   );
 }
 
+
 export default App;
+

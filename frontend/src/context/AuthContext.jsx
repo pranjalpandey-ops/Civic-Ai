@@ -1,145 +1,670 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { fetchApi } from '../utils/api';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
-const DEFAULT_CITIZEN = {
-  id: 'usr_citizen_1',
-  name: 'Pranjal Sharma',
-  email: 'pranjal@citizen.gov.in',
-  role: 'CITIZEN',
-  phone: '+91 98765 43210',
-  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-  wardId: 'ward_62',
-  address: 'Sector 62, Noida, Uttar Pradesh'
-};
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+  updateProfile,
+} from 'firebase/auth';
 
-const DEFAULT_AUTHORITY = {
-  id: 'usr_authority_road',
-  name: 'Rajesh Kumar',
-  email: 'rajesh.kumar@city.gov',
-  role: 'AUTHORITY',
-  departmentId: 'road_maintenance',
-  title: 'Senior Executive Engineer (Roads)',
-  phone: '+91 120 245 8890',
-  avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-  wardId: 'ward_62'
-};
+import {
+  doc,
+  getDoc,
+  setDoc,
+  serverTimestamp,
+} from 'firebase/firestore';
 
-const DEFAULT_ADMIN = {
-  id: 'usr_admin',
-  name: 'Dr. S. K. Sharma',
-  email: 'admin@city.gov',
-  role: 'ADMIN',
-  title: 'Chief Municipal Commissioner',
-  phone: '+91 120 250 0001',
-  avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80'
-};
+import { auth, db } from '../firebase/config';
 
-const AuthContext = createContext();
+
+const AuthContext = createContext(null);
+
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem('civic_user');
-    return saved ? JSON.parse(saved) : DEFAULT_CITIZEN;
-  });
-  const [token, setToken] = useState(() => localStorage.getItem('civic_token') || 'demo_token');
-  const [loading, setLoading] = useState(false);
+
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+
+  // ============================================================
+  // FIREBASE AUTH STATE
+  // ============================================================
 
   useEffect(() => {
-    if (user) {
-      localStorage.setItem('civic_user', JSON.stringify(user));
-      localStorage.setItem('civic_user_id', user.id);
-    } else {
-      localStorage.removeItem('civic_user');
-      localStorage.removeItem('civic_user_id');
-    }
-  }, [user]);
 
-  const login = async (email, password) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      async (firebaseUser) => {
+
+        try {
+
+          if (!firebaseUser) {
+
+            setUser(null);
+            setToken(null);
+            setLoading(false);
+
+            return;
+          }
+
+
+          const userRef = doc(
+            db,
+            'users',
+            firebaseUser.uid
+          );
+
+          const userSnap = await getDoc(
+            userRef
+          );
+
+
+          let userData;
+
+
+          if (userSnap.exists()) {
+
+            const firestoreData =
+              userSnap.data();
+
+            userData = {
+
+              id: firebaseUser.uid,
+
+              uid: firebaseUser.uid,
+
+              ...firestoreData,
+
+              email:
+                firestoreData.email ||
+                firebaseUser.email ||
+                '',
+
+              name:
+                firestoreData.name ||
+                firebaseUser.displayName ||
+                'User',
+
+              role:
+                String(
+                  firestoreData.role ||
+                  'CITIZEN'
+                ).toUpperCase(),
+
+            };
+
+          } else {
+
+            /*
+             * Firebase account exists but there is
+             * no Firestore profile.
+             *
+             * Treat it as Citizen.
+             */
+
+            userData = {
+
+              id: firebaseUser.uid,
+
+              uid: firebaseUser.uid,
+
+              name:
+                firebaseUser.displayName ||
+                'Citizen',
+
+              email:
+                firebaseUser.email ||
+                '',
+
+              phone: '',
+
+              address: '',
+
+              wardId: '',
+
+              avatar: '',
+
+              role: 'CITIZEN',
+
+            };
+
+          }
+
+
+          const firebaseToken =
+            await firebaseUser.getIdToken();
+
+
+          setUser(userData);
+          setToken(firebaseToken);
+
+
+        } catch (error) {
+
+          console.error(
+            'Failed to load Firebase user:',
+            error
+          );
+
+          setUser(null);
+          setToken(null);
+
+        } finally {
+
+          setLoading(false);
+
+        }
+
+      }
+    );
+
+
+    return () => unsubscribe();
+
+  }, []);
+
+
+  // ============================================================
+  // LOGIN
+  // ============================================================
+
+  const login = async (
+    email,
+    password
+  ) => {
+
     setLoading(true);
+
+
     try {
-      const res = await fetchApi('/auth/login', {
-        method: 'POST',
-        body: JSON.stringify({ email, password }),
-      });
-      setUser(res.user);
-      setToken(res.token);
-      localStorage.setItem('civic_token', res.token);
-      return res.user;
-    } catch (err) {
-      console.warn('API login failed, falling back to local demo switch:', err);
-      let targetUser = DEFAULT_CITIZEN;
-      if (email.includes('admin')) targetUser = DEFAULT_ADMIN;
-      else if (email.includes('city.gov') || email.includes('authority') || email.includes('road')) targetUser = DEFAULT_AUTHORITY;
-      setUser(targetUser);
-      return targetUser;
+
+      const credential =
+        await signInWithEmailAndPassword(
+          auth,
+          email.trim(),
+          password
+        );
+
+
+      const firebaseUser =
+        credential.user;
+
+
+      const userRef = doc(
+        db,
+        'users',
+        firebaseUser.uid
+      );
+
+
+      const userSnap =
+        await getDoc(userRef);
+
+
+      let userData;
+
+
+      /*
+       * If Firestore profile exists,
+       * use its role.
+       */
+
+      if (userSnap.exists()) {
+
+        const firestoreData =
+          userSnap.data();
+
+
+        userData = {
+
+          id: firebaseUser.uid,
+
+          uid: firebaseUser.uid,
+
+          ...firestoreData,
+
+          email:
+            firestoreData.email ||
+            firebaseUser.email ||
+            '',
+
+          name:
+            firestoreData.name ||
+            firebaseUser.displayName ||
+            'User',
+
+          role:
+            String(
+              firestoreData.role ||
+              'CITIZEN'
+            ).toUpperCase(),
+
+        };
+
+      } else {
+
+        /*
+         * Don't block Firebase login just because
+         * the Firestore profile is missing.
+         *
+         * Create it as Citizen.
+         */
+
+        const citizenProfile = {
+
+          name:
+            firebaseUser.displayName ||
+            'Citizen',
+
+          email:
+            firebaseUser.email ||
+            email,
+
+          role: 'CITIZEN',
+
+          phone: '',
+
+          address: '',
+
+          wardId: '',
+
+          avatar: '',
+
+          createdAt:
+            serverTimestamp(),
+
+        };
+
+
+        await setDoc(
+          userRef,
+          citizenProfile
+        );
+
+
+        userData = {
+
+          id: firebaseUser.uid,
+
+          uid: firebaseUser.uid,
+
+          ...citizenProfile,
+
+          email:
+            firebaseUser.email ||
+            email,
+
+          role: 'CITIZEN',
+
+        };
+
+      }
+
+
+      const firebaseToken =
+        await firebaseUser.getIdToken();
+
+
+      setUser(userData);
+
+      setToken(firebaseToken);
+
+
+      return userData;
+
+
+    } catch (error) {
+
+      console.error(
+        'Firebase login error:',
+        error
+      );
+
+
+      let message =
+        'Login failed.';
+
+
+      switch (error.code) {
+
+        case 'auth/invalid-credential':
+
+          message =
+            'Invalid email or password.';
+
+          break;
+
+
+        case 'auth/user-not-found':
+
+          message =
+            'No account found with this email.';
+
+          break;
+
+
+        case 'auth/wrong-password':
+
+          message =
+            'Incorrect password.';
+
+          break;
+
+
+        case 'auth/invalid-email':
+
+          message =
+            'Please enter a valid email address.';
+
+          break;
+
+
+        case 'auth/too-many-requests':
+
+          message =
+            'Too many login attempts. Please try again later.';
+
+          break;
+
+
+        case 'auth/network-request-failed':
+
+          message =
+            'Network error. Check your internet connection.';
+
+          break;
+
+
+        default:
+
+          message =
+            error.message ||
+            message;
+
+      }
+
+
+      throw new Error(message);
+
+
     } finally {
+
       setLoading(false);
+
     }
+
   };
+
+
+  // ============================================================
+  // REGISTER
+  // ============================================================
 
   const register = async (userData) => {
+
     setLoading(true);
+
+
     try {
-      const res = await fetchApi('/auth/register', {
-        method: 'POST',
-        body: JSON.stringify(userData),
-      });
-      setUser(res.user);
-      setToken(res.token);
-      return res.user;
-    } catch (err) {
-      console.warn('API register fallback:', err);
-      const newUser = {
-        id: `usr_${Date.now()}`,
-        name: userData.name,
-        email: userData.email,
-        role: userData.role || 'CITIZEN',
-        avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'
+
+      const {
+        name,
+        email,
+        password,
+        phone = '',
+        address = '',
+        wardId = '',
+        avatar = '',
+      } = userData;
+
+
+      /*
+       * PUBLIC SIGNUP CAN ONLY CREATE CITIZEN.
+       */
+
+      const role = 'CITIZEN';
+
+
+      const credential =
+        await createUserWithEmailAndPassword(
+          auth,
+          email.trim(),
+          password
+        );
+
+
+      const firebaseUser =
+        credential.user;
+
+
+      if (name?.trim()) {
+
+        await updateProfile(
+          firebaseUser,
+          {
+            displayName:
+              name.trim(),
+          }
+        );
+
+      }
+
+
+      const profile = {
+
+        uid: firebaseUser.uid,
+
+        name:
+          name?.trim() ||
+          'Citizen',
+
+        email:
+          firebaseUser.email ||
+          email,
+
+        phone,
+
+        address,
+
+        wardId,
+
+        avatar,
+
+        role,
+
+        createdAt:
+          serverTimestamp(),
+
       };
+
+
+      await setDoc(
+        doc(
+          db,
+          'users',
+          firebaseUser.uid
+        ),
+        profile
+      );
+
+
+      const newUser = {
+
+        id: firebaseUser.uid,
+
+        uid: firebaseUser.uid,
+
+        ...profile,
+
+        email:
+          firebaseUser.email ||
+          email,
+
+      };
+
+
+      const firebaseToken =
+        await firebaseUser.getIdToken();
+
+
       setUser(newUser);
+
+      setToken(firebaseToken);
+
+
       return newUser;
+
+
+    } catch (error) {
+
+      console.error(
+        'Firebase registration error:',
+        error
+      );
+
+
+      let message =
+        'Registration failed.';
+
+
+      switch (error.code) {
+
+        case 'auth/email-already-in-use':
+
+          message =
+            'An account already exists with this email.';
+
+          break;
+
+
+        case 'auth/weak-password':
+
+          message =
+            'Password should be at least 6 characters.';
+
+          break;
+
+
+        case 'auth/invalid-email':
+
+          message =
+            'Please enter a valid email address.';
+
+          break;
+
+
+        case 'auth/network-request-failed':
+
+          message =
+            'Network error. Check your internet connection.';
+
+          break;
+
+
+        default:
+
+          message =
+            error.message ||
+            message;
+
+      }
+
+
+      throw new Error(message);
+
+
     } finally {
+
       setLoading(false);
+
+    }
+
+  };
+
+
+  // ============================================================
+  // LOGOUT
+  // ============================================================
+
+  const logout = async () => {
+
+    try {
+
+      await signOut(auth);
+
+      setUser(null);
+
+      setToken(null);
+
+    } catch (error) {
+
+      console.error(
+        'Logout error:',
+        error
+      );
+
+      throw error;
+
     }
   };
 
-  const switchRole = (role) => {
-    let target = DEFAULT_CITIZEN;
-    if (role === 'AUTHORITY') target = DEFAULT_AUTHORITY;
-    else if (role === 'ADMIN') target = DEFAULT_ADMIN;
-    setUser(target);
-    localStorage.setItem('civic_user', JSON.stringify(target));
-    localStorage.setItem('civic_user_id', target.id);
-  };
 
-  const logout = () => {
-    setUser(null);
-    setToken(null);
-    localStorage.removeItem('civic_user');
-    localStorage.removeItem('civic_token');
-    localStorage.removeItem('civic_user_id');
-  };
+  // ============================================================
+  // CONTEXT
+  // ============================================================
 
   return (
+
     <AuthContext.Provider
       value={{
+
         user,
+
         token,
+
         loading,
+
         login,
+
         register,
+
         logout,
-        switchRole,
-        isCitizen: user?.role === 'CITIZEN',
-        isAuthority: user?.role === 'AUTHORITY',
-        isAdmin: user?.role === 'ADMIN',
+
+        isCitizen:
+          user?.role === 'CITIZEN',
+
+        isAuthority:
+          user?.role === 'AUTHORITY',
+
+        isAdmin:
+          user?.role === 'ADMIN',
+
       }}
     >
+
       {children}
+
     </AuthContext.Provider>
+
   );
+
 }
 
+
 export function useAuth() {
-  return useContext(AuthContext);
+
+  return useContext(
+    AuthContext
+  );
+
 }
+
+
+export default AuthContext;

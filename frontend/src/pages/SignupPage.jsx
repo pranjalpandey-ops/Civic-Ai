@@ -1,357 +1,840 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import {
-  Shield,
-  Mail,
-  Lock,
-  User,
-  Building,
-  ArrowRight,
-  CheckCircle2,
-  Eye,
-  EyeOff,
-  Sparkles,
-  Sun,
-  Moon,
-  UserCheck,
-  ShieldAlert,
-  Crown,
-  MapPin,
-  Layers
-} from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useTheme } from '../context/ThemeContext';
-import { useLanguage } from '../context/LanguageContext';
+import { createAccessRequest } from '../services/accessRequest';
 
 export function SignupPage() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState('CITIZEN');
-  const [ward, setWard] = useState('ward_62');
-  const [department, setDepartment] = useState('road_maintenance');
-  const [showPassword, setShowPassword] = useState(false);
-  const [termsAccepted, setTermsAccepted] = useState(true);
-  const [loading, setLoading] = useState(false);
-
-  const { register } = useAuth() || {};
-  const { isDark = false, toggleTheme = () => {} } = useTheme() || {};
-  const { t = (k) => k } = useLanguage() || {};
   const navigate = useNavigate();
 
-  // Real-time automatic persona classification
-  const getDetectedRole = (emailInput) => {
-    const e = (emailInput || '').toLowerCase().trim();
-    if (e.includes('admin') || e.includes('commissioner') || e.includes('mayor')) {
-      return {
-        role: 'ADMIN',
-        label: 'City Administrator / Commissioner',
-        icon: Crown,
-        badgeBg: 'bg-purple-100 dark:bg-purple-950/70 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-800',
-        route: '/admin'
-      };
-    }
-    if (e.includes('authority') || e.includes('road') || e.includes('sanitation') || e.includes('water') || e.includes('electrical') || e.includes('.gov')) {
-      return {
-        role: 'AUTHORITY',
-        label: 'Municipal Authority Officer',
-        icon: ShieldAlert,
-        badgeBg: 'bg-blue-100 dark:bg-blue-950/70 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800',
-        route: '/authority'
-      };
-    }
-    return {
-      role: 'CITIZEN',
-      label: 'Public / Citizen Resident',
-      icon: UserCheck,
-      badgeBg: 'bg-emerald-100 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800',
-      route: '/citizen'
-    };
+  const {
+    register,
+    loading: authLoading,
+  } = useAuth();
+
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    phone: '',
+    accountType: 'CITIZEN',
+  });
+
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+
+  const loading =
+    authLoading || submitting;
+
+
+  // ==========================================================
+  // HANDLE INPUT
+  // ==========================================================
+
+  const handleChange = (event) => {
+    const {
+      name,
+      value,
+    } = event.target;
+
+    setFormData((previous) => ({
+      ...previous,
+      [name]: value,
+    }));
+
+    setError('');
+    setSuccess('');
   };
 
-  const detected = getDetectedRole(email);
 
-  const handleEmailChange = (newEmail) => {
-    setEmail(newEmail);
-    const det = getDetectedRole(newEmail);
-    setRole(det.role);
-  };
+  // ==========================================================
+  // SUBMIT
+  // ==========================================================
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    setError('');
+    setSuccess('');
+
+
+    const {
+      name,
+      email,
+      password,
+      confirmPassword,
+      phone,
+      accountType,
+    } = formData;
+
+
+    // --------------------------------------------------------
+    // VALIDATION
+    // --------------------------------------------------------
+
+    if (!name.trim()) {
+      setError(
+        'Please enter your full name.'
+      );
+      return;
+    }
+
+
+    if (!email.trim()) {
+      setError(
+        'Please enter your email address.'
+      );
+      return;
+    }
+
+
+    if (!password) {
+      setError(
+        'Please enter a password.'
+      );
+      return;
+    }
+
+
+    if (password.length < 6) {
+      setError(
+        'Password must contain at least 6 characters.'
+      );
+      return;
+    }
+
+
+    if (password !== confirmPassword) {
+      setError(
+        'Passwords do not match.'
+      );
+      return;
+    }
+
+
+    if (
+      ![
+        'CITIZEN',
+        'AUTHORITY',
+        'ADMIN',
+      ].includes(accountType)
+    ) {
+      setError(
+        'Please select a valid account type.'
+      );
+      return;
+    }
+
+
+    setSubmitting(true);
+
+
     try {
+
+      // ======================================================
+      // CREATE FIREBASE ACCOUNT
+      // ======================================================
+      //
+      // AuthContext ALWAYS creates the Firebase user as
+      // CITIZEN. This is intentional.
+      //
+      // Admin/Authority access is granted only after approval.
+      //
+
       const newUser = await register({
-        name: name || 'New Resident',
-        email,
-        role,
+        name: name.trim(),
+
+        email:
+          email.trim().toLowerCase(),
+
         password,
-        wardId: ward,
-        departmentId: role === 'AUTHORITY' ? department : null
+
+        phone:
+          phone.trim(),
+
+        role: 'CITIZEN',
       });
 
-      if (role === 'ADMIN') {
-        navigate('/admin');
-      } else if (role === 'AUTHORITY') {
-        navigate('/authority');
-      } else {
-        navigate('/citizen');
+
+      // ======================================================
+      // CITIZEN
+      // ======================================================
+
+      if (accountType === 'CITIZEN') {
+
+        setSuccess(
+          'Citizen account created successfully. Redirecting...'
+        );
+
+
+        setTimeout(() => {
+
+          navigate(
+            '/citizen',
+            {
+              replace: true,
+            }
+          );
+
+        }, 700);
+
+
+        return;
       }
-    } catch (err) {
-      console.error('Registration error:', err);
+
+
+      // ======================================================
+      // ADMIN / AUTHORITY APPLICATION
+      // ======================================================
+      //
+      // Firebase account exists, but role is still CITIZEN.
+      //
+      // Now create an access request.
+      //
+
+      await createAccessRequest({
+
+        name:
+          newUser?.name ||
+          name.trim(),
+
+        email:
+          newUser?.email ||
+          email.trim().toLowerCase(),
+
+        requestedRole:
+          accountType,
+
+      });
+
+
+      // ======================================================
+      // APPLICATION SUCCESS
+      // ======================================================
+
+      const roleName =
+        accountType === 'ADMIN'
+          ? 'Admin'
+          : 'Authority';
+
+
+      setSuccess(
+        `${roleName} access request submitted successfully. Your account will remain a Citizen account until an authorized Admin approves your request.`
+      );
+
+
+      /*
+       * Keep the user on the page for a moment so they
+       * can read the confirmation.
+       */
+
+      setTimeout(() => {
+
+        navigate(
+          '/citizen',
+          {
+            replace: true,
+          }
+        );
+
+      }, 1800);
+
+
+    } catch (error) {
+
+      console.error(
+        'Signup error:',
+        error
+      );
+
+
+      setError(
+        error?.message ||
+        'Unable to create your account. Please try again.'
+      );
+
     } finally {
-      setLoading(false);
+
+      setSubmitting(false);
+
     }
   };
 
-  const DetectedIcon = detected.icon;
+
+  // ==========================================================
+  // PAGE
+  // ==========================================================
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#090d16] text-slate-900 dark:text-white flex flex-col md:flex-row transition-colors duration-200">
-      
-      {/* Left Column: Sign Up Form (Matches Screenshot 4) */}
-      <div className="w-full md:w-1/2 flex flex-col justify-between p-8 sm:p-12 lg:p-16 max-w-xl mx-auto md:max-w-none">
-        
-        {/* Brand & Theme Toggle */}
-        <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-md">
-              <Shield className="w-5 h-5 fill-white/20" />
-            </div>
-            <span className="font-bold text-lg text-slate-900 dark:text-white tracking-tight">
-              CivicEye <span className="text-blue-600 dark:text-blue-400">AI</span>
-            </span>
-          </Link>
 
-          <div className="flex items-center gap-2">
-            <Link
-              to="/login"
-              className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline px-2.5 py-1"
+    <div className="min-h-screen bg-[#070b12] text-slate-100 flex items-center justify-center px-4 py-10">
+
+      <div className="w-full max-w-lg">
+
+
+        {/* ====================================================
+            HEADER
+        ==================================================== */}
+
+        <div className="text-center mb-8">
+
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 mb-4">
+
+            <svg
+              className="w-7 h-7 text-blue-400"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
             >
-              Sign In Instead
-            </Link>
-            <button
-              onClick={toggleTheme}
-              className="p-2 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white bg-slate-100 dark:bg-slate-800 rounded-lg transition-colors"
-              title="Toggle Dark / Light Mode"
-            >
-              {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
-            </button>
+
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"
+              />
+
+              <circle
+                cx="9"
+                cy="7"
+                r="4"
+              />
+
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19 8v6"
+              />
+
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M22 11h-6"
+              />
+
+            </svg>
+
           </div>
+
+
+          <h1 className="text-2xl font-bold tracking-tight">
+            Create your Civic-AI account
+          </h1>
+
+
+          <p className="text-sm text-slate-400 mt-2">
+            Join your city's digital civic platform
+          </p>
+
         </div>
 
-        {/* Main Content */}
-        <div className="my-6 space-y-6">
-          <div>
-            <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-              {t('createAccount') || 'Create an account'}
-            </h1>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
-              Join the central hub for precision urban governance and citizen engagement.
-            </p>
-          </div>
 
-          {/* Real-Time Auto-Identified Persona Tag */}
-          <div className={`p-3 rounded-xl border flex items-center justify-between gap-3 text-xs transition-all ${detected.badgeBg}`}>
-            <div className="flex items-center gap-2">
-              <DetectedIcon className="w-4 h-4 shrink-0" />
-              <div>
-                <span className="text-[10px] uppercase font-bold tracking-wider opacity-80">Target Account Classification</span>
-                <p className="font-bold text-xs">{detected.label}</p>
-              </div>
+        {/* ====================================================
+            CARD
+        ==================================================== */}
+
+        <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl">
+
+
+          {/* ERROR */}
+
+          {error && (
+
+            <div className="mb-5 p-4 rounded-lg border border-red-500/20 bg-red-500/10 text-red-300 text-sm">
+
+              <p className="font-semibold mb-1">
+                Registration failed
+              </p>
+
+              <p>
+                {error}
+              </p>
+
             </div>
-            <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-white/60 dark:bg-black/30 font-semibold">
-              Auto-Routes to {detected.route}
-            </span>
-          </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            
-            {/* Full Name */}
+          )}
+
+
+          {/* SUCCESS */}
+
+          {success && (
+
+            <div className="mb-5 p-4 rounded-lg border border-emerald-500/20 bg-emerald-500/10 text-emerald-300 text-sm leading-relaxed">
+
+              {success}
+
+            </div>
+
+          )}
+
+
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-5"
+          >
+
+
+            {/* ==================================================
+                NAME
+            ================================================== */}
+
             <div>
-              <label className="block font-mono text-[11px] uppercase tracking-wider text-slate-600 dark:text-slate-400 font-semibold mb-1.5">
+
+              <label
+                htmlFor="name"
+                className="block text-xs font-mono uppercase tracking-wider text-slate-400 mb-2"
+              >
                 Full Name
               </label>
-              <div className="relative">
-                <User className="absolute left-3.5 top-3 w-4 h-4 text-slate-400" />
-                <input
-                  type="text"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Jane Doe"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all"
-                />
-              </div>
+
+
+              <input
+                id="name"
+                name="name"
+                type="text"
+                required
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Enter your full name"
+                autoComplete="name"
+                disabled={loading}
+                className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-lg text-sm text-white placeholder:text-slate-600 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:opacity-50"
+              />
+
             </div>
 
-            {/* Email Address */}
-            <div>
-              <label className="block font-mono text-[11px] uppercase tracking-wider text-slate-600 dark:text-slate-400 font-semibold mb-1.5 flex items-center justify-between">
-                <span>Email Address</span>
-                <span className="text-[10px] text-blue-600 dark:text-blue-400 font-mono">✨ Auto-classified</span>
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3.5 top-3 w-4 h-4 text-slate-400" />
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => handleEmailChange(e.target.value)}
-                  placeholder="jane.doe@example.com or officer@city.gov"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all font-mono"
-                />
-              </div>
-            </div>
 
-            {/* User Type (Dropdown) */}
+            {/* ==================================================
+                EMAIL
+            ================================================== */}
+
             <div>
-              <label className="block font-mono text-[11px] uppercase tracking-wider text-slate-600 dark:text-slate-400 font-semibold mb-1.5">
-                User Type
-              </label>
-              <select
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all"
+
+              <label
+                htmlFor="email"
+                className="block text-xs font-mono uppercase tracking-wider text-slate-400 mb-2"
               >
-                <option value="CITIZEN">Public / Citizen Resident</option>
-                <option value="AUTHORITY">Municipal Authority Officer</option>
-                <option value="ADMIN">City Administrator / Commissioner</option>
-              </select>
+                Email Address
+              </label>
+
+
+              <input
+                id="email"
+                name="email"
+                type="email"
+                required
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="you@example.com"
+                autoComplete="email"
+                disabled={loading}
+                className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-lg text-sm text-white placeholder:text-slate-600 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:opacity-50"
+              />
+
             </div>
 
-            {/* If Authority, show Department picker */}
-            {role === 'AUTHORITY' && (
-              <div>
-                <label className="block font-mono text-[11px] uppercase tracking-wider text-slate-600 dark:text-slate-400 font-semibold mb-1.5">
-                  Assigned Municipal Department
-                </label>
-                <select
-                  value={department}
-                  onChange={(e) => setDepartment(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-slate-100"
-                >
-                  <option value="road_maintenance">Road Maintenance Department</option>
-                  <option value="sanitation">Sanitation & Waste Management</option>
-                  <option value="water_supply">Water Supply & Sewerage</option>
-                  <option value="electrical">Electrical & Street Lighting</option>
-                  <option value="drainage_flood">Drainage & Stormwater</option>
-                  <option value="traffic_mgmt">Traffic & Transit Infra</option>
-                </select>
-              </div>
-            )}
 
-            {/* Password */}
+            {/* ==================================================
+                PHONE
+            ================================================== */}
+
             <div>
-              <label className="block font-mono text-[11px] uppercase tracking-wider text-slate-600 dark:text-slate-400 font-semibold mb-1.5">
+
+              <label
+                htmlFor="phone"
+                className="block text-xs font-mono uppercase tracking-wider text-slate-400 mb-2"
+              >
+                Phone Number
+
+                <span className="normal-case text-slate-600 ml-1">
+                  (optional)
+                </span>
+
+              </label>
+
+
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="+91 98765 43210"
+                autoComplete="tel"
+                disabled={loading}
+                className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-lg text-sm text-white placeholder:text-slate-600 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:opacity-50"
+              />
+
+            </div>
+
+
+            {/* ==================================================
+                ACCOUNT TYPE
+            ================================================== */}
+
+            <div>
+
+              <label className="block text-xs font-mono uppercase tracking-wider text-slate-400 mb-2">
+
+                Account Type
+
+              </label>
+
+
+              <div className="space-y-3">
+
+
+                {/* CITIZEN */}
+
+                <label
+                  className={`
+                    flex
+                    items-center
+                    gap-3
+                    p-4
+                    rounded-xl
+                    border
+                    cursor-pointer
+                    transition-all
+
+                    ${
+                      formData.accountType === 'CITIZEN'
+
+                        ? 'border-blue-500 bg-blue-500/10'
+
+                        : 'border-slate-700 bg-slate-950 hover:border-slate-600'
+                    }
+                  `}
+                >
+
+                  <input
+                    type="radio"
+                    name="accountType"
+                    value="CITIZEN"
+                    checked={
+                      formData.accountType ===
+                      'CITIZEN'
+                    }
+                    onChange={handleChange}
+                    disabled={loading}
+                    className="accent-blue-600"
+                  />
+
+
+                  <div>
+
+                    <p className="text-sm font-semibold">
+                      Citizen
+                    </p>
+
+                    <p className="text-xs text-slate-500 mt-1">
+                      Public / Citizen Resident
+                    </p>
+
+                  </div>
+
+                </label>
+
+
+                {/* AUTHORITY */}
+
+                <label
+                  className={`
+                    flex
+                    items-center
+                    gap-3
+                    p-4
+                    rounded-xl
+                    border
+                    cursor-pointer
+                    transition-all
+
+                    ${
+                      formData.accountType === 'AUTHORITY'
+
+                        ? 'border-amber-500 bg-amber-500/10'
+
+                        : 'border-slate-700 bg-slate-950 hover:border-slate-600'
+                    }
+                  `}
+                >
+
+                  <input
+                    type="radio"
+                    name="accountType"
+                    value="AUTHORITY"
+                    checked={
+                      formData.accountType ===
+                      'AUTHORITY'
+                    }
+                    onChange={handleChange}
+                    disabled={loading}
+                    className="accent-amber-500"
+                  />
+
+
+                  <div>
+
+                    <p className="text-sm font-semibold">
+                      Authority
+                    </p>
+
+                    <p className="text-xs text-slate-500 mt-1">
+                      Municipal Authority / Operations
+                    </p>
+
+                  </div>
+
+                </label>
+
+
+                {/* ADMIN */}
+
+                <label
+                  className={`
+                    flex
+                    items-center
+                    gap-3
+                    p-4
+                    rounded-xl
+                    border
+                    cursor-pointer
+                    transition-all
+
+                    ${
+                      formData.accountType === 'ADMIN'
+
+                        ? 'border-purple-500 bg-purple-500/10'
+
+                        : 'border-slate-700 bg-slate-950 hover:border-slate-600'
+                    }
+                  `}
+                >
+
+                  <input
+                    type="radio"
+                    name="accountType"
+                    value="ADMIN"
+                    checked={
+                      formData.accountType ===
+                      'ADMIN'
+                    }
+                    onChange={handleChange}
+                    disabled={loading}
+                    className="accent-purple-500"
+                  />
+
+
+                  <div>
+
+                    <p className="text-sm font-semibold">
+                      Admin
+                    </p>
+
+                    <p className="text-xs text-slate-500 mt-1">
+                      Municipal Administration
+                    </p>
+
+                  </div>
+
+                </label>
+
+              </div>
+
+
+              {/* INFORMATION */}
+
+              <div className="mt-3 p-3 rounded-lg bg-slate-950 border border-slate-800">
+
+                {formData.accountType === 'CITIZEN' && (
+
+                  <p className="text-[11px] text-slate-500 leading-relaxed">
+
+                    Citizen accounts are activated immediately.
+
+                  </p>
+
+                )}
+
+
+                {formData.accountType === 'AUTHORITY' && (
+
+                  <p className="text-[11px] text-slate-500 leading-relaxed">
+
+                    Your Authority application will be reviewed
+                    by an existing Admin. You will remain a
+                    Citizen until your request is approved.
+
+                  </p>
+
+                )}
+
+
+                {formData.accountType === 'ADMIN' && (
+
+                  <p className="text-[11px] text-slate-500 leading-relaxed">
+
+                    Your Admin application requires approval
+                    from an existing authorized Admin. You will
+                    remain a Citizen until approval.
+
+                  </p>
+
+                )}
+
+              </div>
+
+            </div>
+
+
+            {/* ==================================================
+                PASSWORD
+            ================================================== */}
+
+            <div>
+
+              <label
+                htmlFor="password"
+                className="block text-xs font-mono uppercase tracking-wider text-slate-400 mb-2"
+              >
                 Password
               </label>
-              <div className="relative">
-                <Lock className="absolute left-3.5 top-3 w-4 h-4 text-slate-400" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full pl-10 pr-10 py-2.5 bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
-                Must be at least 8 characters long.
-              </p>
-            </div>
 
-            {/* Terms checkbox */}
-            <div className="flex items-start gap-2 text-xs text-slate-600 dark:text-slate-400 pt-1">
+
               <input
-                type="checkbox"
-                checked={termsAccepted}
-                onChange={(e) => setTermsAccepted(e.target.checked)}
+                id="password"
+                name="password"
+                type="password"
                 required
-                className="mt-0.5 rounded border-slate-300 dark:border-slate-700 text-blue-600 focus:ring-blue-500"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Create a password"
+                autoComplete="new-password"
+                disabled={loading}
+                className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-lg text-sm text-white placeholder:text-slate-600 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:opacity-50"
               />
-              <span>
-                I agree to the <a href="#terms" className="text-blue-600 dark:text-blue-400 underline">Terms of Service</a> and{' '}
-                <a href="#privacy" className="text-blue-600 dark:text-blue-400 underline">Privacy Policy</a>.
-              </span>
+
             </div>
 
-            {/* Create Account Button (Matches Screenshot 4) */}
+
+            {/* ==================================================
+                CONFIRM PASSWORD
+            ================================================== */}
+
+            <div>
+
+              <label
+                htmlFor="confirmPassword"
+                className="block text-xs font-mono uppercase tracking-wider text-slate-400 mb-2"
+              >
+                Confirm Password
+              </label>
+
+
+              <input
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                required
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="Confirm your password"
+                autoComplete="new-password"
+                disabled={loading}
+                className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-lg text-sm text-white placeholder:text-slate-600 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:opacity-50"
+              />
+
+            </div>
+
+
+            {/* ==================================================
+                SUBMIT
+            ================================================== */}
+
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white rounded-lg text-sm font-bold shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
+              className="w-full py-3.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <span>{loading ? 'Creating Account...' : 'Create Account'}</span>
-              <ArrowRight className="w-4 h-4" />
+
+              {loading
+                ? 'Creating account...'
+                : formData.accountType === 'CITIZEN'
+                  ? 'Create Citizen Account'
+                  : `Apply for ${
+                      formData.accountType === 'ADMIN'
+                        ? 'Admin'
+                        : 'Authority'
+                    } Access`
+              }
+
             </button>
+
           </form>
 
-          {/* Already have account */}
-          <div className="text-center text-xs text-slate-600 dark:text-slate-400 pt-2">
-            Already have an account?{' '}
-            <Link
-              to="/login"
-              className="text-blue-600 dark:text-blue-400 font-bold hover:underline"
-            >
-              Log in here
-            </Link>
+
+          {/* ====================================================
+              LOGIN
+          ==================================================== */}
+
+          <div className="mt-7 pt-6 border-t border-slate-800 text-center">
+
+            <p className="text-sm text-slate-400">
+
+              Already have an account?{' '}
+
+              <Link
+                to="/login"
+                className="text-blue-400 hover:text-blue-300 font-medium"
+              >
+                Sign in
+              </Link>
+
+            </p>
+
           </div>
+
+
+          {/* ====================================================
+              SECURITY INFO
+          ==================================================== */}
+
+          <div className="mt-5 p-4 rounded-xl bg-slate-950/70 border border-slate-800">
+
+            <p className="text-xs font-semibold text-slate-300">
+
+              Access approval
+
+            </p>
+
+
+            <p className="text-[11px] leading-relaxed text-slate-500 mt-1">
+
+              Admin and Authority applications do not
+              immediately grant elevated privileges. An
+              existing authorized Admin must review your
+              application before your account role changes.
+
+            </p>
+
+          </div>
+
         </div>
 
-        <div className="text-[11px] font-mono text-slate-400 dark:text-slate-500">
-          CivicEye AI v2.4 • Municipal Auth Node
-        </div>
+
+        <p className="text-center text-[11px] text-slate-600 mt-6">
+
+          Civic-AI • Secure Digital Civic Platform
+
+        </p>
+
       </div>
 
-      {/* Right Column: Visual Artwork Hero (Matches Screenshot 4) */}
-      <div className="w-full md:w-1/2 relative bg-slate-950 overflow-hidden flex flex-col justify-end p-8 sm:p-12 lg:p-16 min-h-[400px] md:min-h-auto">
-        
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&auto=format&fit=crop&q=80"
-            alt="Futuristic Architecture"
-            className="w-full h-full object-cover opacity-35 mix-blend-luminosity scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-blue-900/40"></div>
-          <div className="absolute inset-0 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:24px_24px] opacity-25"></div>
-        </div>
-
-        {/* Floating Glassmorphic Card (Matches Screenshot 4) */}
-        <div className="relative z-10 glass-dark rounded-2xl p-6 sm:p-8 border border-white/15 text-white max-w-lg shadow-2xl backdrop-blur-xl space-y-4">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 font-mono text-[11px]">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
-            Platform v2.4 Active
-          </div>
-
-          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight">
-            Empowering cities with <span className="text-blue-400">precision intelligence.</span>
-          </h2>
-
-          <p className="text-xs text-slate-300 leading-relaxed">
-            CivicEye AI seamlessly connects municipal authorities and citizens through real-time data integration, enhancing public safety, sustainability, and urban planning.
-          </p>
-
-          <div className="pt-4 border-t border-white/10 grid grid-cols-2 gap-4">
-            <div>
-              <div className="text-2xl font-extrabold text-white">98%</div>
-              <p className="text-[11px] font-mono text-slate-400 mt-0.5">Response Time Improvement</p>
-            </div>
-            <div>
-              <div className="text-2xl font-extrabold text-white">12M+</div>
-              <p className="text-[11px] font-mono text-slate-400 mt-0.5">Data Points Analyzed Daily</p>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
+
   );
 }
+
+
+export default SignupPage;

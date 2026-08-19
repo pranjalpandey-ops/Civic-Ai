@@ -10,6 +10,7 @@ import {
   Eye,
   FileText,
   Layers3,
+  LogOut,
   Map,
   Radio,
   RefreshCw,
@@ -57,9 +58,18 @@ const PRIORITY_COLORS = {
 
 export function AuthorityDashboard() {
   const { complaints = [] } = useComplaints();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { t = (k) => k } = useLanguage() || {};
   const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/login', { replace: true });
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
 
   const [overview, setOverview] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -346,6 +356,15 @@ export function AuthorityDashboard() {
                     <Map className="w-4 h-4" />
                     Open City Live Map
                     <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="group inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-red-500/20 bg-red-500/5 hover:bg-red-500/10 hover:border-red-500/30 text-red-400 text-xs font-bold transition-all duration-300"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Logout
                   </button>
 
                 </div>
